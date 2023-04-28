@@ -1,0 +1,5 @@
+server:
+  port: 9885
+
+log:
+  path: /home/xxx_logs

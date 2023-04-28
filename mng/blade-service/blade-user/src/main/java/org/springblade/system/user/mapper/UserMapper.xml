@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.springblade.system.user.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="userResultMap" type="org.springblade.system.user.entity.User">
+        <result column="id" property="id"/>
+        <result column="tenant_id" property="tenantId"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="status" property="status"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="code" property="code"/>
+        <result column="user_type" property="userType"/>
+        <result column="account" property="account"/>
+        <result column="password" property="password"/>
+        <result column="name" property="name"/>
+        <result column="real_name" property="realName"/>
+        <result column="email" property="email"/>
+        <result column="phone" property="phone"/>
+        <result column="birthday" property="birthday"/>
+        <result column="sex" property="sex"/>
+        <result column="role_id" property="roleId"/>
+        <result column="dept_id" property="deptId"/>
+        <result column="post_id" property="postId"/>
+    </resultMap>
+
+    <select id="selectUserPage" resultMap="userResultMap">
+        select * from blade_user where is_deleted = 0
+        <if test="tenantId!=null and tenantId != ''">
+            and tenant_id = #{tenantId}
+        </if>
+        <if test="user.tenantId!=null and user.tenantId != ''">
+            and tenant_id = #{user.tenantId}
+        </if>
+        <if test="user.account!=null and user.account != ''">
+            and account = #{user.account}
+        </if>
+        <if test="user.realName!=null and user.realName != ''">
+            and real_name = #{user.realName}
+        </if>
+        <if test="user.userType!=null and user.userType != ''">
+            and user_type = #{user.userType}
+        </if>
+        <if test="memberRoleIdList!=null and memberRoleIdList.size>0">
+            and role_id not in
+            <foreach collection="memberRoleIdList" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+        <if test="deptIdList!=null and deptIdList.size>0">
+            and id in (
+            SELECT
+            user_id
+            FROM
+            blade_user_dept
+            WHERE
+            dept_id IN
+            <foreach collection="deptIdList" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            )
+        </if>
+        ORDER BY id
+    </select>
+
+    <select id="getUser" resultMap="userResultMap">
+        SELECT
+            *
+        FROM
+            blade_user
+        WHERE
+            tenant_id = #{param1} and account = #{param2} and is_deleted = 0
+    </select>
+
+    <select id="exportUser" resultType="org.springblade.system.user.excel.UserExcel">
+        SELECT id, tenant_id, user_type, account, name, real_name, email, phone, birthday, role_id, dept_id, post_id FROM blade_user ${ew.customSqlSegment}
+    </select>
+
+    <select id="getUserByIdDel" resultMap="userResultMap">
+        SELECT
+            *
+        FROM
+            blade_user
+        where id = #{userId}
+    </select>
+
+    <select id="getMemberRoleId" resultType="String">
+        SELECT id FROM blade_role WHERE role_alias = 'menber' LIMIT 1
+    </select>
+
+
+    <select id="getAllHtyh" resultMap="userResultMap">
+        SELECT
+            *
+        FROM
+            blade_user bu
+            INNER JOIN blade_role br ON FIND_IN_SET( br.id, bu.role_id )
+            where 	br.role_alias != 'ptyh'
+    </select>
+</mapper>

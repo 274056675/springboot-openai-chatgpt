@@ -1,0 +1,37 @@
+#服务器端口
+server:
+  port: 9871
+
+#数据源配置
+spring:
+  datasource:
+    url: ${blade.datasource.dev.url}
+    username: ${blade.datasource.dev.username}
+    password: ${blade.datasource.dev.password}
+
+#第三方登陆
+#第三方登陆
+social:
+  enabled: true
+  domain: http://127.0.0.1
+  oauth:
+    GITHUB:
+      client-id: 233************
+      client-secret: 233************************************
+      redirect-uri: ${social.domain}/oauth/redirect/github
+    GITEE:
+      client-id: 233************
+      client-secret: 233************************************
+      redirect-uri: ${social.domain}/oauth/redirect/gitee
+    WECHAT_OPEN:
+      client-id: 233************
+      client-secret: 233************************************
+      redirect-uri: ${social.domain}/oauth/redirect/wechat_open
+    QQ:
+      client-id: 233************
+      client-secret: 233************************************
+      redirect-uri: ${social.domain}/oauth/redirect/qq
+    DINGTALK:
+      client-id: 233************
+      client-secret: 233************************************
+      redirect-uri: ${social.domain}/oauth/redirect/dingtalk

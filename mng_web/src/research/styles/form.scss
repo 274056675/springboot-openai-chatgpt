@@ -1,0 +1,255 @@
+.avue-form-work-style {
+  /deep/.el-collapse-item__content {
+    padding: 1px 1px 0 1px;
+  }
+  /deep/.avue-form__group {
+    border: 0;
+    // border: 1px solid #000;
+    // border-width: 1px 0 0 1px;
+    // border-right-color: #fff;
+    // border-bottom-color: #fff;
+    .avue-form__row {
+      padding: 0 !important;
+      margin-bottom: 0;
+      .el-form-item {
+        margin-bottom: 0;
+        border: 1px solid #000;
+        margin-top: -1px;
+        margin-left: -1px;
+        textarea {
+          border: 0;
+        }
+        input {
+          border: 0;
+        }
+        .el-input-number {
+          span {
+            height: 30px;
+            line-height: 30px;
+            i {
+              height: 30px;
+              line-height: 30px;
+            }
+          }
+        }
+        .el-switch {
+          padding-left: 10px;
+          &::after {
+            content: "";
+            line-height: 32px;
+            height: 32px;
+          }
+        }
+        .avue-checkbox {
+          line-height: normal !important;
+          .el-checkbox-group {
+            padding-left: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            // display: inline-block;
+            // line-height: 1;
+            // vertical-align: middle;
+            .el-checkbox {
+              display: flex;
+              align-items: center;
+            }
+            label {
+              height: 32px !important;
+              line-height: 32px !important;
+            }
+          }
+        }
+
+        .avue-radio {
+          line-height: normal !important;
+          .el-radio-group {
+            padding-left: 10px;
+            label {
+              height: 32px;
+              line-height: 32px;
+            }
+          }
+        }
+
+        .form-custom-rate {
+          padding: 0 0 0 10px;
+          height: 32px;
+          display: flex;
+          align-items: center;
+          .el-rate {
+            height: 32px !important;
+            .el-rate__item {
+              i {
+                height: 32px;
+                line-height: 32px;
+              }
+            }
+          }
+        }
+        .avue-input-color {
+          .el-input-group__append {
+            border: 0;
+          }
+        }
+        .el-slider {
+          height: 32px;
+          display: flex;
+          align-items: center;
+          padding: 0 10px;
+        }
+        .el-divider {
+          .el-divider__text {
+            line-height: 31px;
+          }
+        }
+        .avue-upload[uploadtype="file"],
+        .avue-upload[uploadtype="img"] {
+          padding: 8px 0 0 8px;
+        }
+        .avue-upload[uploadtype="img"] {
+          .avue-upload {
+            height: 155px;
+            .el-upload-list__item {
+              margin-bottom: 0;
+            }
+          }
+          .el-upload--picture-card {
+            i {
+              height: 146px;
+              line-height: 146px;
+            }
+          }
+        }
+        .avue-ueditor {
+          .w-e-toolbar {
+            box-sizing: border-box !important;
+            border-style: #000 #000 #eee #000;
+            border-width: 0 0 1px 0 !important;
+            .w-e-menu {
+              display: block !important;
+              text-align: center !important;
+              line-height: 40px !important;
+              height: 40px !important;
+              i {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+            }
+          }
+          .w-e-text-container {
+            border: 0 !important;
+            height: 299px !important;
+            line-height: 299px !important;
+            .w-e-text {
+              min-height: 299px !important;
+              height: 299px !important;
+              line-height: 299px !important;
+            }
+          }
+        }
+        .markdown-body {
+          box-shadow: none !important;
+          padding-bottom: 1px;
+          .v-note-op {
+            padding: 0;
+            border-radius: 0;
+          }
+        }
+        .form-custom-separator {
+          // &::after {
+          //   display: block;
+          //   content: "";
+          //   line-height: 32px;
+          //   height: 32px;
+          // }
+          .el-divider {
+            margin: 15.5px 0 !important;
+            &::after {
+              content: "";
+              display: block;
+              position: absolute;
+              left: 0;
+              top: 0;
+              height: 1px;
+              line-height: 1px;
+              background-color: #dcdfe6;
+              width: 100%;
+            }
+            .el-divider__text {
+              z-index: 999;
+            }
+          }
+        }
+      }
+      .avue-crud {
+        .avue-crud__menu {
+          padding: 10px 0 0 10px;
+        }
+        .el-form-item {
+          border: 0;
+          margin: 0;
+          input {
+            border: 1px solid #dcdfe6;
+          }
+          textarea {
+            border: 1px solid #dcdfe6;
+          }
+        }
+      }
+    }
+    .avue-form__menu {
+      width: calc(100% + 2px);
+      border-left: 1px solid #fff;
+      border-right: 1px solid #fff;
+      // border-top: 1px solid #000;
+      margin: -1px -1px 0px -1px;
+    }
+  }
+  /deep/.table-control {
+    .el-form {
+      font-size: 0;
+    }
+    .has-gutter {
+      th {
+        background-color: #fff;
+        border-bottom-color: #000;
+        border-right: 1px solid #000;
+        &:nth-last-child(1) {
+          border-right: 0;
+          border-bottom: 1px solid #000;
+        }
+        &:nth-last-child(2) {
+          display: none;
+          border-right: 0;
+        }
+        &:nth-last-child(3) {
+          border-right: 0;
+        }
+      }
+    }
+    .el-table--enable-row-hover .el-table__body tr:hover > td {
+      background-color: #fff;
+    }
+    .el-table__body-wrapper {
+      .el-table__row {
+        td {
+          border-bottom: 1px solid #000;
+          border-right: 1px solid #000;
+          &:nth-last-child(1) {
+            border-right: 0;
+          }
+          &:nth-last-child(2) {
+            border-right: 0;
+          }
+          .el-input__inner,
+          .el-textarea__inner {
+            border: 0 !important;
+          }
+        }
+      }
+    }
+  }
+}

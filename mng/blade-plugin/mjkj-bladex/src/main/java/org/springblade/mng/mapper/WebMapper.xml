@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.springblade.mng.mapper.WebMapper">
+
+    <select id="getMinAccountCou" resultType="map">
+        SELECT
+            api_account_id,
+            IFNULL( count( 1 ), 0 ) cou
+        FROM
+            chat_wxuser
+        WHERE
+            is_deleted = 0
+            AND api_account_id IS NOT NULL
+        GROUP BY
+            api_account_id
+        ORDER BY
+            cou ASC
+    </select>
+
+    <select id="getMessageCou" resultType="Integer">
+        SELECT
+            count(1) as cou
+        FROM
+            chat_log_message
+            where
+            message_type ='q'
+            and blade_user_id =#{bladeUserId}
+    </select>
+
+    <select id="getMessageHotList" resultType="map">
+        SELECT
+            lm_q.id,
+            wx.wx_name,
+            wx.wx_avatar,
+            lm_q.message_content message_q,
+            lm_a.message_content message_a,
+            ifnull(lm_q.hot_time,lm_a.hot_time) hot_time,
+            0 as star_num
+        FROM
+            chat_log_message lm_q
+            INNER JOIN chat_log_message lm_a on lm_q.id =lm_a.pid
+            INNER JOIN chat_wxuser wx on lm_q.wxuser_id =wx.id
+        where
+        lm_q.is_deleted=0
+        and lm_a.is_deleted =0
+        and wx.is_deleted =0
+        and (lm_q.is_hot=1 or lm_a.is_hot =1)
+        order by hot_time desc
+    </select>
+
+    <select id="getSubCouList" resultType="map">
+        SELECT
+            id,
+            wx_name,
+            register_time,
+            view_sub_member,
+            (select count(id) from chat_wxuser where is_deleted =0 and pid=wx.id) as cou
+        FROM
+            chat_wxuser  wx
+            where wx.pid=#{wxuserId}
+            and wx.is_deleted =0
+        -- order by cou desc,id+0 desc
+         order by id+0 desc
+    </select>
+
+</mapper>

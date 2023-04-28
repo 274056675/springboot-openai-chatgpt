@@ -1,0 +1,28 @@
+# 在使用Spring默认数据源Hikari的情况下配置以下配置项
+spring:
+  datasource:
+    hikari:
+      # 自动提交从池中返回的连接
+      auto-commit: true
+      # 连接池中维护的最小空闲连接数
+      minimum-idle: 10
+      # 连接池中允许的最大连接数。缺省值：10；推荐的公式：((core_count * 2) + effective_spindle_count)
+      maximum-pool-size: 60
+      # 空闲连接超时时间，默认值600000（10分钟），大于等于max-lifetime且max-lifetime>0，会被重置为0；不等于0且小于10秒，会被重置为10秒。
+      # 只有空闲连接数大于最大连接数且空闲时间超过该值，才会被释放
+      idle-timeout: 30000
+      # 连接最大存活时间.不等于0且小于30秒，会被重置为默认值30分钟.设置应该比mysql设置的超时时间短
+      max-lifetime: 1800000
+      # 等待连接池分配连接的最大时长（毫秒），超过这个时长还没可用的连接则发生SQLException， 缺省:30秒
+      connection-timeout: 30000
+      # 连接测试查询
+      connection-test-query: select 1
+      #connection-test-query: select 1 from dual
+
+#swagger文档
+swagger:
+  base-packages:
+    - org.springblade
+    - org.springframework.security.oauth2.provider.endpoint
+
+#第三方登陆 魔晶定制，删除

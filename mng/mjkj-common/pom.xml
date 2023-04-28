@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>BladeX</artifactId>
+        <groupId>org.springblade</groupId>
+        <version>2.9.1.RELEASE</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>mjkj-common</artifactId>
+    <name>${project.artifactId}</name>
+    <version>${bladex.project.version}</version>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-core-launch</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-starter-ribbon</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-core-auto</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-starter-log</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-common</artifactId>
+            <version>${bladex.project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-starter-metrics</artifactId>
+            <version>${bladex.project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-starter-tenant</artifactId>
+            <version>${bladex.project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-starter-datascope</artifactId>
+            <version>${bladex.project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-starter-api-crypto</artifactId>
+            <version>${bladex.project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-core-boot</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-starter-swagger</artifactId>
+        </dependency>
+
+        <!-- ######################## -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-collections</groupId>
+                    <artifactId>commons-collections</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.9.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.6.6</version>
+        </dependency>
+
+        <!-- poi -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>xml-apis</artifactId>
+                    <groupId>xml-apis</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml-schemas</artifactId>
+            <version>3.15</version>
+        </dependency>
+        <!-- Sax 读入的时候使用 -->
+        <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+            <version>2.9.1</version>
+        </dependency>
+        <!-- Word 时候用到 -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-scratchpad</artifactId>
+        </dependency>
+
+        <!--第三方登录-->
+        <dependency>
+            <groupId>me.zhyd.oauth</groupId>
+            <artifactId>JustAuth</artifactId>
+            <version>1.16.5</version>
+        </dependency>
+
+        <!--minio-->
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>8.0.3</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <!-- 魔晶定制 -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.html</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.json</include>
+                    <include>**/*.ftl</include>
+                    <include>**/*.html</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>lib</directory>
+                <targetPath>/BOOT-INF/lib/</targetPath>
+                <includes>
+                    <include>**/*.jar</include>
+                </includes>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                    <finalName>${project.name}</finalName>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

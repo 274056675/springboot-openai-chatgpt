@@ -1,0 +1,92 @@
+.theme-vip {
+  $color:rgba(246,202,157,.7);
+  $is_active_color:#f6ca9d;
+  .avue-header{
+    background-color: #20222a;
+  }
+  .el-dropdown{
+    color: $color;
+  }
+  .avue-logo{
+    .avue-logo_title{
+      background-image:-webkit-gradient(linear,left top,left bottom,from($color),to( $is_active_color)); 
+      -webkit-background-clip:text; 
+      -webkit-text-fill-color:transparent; 
+      font-weight: 400;
+    }
+  }
+  .avue-breadcrumb{
+    i{
+      color: $color;
+    }
+  }
+  .avue-sidebar{
+    .el-menu-item{
+      &.is-active {
+          &:before {
+           background: $color;
+          }
+          i,span{
+            color: $is_active_color;
+        }
+      }
+    }
+  }
+  .avue-tags{
+    .el-tabs__item{
+      color: rgba(0, 0, 0, 0.4)  !important;
+      &.is-active{
+        color:$is_active_color !important;
+        border-color: $is_active_color !important;
+      }
+      &:before{
+        background: $is_active_color;
+      }
+    } 
+  }
+  .top-search {
+    .el-input__inner{
+      color: $color;
+    }
+    input::-webkit-input-placeholder,
+    textarea::-webkit-input-placeholder {
+        /* WebKit browsers */
+        color: $color;
+    }
+    input:-moz-placeholder,
+    textarea:-moz-placeholder {
+        /* Mozilla Firefox 4 to 18 */
+        color: $color;
+    }
+    input::-moz-placeholder,
+    textarea::-moz-placeholder {
+        /* Mozilla Firefox 19+ */
+        color: $color;
+    }
+    input:-ms-input-placeholder,
+    textarea:-ms-input-placeholder {
+        /* Internet Explorer 10+ */
+        color: $color;
+    }
+}
+  .top-bar__item {
+    i {
+      color: $color;
+    }
+  }
+  .avue-top{
+   
+    .el-menu-item {
+        i,
+        span {
+          color: $color;
+        }
+      &:hover {
+          i,
+          span {
+            color:$is_active_color;
+          }
+      }
+    }
+  }
+}

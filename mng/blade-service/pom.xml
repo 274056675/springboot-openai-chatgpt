@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>org.springblade</groupId>
+        <artifactId>BladeX</artifactId>
+        <version>2.9.1.RELEASE</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>blade-service</artifactId>
+    <name>${project.artifactId}</name>
+    <version>2.9.1.RELEASE</version>
+    <packaging>pom</packaging>
+    <description>BladeX 微服务集合</description>
+
+    <modules>
+        <module>blade-system</module>
+        <module>blade-user</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-starter-metrics</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-starter-tenant</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-starter-api-crypto</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-dict-api</artifactId>
+            <version>${bladex.project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-scope-api</artifactId>
+            <version>${bladex.project.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>

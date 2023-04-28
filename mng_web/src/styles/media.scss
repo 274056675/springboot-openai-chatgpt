@@ -1,0 +1,182 @@
+.avue-left,
+.avue-header,
+.avue-top,
+.avue-logo,
+.avue-layout
+.login-logo,
+.avue-main {
+  transition: all .3s;
+}
+
+.avue-contail {
+  width: 100%;
+  height: 100%;
+  background: #f0f2f5;
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+
+
+.avue-left {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 240px;
+  height: 100%;
+  z-index: 1025;
+}
+
+.avue--collapse {
+  .avue-left,
+  .avue-logo {
+    width: 60px;
+  }
+
+  .avue-header {
+    padding-left: 60px;
+  }
+
+  .avue-main {
+    width: calc(100% - 60px);
+    left: 60px;
+  }
+}
+
+.avue-header {
+  padding-left: 240px;
+  width: 100%;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+.avue-main {
+  position: absolute;
+  left: 240px;
+  padding: 0;
+  padding-bottom: 20px;
+  width: calc(100% - 240px);
+  height: calc(100% - 64px);
+  box-sizing: border-box;
+  overflow: hidden;
+  transition: all 0.5s;
+  background: #f0f2f5;
+  z-index: 1026;
+
+  &--fullscreen {
+    width: 100%;
+    left: 0;
+  }
+}
+
+.avue-view {
+  padding: 0 10px !important;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.avue-footer {
+  margin: 0 auto;
+  padding: 0 22px;
+  width: 1300px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .logo {
+    margin-left: -50px;
+  }
+
+  .copyright {
+    color: #666;
+    line-height: 1.5;
+    font-size: 12px;
+  }
+}
+
+.avue-shade {
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, .3);
+  z-index: 1024;
+
+  &--show {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  $width: 240px;
+  // ele的自适应
+  .el-dialog,
+  .el-message-box {
+    width: 98% !important;
+  }
+  //登录页面
+  .login-left {
+    display: none !important;
+  }
+  .login-logo {
+    padding-top: 30px !important;
+    margin-left: -30px;
+  }
+  .login-weaper {
+    margin: 0 auto;
+    width: 96% !important;
+  }
+  .login-border {
+    border-radius: 5px;
+    padding: 40px;
+    margin: 0 auto;
+    float: none !important;
+    width: 100% !important;
+  }
+  .login-main {
+    width: 100% !important;
+  }
+  //主框架
+  .avue-tags {
+    display: none;
+  }
+  .avue-left,
+  .avue-logo {
+    left: -$width;
+  }
+  .avue-main {
+    left: 0;
+    width: 100%;
+  }
+  .avue-header {
+    margin-bottom: 15px;
+    padding-left: 15px;
+  }
+  .top-bar__item {
+    display: none;
+  }
+  .avue--collapse {
+    .avue-left,
+    .avue-logo {
+      width: $width;
+      left: 0;
+    }
+
+    .avue-main {
+      left: $width;
+      width: 100%;
+    }
+
+    .avue-header {
+      padding: 0;
+      transform: translate3d(230px, 0, 0);
+    }
+
+    .avue-shade {
+      display: block;
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+	"easycom": {
+		"autoscan": true,
+		"^uni-(.*)": "@/components/uni-$1/uni-$1.vue",
+		"^u-(.*)": "@/uni_modules/uview-ui/components/u-$1/u-$1.vue"
+	},
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "超级AI大脑PC开源",
+				"navigationStyle": "custom"
+			}
+		}
+	],
+	"subPackages": [{
+		"root": "pages/subPack",
+		"pages": [{
+				"path": "loginpc",
+				"style": {
+					"navigationBarTitleText": "",
+					"enablePullDownRefresh": false,
+					"navigationStyle": "custom"
+				}
+			},
+			{
+				"path": "chatpc",
+				"style": {
+					"navigationBarTitleText": "",
+					"enablePullDownRefresh": false
+				}
+			}, {
+				"path": "bindphone",
+				"style": {
+					"navigationBarTitleText": "",
+					"enablePullDownRefresh": false,
+					"navigationStyle": "custom"
+				}
+
+			}
+		]
+	}],
+	"preloadRule": {
+		// 当我们进入了pages/index/index页面以后就会预下载pages/subPack分包
+		"pages/index/index": {
+			"network": "all", //在指定网络下预下载，可选值为：all（不限网络）、wifi（仅wifi下预下载）
+			"packages": [
+				"pages/subPack"
+			] //进入页面后预下载分包
+		}
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "超级AI大脑PC开源",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F4F4F4"
+	},
+	"uniIdRouter": {},
+	"condition": { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [{
+			"name": "", //模式名称
+			"path": "", //启动页面，必选
+			"query": "" //启动参数，在页面的onLoad函数里面得到
+		}]
+	}
+}

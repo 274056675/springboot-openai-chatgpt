@@ -1,0 +1,95 @@
+.theme-star {
+  .avue-main{
+    background: transparent;
+  }
+    .avue-contail {
+        background-image: url("/img/bg/star-squashed.jpg");
+        background-size: 100% 100%;
+    }
+    .avue-logo{
+        color: #fff;
+    }
+    .avue-header,
+    .avue-logo,
+    .tags-container {
+        background-color: transparent;
+    }
+    .el-card,.error-page {
+        opacity: .9;
+    }
+    .avue-tabs {
+        padding: 0 20px ;
+    }
+    .avue-tags{
+        background-color: transparent;
+        border-top: none;
+    }
+    .avue-top{
+        .avue-breadcrumb{
+            color:#fff;
+        }
+        .el-menu-item{
+            i,span{
+                color:#fff;
+            }
+            &.is-active{
+                background-color: rgba(0,0,0,.4)
+            }
+        }
+        .el-dropdown{
+            color:#fff;
+        }
+    }
+    .avue-sidebar{
+        box-shadow: 2px 0 6px rgba(0, 21, 41, 0.15);
+        background-color:transparent;
+        .el-menu-item,.el-submenu__title{
+        i,span{
+            color:#fff
+        }
+        &:hover{
+            background: transparent;
+            i,span{
+                color:#409EFF;
+            }
+        }
+        &.is-active {
+            background-color: rgba(0,0,0,.4);
+            i,span{
+                color:#fff;
+            }
+        }
+        }
+    }
+
+  .top-search {
+        .el-input__inner{
+        color: #333;
+        }
+        input::-webkit-input-placeholder,
+        textarea::-webkit-input-placeholder {
+            /* WebKit browsers */
+            color: #fff;
+        }
+        input:-moz-placeholder,
+        textarea:-moz-placeholder {
+            /* Mozilla Firefox 4 to 18 */
+            color: #fff;
+        }
+        input::-moz-placeholder,
+        textarea::-moz-placeholder {
+            /* Mozilla Firefox 19+ */
+            color: #fff;
+        }
+        input:-ms-input-placeholder,
+        textarea:-ms-input-placeholder {
+            /* Internet Explorer 10+ */
+            color: #fff;
+        }
+    }
+    .top-bar__item {
+        i {
+            color: #fff;
+        }
+    }
+}

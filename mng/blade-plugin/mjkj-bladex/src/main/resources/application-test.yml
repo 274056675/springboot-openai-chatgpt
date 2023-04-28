@@ -1,0 +1,15 @@
+#数据源配置
+spring:
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  datasource:
+    url: ${blade.datasource.test.url}
+    username: ${blade.datasource.test.username}
+    password: ${blade.datasource.test.password}
+
+blade:
+  log:
+    request:
+      enabled: true

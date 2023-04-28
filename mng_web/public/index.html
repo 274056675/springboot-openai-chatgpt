@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="renderer" content="webkit" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <link
+      rel="stylesheet"
+      href="<%= BASE_URL %>cdn/element-ui/2.15.6/theme-chalk/index.css"
+    />
+    <link
+      rel="stylesheet"
+      href="<%= BASE_URL %>cdn/animate/3.5.2/animate.css"
+    />
+    <link rel="stylesheet" href="<%= BASE_URL %>cdn/iconfont/index.css" />
+    <link
+      rel="stylesheet"
+      href="<%= BASE_URL %>cdn/iconfont/avue/iconfont.css"
+    />
+    <link
+      rel="stylesheet"
+      href="<%= BASE_URL %>cdn/iconfont/saber/iconfont.css"
+    />
+    <link rel="stylesheet" href="<%= BASE_URL %>cdn/avue/2.9.5/index.css" />
+    <script src="<%= BASE_URL %>cdn/xlsx/FileSaver.min.js"></script>
+    <script src="<%= BASE_URL %>cdn/xlsx/xlsx.full.min.js"></script>
+    <script src="<%= BASE_URL %>cdn/sortable/Sortable.min.js"></script>
+    <script src="https://cdn.staticfile.org/Sortable/1.10.0-rc2/Sortable.min.js"></script>
+    <script>
+      window.chatgpt_title='超级AI大脑开源系统'
+    </script>
+    <link rel="icon" href="<%= BASE_URL %>favicon.png" />
+    <title>超级AI大脑开源系统</title>
+    <style>
+      html,
+      body,
+      #app {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      .avue-home {
+        background-color: #303133;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .avue-home__main {
+        user-select: none;
+        width: 100%;
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      .avue-home__footer {
+        width: 100%;
+        flex-grow: 0;
+        text-align: center;
+        padding: 1em 0;
+      }
+
+      .avue-home__footer > a {
+        font-size: 12px;
+        color: #ababab;
+        text-decoration: none;
+      }
+
+      .avue-home__loading {
+        height: 32px;
+        width: 32px;
+        margin-bottom: 20px;
+      }
+
+      .avue-home__title {
+        color: #fff;
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      .avue-home__sub-title {
+        color: #ababab;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <noscript>
+      <strong>
+        很抱歉，如果没有 JavaScript 支持，网站将不能正常工作。请启用浏览器的
+        JavaScript 然后继续。
+      </strong>
+    </noscript>
+    <div id="app">
+      <div class="avue-home">
+        <div class="avue-home__main">
+          <img
+            class="avue-home__loading"
+            src="<%= BASE_URL %>svg/loading-spin.svg"
+            alt="loading"
+          />
+          <div class="avue-home__title">正在加载资源</div>
+          <div class="avue-home__sub-title d">
+            初次加载资源可能需要较多时间 请耐心等待
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- built files will be auto injected -->
+    <script src="<%= BASE_URL %>util/aes.js" charset="utf-8"></script>
+    <script
+      src="<%= BASE_URL %>cdn/vue/2.6.10/vue.min.js"
+      charset="utf-8"
+    ></script>
+    <script
+      src="<%= BASE_URL %>cdn/vuex/3.1.1/vuex.min.js"
+      charset="utf-8"
+    ></script>
+    <script
+      src="<%= BASE_URL %>cdn/vue-router/3.0.1/vue-router.min.js"
+      charset="utf-8"
+    ></script>
+    <script
+      src="<%= BASE_URL %>cdn/axios/1.0.0/axios.min.js"
+      charset="utf-8"
+    ></script>
+    <script
+      src="<%= BASE_URL %>cdn/element-ui/2.15.6/index.js"
+      charset="utf-8"
+    ></script>
+    <script
+      src="<%= BASE_URL %>cdn/avue/2.9.5/avue.min.js"
+      charset="utf-8"
+    ></script>
+    <script
+      src="<%= BASE_URL %>cdn/nutflow/wf-design-base/index.umd.min.js"
+      charset="utf-8"
+    ></script>
+  </body>
+</html>

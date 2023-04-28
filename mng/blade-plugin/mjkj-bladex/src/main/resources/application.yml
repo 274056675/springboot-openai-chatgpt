@@ -1,0 +1,26 @@
+#服务器端口
+server:
+  port: 9874
+
+#mjkj专用配置
+mjkj:
+  excludeTable: linaaa_ #onl_,sys_,blade_ #排除表明开头
+  databaseSchema: chat #数据库名称，反向生成代码用到
+  generateExcludeTable: blade_*,design_*,onl_cgform_*,sys_*,design_desform_data #反向生成表结构排除表
+
+#blade配置
+blade:
+  #接口配置
+  api:
+    # 报文加密配置
+    crypto:
+    # 启用报文加密配置
+    enabled: true
+    # 使用AesUtil.genAesKey()生成
+    aes-key: "YgDAc1LCCwH2Wff99IaYxseN0K4A38bV"
+    # 使用DesUtil.genDesKey()生成
+    des-key: "jMVCBsFGDQr1USHo"
+  #jackson配置
+  jackson:
+    # 支持text文本请求,与报文加密同时开启
+    support-text-plain: true

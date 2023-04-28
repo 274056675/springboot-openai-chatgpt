@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>blade-plugin</artifactId>
+        <groupId>org.springblade</groupId>
+        <version>2.9.1.RELEASE</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>mjkj-message</artifactId>
+    <name>${project.artifactId}</name>
+    <version>${bladex.project.version}</version>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <!--Blade-->
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-core-boot</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-starter-swagger</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-user-api</artifactId>
+            <version>${bladex.project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-system-api</artifactId>
+            <version>${bladex.project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>mjkj-message-api</artifactId>
+            <version>${bladex.project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.dreamlu</groupId>
+            <artifactId>mica-mqtt-core</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <configuration>
+                    <username>${docker.username}</username>
+                    <password>${docker.password}</password>
+                    <repository>${docker.registry.url}/${docker.namespace}/${project.artifactId}</repository>
+                    <tag>${project.version}</tag>
+                    <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+                    <buildArgs>
+                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
+                    <skip>false</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

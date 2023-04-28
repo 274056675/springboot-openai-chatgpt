@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.springblade</groupId>
+    <artifactId>BladeX</artifactId>
+    <version>2.9.1.RELEASE</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <bladex.project.version>2.9.1.RELEASE</bladex.project.version>
+
+        <java.version>1.8</java.version>
+        <maven.plugin.version>3.8.1</maven.plugin.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <spring.boot.version>2.3.12.RELEASE</spring.boot.version>
+        <spring.cloud.version>Hoxton.SR12</spring.cloud.version>
+        <spring.platform.version>Cairo-SR8</spring.platform.version>
+
+        <!-- 推荐使用Harbor -->
+        <docker.registry.url>192.168.0.157</docker.registry.url>
+        <docker.registry.host>http://${docker.registry.url}:2375</docker.registry.host>
+        <docker.username>admin</docker.username>
+        <docker.password>Harbor12345</docker.password>
+        <docker.namespace>blade</docker.namespace>
+        <docker.plugin.version>1.4.13</docker.plugin.version>
+    </properties>
+
+    <modules>
+        <module>blade-auth</module>
+        <module>blade-common</module>
+        <module>blade-gateway</module>
+        <module>blade-plugin</module>
+        <module>blade-plugin-api</module>
+        <module>blade-service</module>
+        <module>blade-service-api</module>
+        <module>mjkj-common</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springblade.platform</groupId>
+                <artifactId>blade-bom</artifactId>
+                <version>${bladex.project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springblade</groupId>
+                <artifactId>blade-common</artifactId>
+                <version>${bladex.project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.spring.platform</groupId>
+                <artifactId>platform-bom</artifactId>
+                <version>${spring.platform.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>${project.name}</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring.boot.version}</version>
+                    <configuration>
+                        <fork>true</fork>
+                        <finalName>${project.build.finalName}</finalName>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>com.spotify</groupId>
+                    <artifactId>dockerfile-maven-plugin</artifactId>
+                    <version>${docker.plugin.version}</version>
+                    <configuration>
+                        <username>${docker.username}</username>
+                        <password>${docker.password}</password>
+                        <repository>${docker.registry.url}/${docker.namespace}/${project.artifactId}</repository>
+                        <tag>${project.version}</tag>
+                        <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+                        <buildArgs>
+                            <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+                        </buildArgs>
+                    </configuration>
+                    <!--子服务添加如下配置，运行 mvn deploy 命令便会自动打包镜像-->
+                    <!--<executions>
+                        <execution>
+                            <id>default</id>
+                            <goals>
+                                <goal>build</goal>
+                                <goal>push</goal>
+                            </goals>
+                        </execution>
+                    </executions>-->
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                            <configuration>
+                                <tasks>
+                                    <!--suppress UnresolvedMavenProperty -->
+                                    <copy overwrite="true"
+                                          tofile="${session.executionRootDirectory}/target/${project.artifactId}.jar"
+                                          file="${project.build.directory}/${project.artifactId}.jar" />
+                                </tasks>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.plugin.version}</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>aliyun-repos</id>
+            <url>https://maven.aliyun.com/repository/public/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>blade-release</id>
+            <name>Release Repository</name>
+            <url>http://nexus.bladex.vip/repository/maven-releases/</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>aliyun-plugin</id>
+            <url>https://maven.aliyun.com/repository/public/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+</project>

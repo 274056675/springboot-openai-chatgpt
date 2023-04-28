@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.springblade.system.user.mapper.MjkjLoginMapper">
+
+    <select id="getAdministrator" resultType="map">
+         SELECT
+                bu.*
+            FROM
+                blade_user bu
+                INNER JOIN blade_role br ON FIND_IN_SET( br.id, bu.role_id )
+            WHERE
+            br.role_alias = 'admin'
+            AND bu.is_deleted = 0
+	        and bu.tenant_id=#{tenantId}
+	        and bu.account='administrator'
+	        and bu.is_deleted !=0
+	        limit 1
+    </select>
+
+    <select id="getTopDeptd" resultType="long">
+        select id from blade_dept where tenant_id=#{tenantId} and is_deleted=0  order by id asc limit 1;
+    </select>
+
+    <select id="getTopRoleId" resultType="long">
+        select id from blade_role where tenant_id=#{tenantId} and role_alias='admin' and is_deleted=0  order by id asc limit 1;
+    </select>
+
+    <!-- 执行保存语句 据说可以防注入-->
+    <insert id="baseIntegerSql" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		${select_sql}
+	</insert>
+
+    <!-- 执行编辑语句 据说可以防注入-->
+    <update id="baseUpdateSql" parameterType="java.util.Map">
+		${select_sql}
+	</update>
+
+    <select id="getTopPostId" resultType="long">
+        select id from blade_post where tenant_id=#{tenantId} and is_deleted=0  order by id asc limit 1;
+    </select>
+
+    <select id="getRoleAliases" resultType="java.lang.String">
+        SELECT
+        role_alias
+        FROM
+        blade_role
+        WHERE
+        id IN
+        <foreach collection="array" item="ids" index="index" open="(" close=")" separator=",">
+            #{ids}
+        </foreach>
+        and is_deleted = 0
+    </select>
+
+    <select id="getBladeUserIdByOpenId" resultType="long">
+        SELECT
+            blade_user_id
+        FROM
+            chat_wxuser
+        WHERE
+        is_deleted =0
+        and open_id = #{openId}
+    </select>
+
+    <select id="getBladeUserIdByPhone" resultType="long">
+        SELECT
+            blade_user_id
+        FROM
+            chat_wxuser
+        WHERE
+        is_deleted =0
+        and phone = #{phone}
+        order by id+0 asc
+        limit 1
+    </select>
+
+    <select id="getWxUserId" resultType="String">
+        select
+            id
+        from chat_wxuser
+        where
+        is_deleted =0
+        and blade_user_id =#{bladeUserId}
+    </select>
+
+    <select id="getWxUserIdByUnioId" resultType="String">
+        select
+            id
+        from chat_wxuser
+        where
+        is_deleted =0
+        and wx_union_id =#{unionId}
+    </select>
+
+    <select id="getBladeUserIdByUnioId" resultType="Long">
+        select
+            blade_user_id
+        from chat_wxuser
+        where
+        is_deleted =0
+        and wx_union_id =#{unionId}
+    </select>
+
+</mapper>

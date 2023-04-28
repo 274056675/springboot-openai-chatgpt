@@ -1,0 +1,22 @@
+#服务器端口
+server:
+  port: 9873
+
+#数据源配置
+spring:
+  datasource:
+    url: ${blade.datasource.test.url}
+    username: ${blade.datasource.test.username}
+    password: ${blade.datasource.test.password}
+
+
+#mqtt,rabbitmq 是否启用
+message:
+  type:
+    #rabbitDirectSender,mqttSender 选择
+    name: mqttSender
+    #服务端互相发送mq 只支持rabbitDirectSender
+    serve-rabbitmq: false
+
+
+

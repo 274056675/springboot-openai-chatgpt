@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.springblade.mng.mapper.MngMapper">
+
+    <select id="getMessageHistoryList" resultType="map">
+        SELECT
+            lm.id as id,
+            wx.wx_name,
+            lm.message_content as message_q,
+            lma.message_content as message_a,
+            lm.message_time,
+            lma.message_time as answer_time
+        FROM
+            chat_log_message  lm
+            INNER JOIN chat_wxuser wx on lm.wxuser_id =wx.id
+            LEFT JOIN chat_log_message lma on lma.pid=lm.id and lma.message_type ='a'
+        WHERE
+            lm.is_deleted =0
+            and wx.is_deleted =0
+            and lm.message_type ='q'
+            <if test="params.id!=null and params.id!=''">
+                and lm.id =#{params.id}
+            </if>
+            <if test="params.wx_name!=null and params.wx_name!=''">
+                and wx.wx_name like concat('%', #{params.wx_name}, '%')
+            </if>
+            <if test="params.blade_user_id!=null and params.blade_user_id!=''">
+                and lm.blade_user_id =#{params.blade_user_id}
+            </if>
+            <if test="params.view_type!=null and params.view_type!=''">
+                and lm.view_type =#{params.view_type}
+            </if>
+            <if test="params !=null and params.message_time != null and params.message_time != ''">
+                <![CDATA[
+                and SUBSTRING_INDEX(#{params.message_time}, ',', 1) <= DATE_FORMAT(lm.message_time, '%Y-%m-%d')
+                and SUBSTRING_INDEX(#{params.message_time}, ',', -1) >= DATE_FORMAT(lm.message_time, '%Y-%m-%d')
+                ]]>
+            </if>
+        order by lm.id+0 desc
+    </select>
+    <select id="getMessageMoreFunHistoryList" resultType="map">
+        SELECT
+        lm.id as id,
+        wx.wx_name as view_wxname,
+        lm.fun_name,
+        lm.message_q,
+        lm.message_a,
+        lm.message_q_time,
+        lm.message_a_time
+        FROM
+        chat_log_message_fun  lm
+        INNER JOIN chat_wxuser wx on lm.wxuser_id =wx.id
+        WHERE
+        lm.is_deleted =0
+        and wx.is_deleted =0
+        <if test="params.fun_name!=null and params.fun_name!=''">
+            and lm.fun_name =#{params.fun_name}
+        </if>
+        <if test="params.view_wxname!=null and params.view_wxname!=''">
+            and wx.wx_name like concat('%', #{params.view_wxname}, '%')
+        </if>
+        order by lm.id+0 desc
+    </select>
+
+
+
+    <select id="getWxUserList" resultType="map">
+        SELECT
+        *
+        FROM
+        (
+            SELECT
+            wuser.id as id,
+            IFNULL(wuser.wx_name,'匿名用户') AS wx_name,
+            wuser.wx_avatar,
+            wuser.last_login_time,
+            wuser.register_time,
+            wuser.phone,
+            wuser.expire_time,
+            wuser.stop_send_time,
+            (select ifnull(count(id),0) from chat_log_message where is_deleted =0 and wxuser_id=wuser.id and message_type
+            ='q' ) as view_cou,
+            wuser.question_cou,
+            wuser.invite_code,
+            (select ifnull(count(id),'0') from chat_wxuser where is_deleted =0 and pid=wuser.id ) as view_sub_member,
+            (select ifnull(count(id),'0') from chat_log_share where is_deleted =0 and wxuser_id=wuser.id ) as view_share_cou,
+            p_wuser.wx_name as view_p_wx_name,
+            ifnull(wal.amount,0) as view_amount,
+            wuser.is_agent
+            FROM
+            chat_wxuser wuser
+            left join chat_wxuser p_wuser on wuser.pid =p_wuser.id
+            left join chat_wxuser_wallet wal on wal.wxuser_id =wuser.id
+            WHERE
+            wuser.is_deleted =0
+            <if test="params.wx_name!=null and params.wx_name!=''">
+                and wuser.wx_name like concat('%', #{params.wx_name},'%')
+            </if>
+            <if test="params.view_p_wx_name!=null and params.view_p_wx_name!=''">
+                and p_wuser.wx_name = #{params.view_p_wx_name}
+            </if>
+            <if test="params.phone!=null and params.phone!=''">
+                and wuser.phone like concat('%', #{params.phone},'%')
+            </if>
+            <if test="params.question_cou!=null and params.question_cou!=''">
+                <![CDATA[
+                     and wuser.question_cou <= #{params.question_cou}
+                ]]>
+            </if>
+            <if test="params !=null and params.register_time != null and params.register_time != ''">
+                <![CDATA[
+                    and SUBSTRING_INDEX(#{params.message_time}, ',', 1) <= DATE_FORMAT(wuser.register_time, '%Y-%m-%d')
+                    and SUBSTRING_INDEX(#{params.message_time}, ',', -1) >= DATE_FORMAT(wuser.register_time, '%Y-%m-%d')
+                ]]>
+            </if>
+        ) t where 1=1
+        <if test="params.column!=null and params.column=='id'">
+            <![CDATA[  order by id+0 ${params.order} ]]>
+        </if>
+        <if test="params.column!=null and params.column=='view_cou'">
+            <![CDATA[  order by view_cou+0 ${params.order} ]]>
+        </if>
+        <if test="params.column!=null and params.column=='question_cou'">
+            <![CDATA[  order by question_cou+0 ${params.order} ]]>
+        </if>
+        <if test="params.column!=null and params.column=='view_sub_member'">
+            <![CDATA[  order by view_sub_member+0 ${params.order} ]]>
+        </if>
+        <if test="params.column!=null and params.column=='view_share_cou'">
+            <![CDATA[  order by view_share_cou+0 ${params.order} ]]>
+        </if>
+    </select>
+
+    <select id="getMessageCouList" resultType="map">
+        SELECT
+            DATE_FORMAT(message_time, '%Y-%m-%d') as timeStr,
+            count(1) as cou
+        FROM
+            chat_log_message
+            where is_deleted =0
+            and message_type='q'
+            group by timeStr
+    </select>
+
+    <select id="getRegisterCouList" resultType="map">
+        SELECT
+            DATE_FORMAT(create_time, '%Y-%m-%d') as timeStr,
+            count(1) as cou
+        FROM
+            chat_wxuser
+            where is_deleted =0
+            group by timeStr
+    </select>
+
+    <select id="getUseWuserCouList" resultType="map">
+        SELECT
+            DATE_FORMAT(message_time, '%Y-%m-%d') as timeStr,
+            count(distinct wxuser_id) as cou
+        FROM
+            chat_log_message
+            where is_deleted =0
+            and message_type='q'
+            group by timeStr
+    </select>
+    <select id="getShareCouList" resultType="map">
+        SELECT
+            DATE_FORMAT(share_time, '%Y-%m-%d') as timeStr,
+            count(id) as cou
+        FROM
+            chat_log_share
+            where is_deleted =0
+            group by timeStr
+    </select>
+
+    <select id="getSignCouList" resultType="map">
+        SELECT
+            DATE_FORMAT(sign_time, '%Y-%m-%d') as timeStr,
+            count(id) as cou
+        FROM
+            chat_log_sign
+            where is_deleted =0
+            group by timeStr
+    </select>
+
+    <select id="getFileCouList" resultType="map">
+        SELECT
+            DATE_FORMAT(create_time, '%Y-%m-%d') as timeStr,
+            count(id) as cou
+        FROM
+            chat_log_file_download
+            where is_deleted =0
+            group by timeStr
+    </select>
+
+
+    <select id="getShareHistoryList" resultType="map">
+        SELECT
+        wuser.id as id,
+        wuser.wx_name AS wx_name,
+        ls.share_time
+        FROM
+        chat_wxuser  wuser
+        inner join chat_log_share ls ON wuser.id = ls.wxuser_id
+        WHERE
+        wuser.is_deleted =0
+        <if test="params.wx_name!=null and params.wx_name!=''">
+            and wuser.wx_name like concat('%', #{params.wx_name}, '%')
+        </if>
+        <if test="params !=null and params.share_time != null and params.share_time != ''">
+            <![CDATA[
+                and SUBSTRING_INDEX(#{params.message_time}, ',', 1) <= DATE_FORMAT(ls.share_time, '%Y-%m-%d')
+                and SUBSTRING_INDEX(#{params.message_time}, ',', -1) >= DATE_FORMAT(ls.share_time, '%Y-%m-%d')
+            ]]>
+        </if>
+        order by ls.id+0 desc
+    </select>
+
+    <select id="getNumLogList" resultType="map">
+        SELECT
+        wx.wx_name as view_wx_name,
+        lm.message_content as view_question_title,
+        ln.*
+        FROM
+        chat_log_num ln
+        left join chat_wxuser wx on ln.wxuser_id =wx.id
+        left join chat_log_message lm on ln.question_id = lm.id
+        WHERE
+        ln.is_deleted =0
+        <if test="params.view_wx_name!=null and params.view_wx_name!=''">
+            and wx.wx_name like concat('%', #{params.view_wx_name}, '%')
+        </if>
+        <if test="params.service_type!=null and params.service_type!=''">
+            and ln.service_type = #{params.service_type}
+        </if>
+        <if test="params.type!=null and params.type!=''">
+            and ln.type = #{params.type}
+        </if>
+        order by ln.id+0 desc
+    </select>
+
+    <select id="getTodayCountList" resultType="map">
+        SELECT
+            *
+        from (
+            SELECT
+                wxuser.wx_name,
+                (select ifnull(count(id),0) from chat_wxuser where pid=wxuser.id and is_deleted =0 and  #{params.view_time}=DATE_FORMAT(create_time, '%Y-%m-%d')) as yq_cou,
+                (select ifnull(count(id),0) from chat_log_share where wxuser_id=wxuser.id and is_deleted =0 and  #{params.view_time}=DATE_FORMAT(create_time, '%Y-%m-%d')) as fx_cou,
+                (select ifnull(count(id),0) from chat_log_message where wxuser_id=wxuser.id and is_deleted =0 and  #{params.view_time}=DATE_FORMAT(create_time, '%Y-%m-%d')) as sy_cou
+            FROM
+                chat_wxuser wxuser
+            where is_deleted=0
+        ) t where 1=1
+        <if test="params.wx_name!=null and params.wx_name!=''">
+            and wx_name like concat('%', #{params.wx_name}, '%')
+        </if>
+        <if test="params.column!=null and params.column=='yq_cou'">
+            <![CDATA[ and yq_cou >0  order by yq_cou ${params.order} ]]>
+        </if>
+        <if test="params.column!=null and params.column=='fx_cou'">
+            <![CDATA[ and fx_cou >0  order by fx_cou ${params.order} ]]>
+        </if>
+        <if test="params.column!=null and params.column=='sy_cou'">
+            <![CDATA[ and sy_cou >0  order by sy_cou ${params.order} ]]>
+        </if>
+    </select>
+
+    <select id="getCommissionLogList" resultType="map">
+        SELECT
+            log.id,
+            log.order_code,
+            log.order_amount,
+            log.create_time as order_time,
+            log.fy_level,
+            wxuser.wx_name as fy_wxname,
+            wxuser.phone as fy_phone,
+            log.fy_rate,
+            log.fy_amount
+        FROM
+            chat_commission_log log
+            INNER JOIN chat_wxuser wxuser on log.fy_wxuserid =wxuser.id
+        where
+            log.is_deleted =0
+            and wxuser.is_deleted =0
+        <if test="params.order_code!=null and params.order_code!=''">
+            and log.order_code = #{params.order_code}
+        </if>
+        <if test="params.fy_level!=null and params.fy_level!=''">
+            and log.order_code = #{params.fy_level}
+        </if>
+        <if test="params.fy_wxname!=null and params.fy_wxname!=''">
+            and  wxuser.wx_name like concat('%', #{params.fy_wxname}, '%')
+        </if>
+        <if test="params.fy_phone!=null and params.fy_phone!=''">
+            and  wxuser.phone like concat('%', #{params.fy_phone}, '%')
+        </if>
+        <if test="params !=null and params.order_time != null and params.order_time != ''">
+            <![CDATA[
+                and SUBSTRING_INDEX(#{params.order_time}, ',', 1) <= DATE_FORMAT(log.order_time, '%Y-%m-%d')
+                and SUBSTRING_INDEX(#{params.order_time}, ',', -1) >= DATE_FORMAT(log.order_time, '%Y-%m-%d')
+            ]]>
+        </if>
+        order by log.id+0 desc
+    </select>
+
+    <select id="getWalletHistoryLogList" resultType="map">
+        SELECT
+            wh.id as id,
+            wx.wx_name,
+            wx.phone,
+            wh.type as wallet_type,
+            wh.service_type,
+            wh.before_amount,
+            wh.amount,
+            wh.after_amount,
+            wh.remark,
+            wh.create_time as wallet_time
+        FROM
+            chat_wxuser_wallet_history wh
+        INNER JOIN chat_wxuser wx ON wh.wxuser_id = wx.id
+        WHERE
+            wh.is_deleted = 0
+            AND wx.is_deleted =0
+        <if test="params.wx_name!=null and params.wx_name!=''">
+            and  wx.wx_name like concat('%', #{params.wx_name}, '%')
+        </if>
+        <if test="params.phone!=null and params.phone!=''">
+            and  wx.phone like concat('%', #{params.phone}, '%')
+        </if>
+        <if test="params.wallet_type!=null and params.wallet_type!=''">
+            and  wh.wallet_type = #{params.wallet_type}
+        </if>
+        <if test="params.service_type!=null and params.service_type!=''">
+            and  wh.service_type = #{params.service_type}
+        </if>
+        order by wh.id+0 desc
+    </select>
+    <select id="getOrderList" resultType="map">
+        SELECT
+        wx.phone as  view_phone,
+        gor.*
+        FROM
+        chat_goods_order gor
+        INNER JOIN chat_wxuser wx on gor.wxuser_id = wx.id
+        where
+        gor.is_deleted = 0
+        AND wx.is_deleted =0
+        <if test="params.wxuser_name!=null and params.wxuser_name!=''">
+            and  gor.wxuser_name like concat('%', #{params.wxuser_name}, '%')
+        </if>
+        <if test="params.phone!=null and params.phone!=''">
+            and  wx.phone like concat('%', #{params.phone}, '%')
+        </if>
+        <if test="params.goods_title!=null and params.goods_title!=''">
+            and  gor.goods_title like concat('%', #{params.goods_title}, '%')
+        </if>
+        <if test="params.order_code!=null and params.order_code!=''">
+            and  gor.order_code like concat('%', #{params.order_code}, '%')
+        </if>
+        <if test="params.pay_type!=null and params.pay_type!=''">
+            and  gor.pay_type = #{params.pay_type}
+        </if>
+        <if test="params.pay_status!=null and params.pay_status!=''">
+            and  gor.pay_status = #{params.pay_status}
+        </if>
+        order by gor.id+0 desc
+    </select>
+
+
+</mapper>

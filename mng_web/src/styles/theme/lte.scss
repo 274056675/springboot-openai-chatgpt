@@ -1,0 +1,36 @@
+.theme-lte {
+  .avue-logo{
+    background-color: #409EFF;
+    .avue-logo_title{
+      font-weight: 500;
+      font-size: 20px;
+      color:#fff;
+    }
+  }
+  .avue-tags{
+    .el-tabs__item{
+      font-size: 12px !important;
+      font-weight: 500 !important;
+    }
+  }
+  .avue-sidebar{
+    background-color: #263238;
+      .el-menu-item,.el-submenu__title{
+        i,span{
+          color: #8a979e;
+        }
+        &:hover{
+            background-color: #2b373d;
+        }
+        &.is-active {
+            &:before {
+              display: none;
+            }
+            background-color: #2b373d;
+            i,span{
+                color:#fff;
+            }
+        }
+    }
+  }
+}

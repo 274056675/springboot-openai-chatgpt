@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.springblade.system.mapper.MjkjSystemMapper">
+
+
+
+    <select id="getUserDeptList" resultType="Long">
+    SELECT
+    DISTINCT dept_id
+    FROM
+        blade_user_dept userdept
+        INNER join blade_dept dept on userdept.dept_id = dept.id
+    WHERE
+        dept.is_deleted =0 and user_id = #{userId}
+    </select>
+
+
+
+</mapper>
