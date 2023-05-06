@@ -61,7 +61,7 @@ APP端前台
 
 **通过绘画、生成等关键词发出绘画指令，操作示例图**:
 
-<table>
+<table  align="center">
     <tr>
         <td><img src="https://ai.oss.mj.ink/chatgpt/github/A7C6EF10-BF97-4116-AC0F-3E45FEA9F837.png" height="310"/></td>
     </tr>
@@ -80,7 +80,7 @@ P1 古风美女："问纤腰如柳，飘逸生姿。盈盈眸中承星月，繁�
     <tr>
         <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/mmexport1682156392120.jpg" /></td>
         <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/1650158609331527682_1682263445586.png" /></td>
-        <td height="220" width="210"><img src="images/1650376735184789506_1682315450842.png" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/1650376735184789506_1682315450842.png" /></td>
     </tr>
     <tr>
         <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/mmexport1682574098103.jpg" /></td>
