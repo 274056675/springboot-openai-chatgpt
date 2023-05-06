@@ -1,0 +1,3 @@
+chatgpt:
+	uploadUrl: 
+把图片放入到该目录下即可
