@@ -18,7 +18,7 @@
 
 - PC地址(点击图片可访问)：http://www.mj.ink
 
-  <a href="http://www.mj.ink"><img src="images/下载页展示.png" /></a>
+  <a href="http://www.mj.ink"><img src="images/Snipaste_2023-05-05_23-46-35.png" /></a>
 
 - APP地址：
 
@@ -38,7 +38,7 @@
 
 如图：
 
-<img src="images/下载页展示.png" />
+<img src="images/Snipaste_2023-05-05_23-46-35.png" />
 
 ### 1.3超级AI大脑前台展示
 
@@ -63,10 +63,10 @@ APP端前台
 
 <table>
     <tr>
-        <td><img src="images/Snipaste_2023-04-26_16-38-21.png" height="450"/></td>
+        <td><img src="images/Snipaste_2023-05-06_00-18-31.png" height="310"/></td>
     </tr>
     <tr>
-        <td><img src="images/Snipaste_2023-04-26_16-47-09.png" height="450"/></td>
+        <td><img src="images/Snipaste_2023-05-06_00-21-40.png" height="310"/></td>
     </tr>
 </table>
 
