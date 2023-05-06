@@ -38,7 +38,7 @@
 
 如图：
 
-<img src="images/Snipaste_2023-05-05_23-46-35.png" />
+<img src="https://ai.oss.mj.ink/chatgpt/github/Snipaste_2023-05-05_23-46-35.png" />
 
 ### 1.3超级AI大脑前台展示
 
@@ -46,10 +46,10 @@ APP端前台
 
 <table>
     <tr>
-        <td><img src="images/mmexport1682576226118.jpg"/></td>
-        <td><img src="images/mmexport1682576228612.jpg"/></td>
-        <td><img src="images/mmexport1682576232109.jpg"/></td>
-        <td><img src="images/mmexport1682576223811.jpg"/></td>
+        <td><img src="https://ai.oss.mj.ink/chatgpt/github/mmexport1682576226118.jpg"/></td>
+        <td><img src="https://ai.oss.mj.ink/chatgpt/github/mmexport1682576228612.jpg"/></td>
+        <td><img src="https://ai.oss.mj.ink/chatgpt/github/mmexport1682576232109.jpg"/></td>
+        <td><img src="https://ai.oss.mj.ink/chatgpt/github/mmexport1682576223811.jpg"/></td>
     </tr>
 </table>
 
@@ -63,10 +63,10 @@ APP端前台
 
 <table>
     <tr>
-        <td><img src="images/A7C6EF10-BF97-4116-AC0F-3E45FEA9F837.png" height="310"/></td>
+        <td><img src="https://ai.oss.mj.ink/chatgpt/github/A7C6EF10-BF97-4116-AC0F-3E45FEA9F837.png" height="310"/></td>
     </tr>
     <tr>
-        <td><img src="images/E23F0D97-6207-4a56-BE51-1B4CEEA7B0E6.png" height="310"/></td>
+        <td><img src="https://ai.oss.mj.ink/chatgpt/github/E23F0D97-6207-4a56-BE51-1B4CEEA7B0E6.png" height="310"/></td>
     </tr>
 </table>
 
@@ -78,14 +78,14 @@ P1 古风美女："问纤腰如柳，飘逸生姿。盈盈眸中承星月，繁�
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="images/mmexport1682156392120.jpg" /></td>
-        <td height="220" width="210"><img src="images/1650158609331527682_1682263445586.png" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/mmexport1682156392120.jpg" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/1650158609331527682_1682263445586.png" /></td>
         <td height="220" width="210"><img src="images/1650376735184789506_1682315450842.png" /></td>
     </tr>
     <tr>
-        <td height="220" width="210"><img src="images/mmexport1682574098103.jpg" /></td>
-        <td height="220" width="210"><img src="images/2c2effb816e3b763e707b5ef25b68a1.jpg" /></td>
-        <td height="220" width="210"><img src="images/mmexport1682592728861.jpg" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/mmexport1682574098103.jpg" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/2c2effb816e3b763e707b5ef25b68a1.jpg" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/mmexport1682592728861.jpg" /></td>
     </tr>
 </table>
 
@@ -94,15 +94,15 @@ P2 动漫奇异动物：“在这里，你可以看到从古老传说中走出�
 ```
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="images/1651147774541488130_1682499280949.png" /></td>
-        <td height="220" width="210"><img src="images/mmexport1682145041145.jpg" /></td>
-        <td height="220" width="210"><img src="images/mmexport1682571966940.jpg" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/1651147774541488130_1682499280949.png" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/mmexport1682145041145.jpg" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/mmexport1682571966940.jpg" /></td>
     </tr>
 </div>
     <tr>
-        <td height="220" width="210"><img src="images/mmexport1682145099316.jpg" /></td>
-        <td height="220" width="210"><img src="images/mmexport1682586257822.jpg" /></td>
-        <td height="220" width="210"><img src="images/1651149871966117890_1682499781014.png" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/mmexport1682145099316.jpg" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/mmexport1682586257822.jpg" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/1651149871966117890_1682499781014.png" /></td>
     </tr>
 </table>
 
@@ -111,14 +111,14 @@ P3 动漫人物："各种光怪陆离、奇异的动漫人物"
 ```
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="images/a12c434f7a5ce1561c4c774450fca09.jpg" /></td>
-        <td height="220" width="210"><img src="images/1651149309421871106_1682499646893.png" /></td>
-        <td height="220" width="210"><img src="images/0f78efa269608d3a962bc1dca4a6d13.jpg" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/a12c434f7a5ce1561c4c774450fca09.jpg" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/1651149309421871106_1682499646893.png" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/0f78efa269608d3a962bc1dca4a6d13.jpg" /></td>
     </tr>
     <tr>
-        <td height="220" width="210"><img src="images/ee8fa19f1311d7e3cdc2536b49a7c4f.jpg" /></td>
-        <td height="220" width="210"><img src="images/3ee585135f5ddc9fee5b2298d1b27fd.jpg" /></td>
-        <td height="220" width="210"><img src="images/mmexport1682586265500.jpg" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/ee8fa19f1311d7e3cdc2536b49a7c4f.jpg" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/3ee585135f5ddc9fee5b2298d1b27fd.jpg" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/mmexport1682586265500.jpg" /></td>
     </tr>
 </table>
 
@@ -128,14 +128,14 @@ P4 AI抽象艺术："AI生成具有独特艺术氛围的绘画，山水、屋舍
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="images/mmexport1682586290326.jpg" /></td>
-        <td height="220" width="210"><img src="images/2ae7bcf277385394ccdf1c60fd7e0b2.jpg" /></td>
-        <td height="220" width="210"><img src="images/28cf45d860644a3bd66084c156e841d.jpg" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/mmexport1682586290326.jpg" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/2ae7bcf277385394ccdf1c60fd7e0b2.jpg" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/28cf45d860644a3bd66084c156e841d.jpg" /></td>
     </tr>
     <tr>
-        <td height="220" width="210"><img src="images/c2dc425f87ce44be30b19e9ff9c3e9f.jpg" /></td>
-        <td height="220" width="210"><img src="images/e2e09856de9f4f7377077d2a451cb7c.jpg" /></td>
-        <td height="220" width="210"><img src="images/mmexport1682586300376.jpg" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/c2dc425f87ce44be30b19e9ff9c3e9f.jpg" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/e2e09856de9f4f7377077d2a451cb7c.jpg" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/mmexport1682586300376.jpg" /></td>
     </tr>
 </table>
 
@@ -143,7 +143,7 @@ P4 AI抽象艺术："AI生成具有独特艺术氛围的绘画，山水、屋舍
 ### 1.4超级AI大脑后台数据
 <table>
     <tr>
-        <td ><img src="images/lALPJxRxWXd0e8HNBWfNBzA_1840_1383.png"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/lALPJxRxWXd0e8HNBWfNBzA_1840_1383.png"/></td>
     </tr>
 </table>
 
@@ -152,16 +152,16 @@ P4 AI抽象艺术："AI生成具有独特艺术氛围的绘画，山水、屋舍
 用户管理、微信机器人、商品管理、更多好玩管理
 <table>
     <tr>
-        <td ><img src="images/1682406718076.png"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/1682406718076.png"/></td>
     </tr>
     <tr>
-        <td ><img src="images/1682406881447.png"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/1682406881447.png"/></td>
     </tr>
     <tr>
-        <td ><img src="images/1682406917225.png"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/1682406917225.png"/></td>
     </tr>
     <tr>
-        <td ><img src="images/1682406989125.png"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/1682406989125.png"/></td>
     </tr>
 </table>
 
@@ -172,7 +172,7 @@ P4 AI抽象艺术："AI生成具有独特艺术氛围的绘画，山水、屋舍
 
 <table>
     <tr>
-        <td ><img src="images/超级AI大脑架构图.png"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/超级AI大脑架构图.png"/></td>
     </tr>
 </table>
 
@@ -221,7 +221,7 @@ SpringBoot-Openai-ChatGpt
 
 <table>
     <tr>
-        <td ><img src="images/1682411107813.png"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/1682411107813.png"/></td>
     </tr>
 </table>
 
@@ -233,7 +233,7 @@ blade-dev.yaml文件，如图：(在这里关于一些中间件的地址已有�
 
 <table>
     <tr>
-        <td ><img src="images/Snipaste_2023-04-28_11-17-57.png"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/Snipaste_2023-04-28_11-17-57.png"/></td>
     </tr>
 </table>
 
@@ -245,7 +245,7 @@ blade-dev.yaml文件，如图：(在这里关于一些中间件的地址已有�
 
 <table>
     <tr>
-        <td ><img src="images/Snipaste_2023-04-28_11-12-24.png"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/Snipaste_2023-04-28_11-12-24.png"/></td>
     </tr>
 </table>
 
@@ -253,7 +253,7 @@ blade-dev.yaml文件，如图：(在这里关于一些中间件的地址已有�
 
 <table>
     <tr>
-        <td ><img src="images/Snipaste_2023-04-28_11-16-49.png"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/Snipaste_2023-04-28_11-16-49.png"/></td>
     </tr>
 </table>
 
@@ -273,7 +273,7 @@ blade-dev.yaml文件，如图：(在这里关于一些中间件的地址已有�
 
 <table>
     <tr>
-        <td ><img src="images/Snipaste_2023-04-28_02-54-21.png"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/Snipaste_2023-04-28_02-54-21.png"/></td>
     </tr>
 </table>
 
@@ -283,7 +283,7 @@ blade-dev.yaml文件，如图：(在这里关于一些中间件的地址已有�
 
 <table>
     <div >
-    <td ><img src="images/Snipaste_2023-04-25_17-17-50.png"/></td>
+    <td ><img src="https://ai.oss.mj.ink/chatgpt/github/Snipaste_2023-04-25_17-17-50.png"/></td>
 </div>
 </table>
 
@@ -291,20 +291,20 @@ blade-dev.yaml文件，如图：(在这里关于一些中间件的地址已有�
 
  <table>
      <div >
-    <td ><img src="images/Snipaste_2023-04-28_02-16-13.png" width="85%"/></td>
+    <td ><img src="https://ai.oss.mj.ink/chatgpt/github/Snipaste_2023-04-28_02-16-13.png" width="85%"/></td>
  </div>
 </table>
 
  <table> 
      <div >
- <td ><img src="images/Snipaste_2023-04-28_02-12-02.png" width="85%"/></td>   
+ <td ><img src="https://ai.oss.mj.ink/chatgpt/github/Snipaste_2023-04-28_02-12-02.png" width="85%"/></td>   
  </div></table>
 
 运行项目，选择使用chorm运行项目，如图：
 
 <table>
     <tr>
-        <td ><img src="images/Snipaste_2023-04-25_17-27-20.png"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/Snipaste_2023-04-25_17-27-20.png"/></td>
     </tr>
 </table>
 
@@ -312,7 +312,7 @@ blade-dev.yaml文件，如图：(在这里关于一些中间件的地址已有�
 
 <table>
     <tr>
-        <td ><img src="images/AFBB12D7-6EC7-4984-BD8E-87C4792DC47C.png"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/AFBB12D7-6EC7-4984-BD8E-87C4792DC47C.png"/></td>
     </tr>
 </table>
 
@@ -326,7 +326,7 @@ blade-dev.yaml文件，如图：(在这里关于一些中间件的地址已有�
 
 <table>
     <tr>
-        <td ><img src="images/后台前端.png"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/后台前端.png"/></td>
     </tr>
 </table>
 
@@ -334,21 +334,21 @@ blade-dev.yaml文件，如图：(在这里关于一些中间件的地址已有�
 
 <table>
     <tr>
-        <td ><img src="images/1682406718076.png"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/1682406718076.png"/></td>
     </tr>
 </table>
 
 ## 添加客服微信
 
  <div align=center>
-    <td ><img height="300" width="300" src="images/客服微信.png"/></td>
-    <td ><img height="300" width="300" src="images/客服微信2.png"/></td>
+    <td ><img height="300" width="300" src="https://ai.oss.mj.ink/chatgpt/github/客服微信.png"/></td>
+    <td ><img height="300" width="300" src="https://ai.oss.mj.ink/chatgpt/github/客服微信2.png"/></td>
  </div>
 
 ## chatgpt应用场景及生态分析
 
  <div align=center>
-    <td ><img src="images/chatgpt应用场景及生态分析.png"/></td>
+    <td ><img src="https://ai.oss.mj.ink/chatgpt/github/chatgpt应用场景及生态分析.png"/></td>
  </div>
 
 
