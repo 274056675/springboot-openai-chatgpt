@@ -339,7 +339,7 @@ blade-dev.yaml文件，如图：(在这里关于一些中间件的地址已有�
 </table>
 ## 加入技术讨论群
  <div align=center>
-    <td ><img height="430" width="330" src=""/></td>
+    <td ><img height="430" width="330" src="https://ai.oss.mj.ink/chatgpt/github/%E6%8A%80%E6%9C%AF%E8%AE%A8%E8%AE%BA%E7%BE%A4.png"/></td>
  </div>
 ## 添加客服微信
 
