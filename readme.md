@@ -12,7 +12,10 @@
 
 ## 超级AI大脑产品架构图
 
-<img src="https://ai.oss.mj.ink/chatgpt/github/产品架构图.png" />
+<div align=center>
+    <td ><img src="https://ai.oss.mj.ink/chatgpt/github/产品架构图.png"/></td>
+ </div>
+
 
 ## 在线体验
 
