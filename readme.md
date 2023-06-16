@@ -12,10 +12,7 @@
 
 ## 超级AI大脑产品架构图
 
-<div align=center>
-    <td ><img src="https://ai.oss.mj.ink/chatgpt/github/jiaGouIma.png"/></td>
- </div>
-
+<img src="https://ai.oss.mj.ink/chatgpt/github/产品架构图.png" />
 
 ## 在线体验
 
@@ -24,11 +21,15 @@
      <a href="http://www.mj.ink"><img src="https://ai.oss.mj.ink/chatgpt/github/Snipaste_2023-05-05_23-46-35.png" /></a>
 
 - 2. 微信关注超级AI大脑公众号
+
+ <div align=center>
+    <td ><img height="" width="" src="https://ai.oss.mj.ink/chatgpt/github/wxmp.jpg"/></td>
+ </div>
+
   3. 下载及登录，新用户第一次登录即为注册，可微信进行登录。如图：
 
  <div align=center>
     <td ><img height="" width="" src="https://ai.oss.mj.ink/chatgpt/github/登录1.jpg"/></td>
-    <td ><img height="300" width="300" src="https://ai.oss.mj.ink/chatgpt/github/登录2.jpg"/></td>
  </div>
 
 
@@ -57,7 +58,7 @@
 <table>
     <tr>
         <td><img src="https://ai.oss.mj.ink/chatgpt/github/首页1.jpg" /></td>
-        <td><img src="https://ai.oss.mj.ink/chatgpt/github/首页2.jpg" /></td>
+        <td><img src="https://ai.oss.mj.ink/chatgpt/github/%E5%89%8D%E5%8F%B02.jpg" /></td>
         <td><img src="https://ai.oss.mj.ink/chatgpt/github/首页3.jpg"/></td>
     </tr>
 </table>
@@ -200,16 +201,16 @@ P5分类：艺术家   风格：布拉德利   比例：1:1   尺寸：512*512  
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/表单开发1.jpg"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/%E8%A1%A8%E5%8D%95%E5%BC%80%E5%8F%911.jpg"/></td>
     </tr>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/表单开发2.jpg"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/%E8%A1%A8%E5%8D%95%E5%BC%80%E5%8F%912.jpg"/></td>
     </tr>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/表单开发3.jpg"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/%E8%A1%A8%E5%8D%95%E5%BC%80%E5%8F%913.jpg"/></td>
     </tr>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/表单开发4.jpg"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/%E8%A1%A8%E5%8D%95%E5%BC%80%E5%8F%914.jpg"/></td>
 </table>
 
 ### 3.2 App在线开发
@@ -220,13 +221,13 @@ P5分类：艺术家   风格：布拉德利   比例：1:1   尺寸：512*512  
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/表单设计1.png"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/%E8%A1%A8%E5%8D%95%E8%AE%BE%E8%AE%A11.png"/></td>
     </tr>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/表单设计2.png"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/%E8%A1%A8%E5%8D%95%E8%AE%BE%E8%AE%A12.png"/></td>
     </tr>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/表单设计3.png"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/%E8%A1%A8%E5%8D%95%E8%AE%BE%E8%AE%A13.png"/></td>
     </tr>
 </table>
 
@@ -286,7 +287,7 @@ P5分类：艺术家   风格：布拉德利   比例：1:1   尺寸：512*512  
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/启动服务截图.jpg"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1%E6%88%AA%E5%9B%BE.jpg"/></td>
     </tr>
 </table>
 
@@ -359,7 +360,7 @@ P5分类：艺术家   风格：布拉德利   比例：1:1   尺寸：512*512  
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/后台前端.png"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/%E5%90%8E%E5%8F%B0%E5%89%8D%E7%AB%AF.png"/></td>
     </tr>
 </table>
 
