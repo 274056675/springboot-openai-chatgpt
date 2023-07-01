@@ -12,7 +12,7 @@
 
 ## 超级AI大脑产品架构图
 
-<img src="http://ai.oss.mj.ink/chatgpt/github/jiaGouIma.png" />
+<img src="https://ai.oss.mj.ink/chatgpt/github/jiaGouIma.png" />
 
 ## 在线体验
 
