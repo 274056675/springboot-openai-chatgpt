@@ -143,7 +143,7 @@ P4分类：中国风   风格：国画   比例：1:1   尺寸：512*512   生�
     <tr>
         <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/山水画1.png" /></td>
         <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/山水画2.png" /></td>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/山水画3.png" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/%E5%B1%B1%E6%B0%B4%E7%94%BB3.png" /></td>
     </tr>
 </table>
 
