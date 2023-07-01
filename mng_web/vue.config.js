@@ -60,7 +60,7 @@ module.exports = {
     port: 1888,
     proxy: {
       '/api': {
-        //本地服务接口地址
+        //本地服务接口地址，连接后端的网关服务端口
         target: 'http://127.0.0.1:9872',
         //远程演示服务地址,可用于直接启动项目
         //target: 'https://saber.bladex.vip/api',
