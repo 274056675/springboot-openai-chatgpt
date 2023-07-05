@@ -375,7 +375,7 @@ P5分类：艺术家   风格：布拉德利   比例：1:1   尺寸：512*512  
 ## 加入技术讨论群
 
  <div align=center>
-    <td ><img height="430" width="330" src="https://ai.oss.mj.ink/chatgpt/github/jishu3.png"/></td>
+    <td ><img height="430" width="330" src="https://ai.oss.mj.ink/chatgpt/github/jishu4.png"/></td>
  </div>
 
 ## 添加客服微信
