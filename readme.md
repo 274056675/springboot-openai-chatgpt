@@ -16,7 +16,7 @@
 
 ## 在线体验
 
-- 1. Web端在线体验地址(点击图片可访问)：http://www.mj.ink
+1. Web端在线体验地址(点击图片可访问)：http://www.mj.ink
 
      <a href="http://www.mj.ink"><img src="https://ai.oss.mj.ink/chatgpt/github/Snipaste_2023-05-05_23-46-35.png" /></a>
 
