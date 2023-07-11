@@ -20,11 +20,12 @@
 
      <a href="http://www.mj.ink"><img src="https://ai.oss.mj.ink/chatgpt/github/Snipaste_2023-05-05_23-46-35.png" /></a>
 
-- 2. 微信关注超级AI大脑公众号
+2. 微信关注超级AI大脑公众号及手机扫码下载App
 
- <div align=center>
-    <td ><img height="" width="" src="https://ai.oss.mj.ink/chatgpt/github/wxmp.jpg"/></td>
- </div>
+|                          微信公众号                          |                           Android                            |                             IOS                              |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+| <img height="200" width="200" src="https://ai.oss.mj.ink/chatgpt/github/wxgzh.jpg"/> | <img height="200" width="200" src="https://ai.oss.mj.ink/chatgpt/github/android.png"/> | <a href="https://apps.apple.com/cn/app/id6448979172"><img height="200" width="200" src="https://ai.oss.mj.ink/chatgpt/github/ios.png"/></a> |
+|                        **微信公众号**                        |                         **Android**                          |                           **IOS**                            |
 
   3. 下载及登录，新用户第一次登录即为注册，可微信进行登录。如图：
 
