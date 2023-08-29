@@ -12,7 +12,7 @@
 
 ## 超级AI大脑产品架构图
 
-![jiagoutu](images/jiagoutu-16932962555232.png)
+![jiagoutu](images/jiaGouIma.png)
 
 ## 在线体验
 
