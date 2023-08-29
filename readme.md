@@ -12,7 +12,7 @@
 
 ## 超级AI大脑产品架构图
 
-<img src="https://ai.oss.mj.ink/chatgpt/github/jiaGouIma.png" />
+![jiagoutu](images/jiagoutu-16932962555232.png)
 
 ## 在线体验
 
@@ -385,7 +385,6 @@ P5分类：艺术家   风格：布拉德利   比例：1:1   尺寸：512*512  
     <td ><img height="300" width="300" src="https://ai.oss.mj.ink/chatgpt/github/客服微信.png"/></td>
     <td ><img height="300" width="300" src="https://ai.oss.mj.ink/chatgpt/github/客服微信2.png"/></td>
  </div>
-
 
 
 
