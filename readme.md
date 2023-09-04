@@ -12,7 +12,7 @@
 
 ## 超级AI大脑产品架构图
 
-<img src="https://ai.oss.mj.ink/chatgpt/github/jiaGouIma.png" />
+<img src="https://ai.oss.mj.ink/chatgpt/github/架构图.png" />
 
 ## 在线体验
 
@@ -24,14 +24,15 @@
 
 |                          微信公众号                          |                           Android                            |                             IOS                              |
 | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
-| <img height="200" width="200" src="https://ai.oss.mj.ink/chatgpt/github/wxgzh.jpg"/> | <img height="200" width="200" src="https://ai.oss.mj.ink/chatgpt/github/android.png"/> | <a href="https://apps.apple.com/cn/app/id6448979172"><img height="200" width="200" src="https://ai.oss.mj.ink/chatgpt/github/ios.png"/></a> |
+| <img height="200" width="200" src="https://ai.oss.mj.ink/chatgpt/github/wxgzh.jpg"/> | <img height="200" width="200" src="https://ai.oss.mj.ink/chatgpt/github/安卓.png"/> | <a href="https://apps.apple.com/cn/app/id6448979172"><img height="200" width="200" src="https://ai.oss.mj.ink/chatgpt/github/ios.png"/></a> |
 |                        **微信公众号**                        |                         **Android**                          |                           **IOS**                            |
 
-  3. 下载及登录，新用户第一次登录即为注册，可微信进行登录。如图：
+3. 新用户第一次登录即为注册，可微信进行登录。如图：
 
- <div align=center>
-    <td ><img height="" width="" src="https://ai.oss.mj.ink/chatgpt/github/登录1.jpg"/></td>
+ <div align=left>
+    <td ><img height="" width="" src="https://ai.oss.mj.ink/chatgpt/github/首页.png"/></td>
  </div>
+
 
 
 
@@ -74,92 +75,136 @@
 
 <table>
     <tr>
-        <td><img src="https://ai.oss.mj.ink/chatgpt/github/绘图1.png" /></td>
-        <td><img src="https://ai.oss.mj.ink/chatgpt/github/绘图2.png" /></td>
-        <td><img src="https://ai.oss.mj.ink/chatgpt/github/绘图3.png"/></td>
-        <td><img src="https://ai.oss.mj.ink/chatgpt/github/绘图4.png" /></td>
+        <td><img src="https://ai.oss.mj.ink/chatgpt/upload/2023-09-02/1697894033617657858_1693644457619.png" /></td>
+        <td><img src="https://ai.oss.mj.ink/chatgpt/upload/2023-09-02/1697894588394053634_1693644589891.png" /></td>
+        <td><img src="http://ai.oss.mj.ink/chatgpt/upload/2023-09-02/1697895053861134338_1693644700864.png"/></td>
+        <td><img src="http://ai.oss.mj.ink/chatgpt/upload/2023-09-02/1697895337224118274_1693644768430.png" /></td>
     </tr>
 </table>
-
 **社区部分**，用户发布的作品将在社区中根据作品热度进行排序展示，用户可点击进行观赏、创作同款、生成海报，用户点击分享可下载图片以及分享到朋友圈。功能展示如图：
 
 <table>
     <tr>
-        <td><img src="https://ai.oss.mj.ink/chatgpt/github/社区1.png" /></td>
-        <td><img src="https://ai.oss.mj.ink/chatgpt/github/社区2.png" /></td>
-        <td><img src="https://ai.oss.mj.ink/chatgpt/github/社区3.1.jpg"/></td>
-        <td><img src="https://ai.oss.mj.ink/chatgpt/github/社区4.png"/></td>
+        <td><img src="https://ai.oss.mj.ink/chatgpt/github/绘画界面.png" /></td>
+        <td><img src="https://ai.oss.mj.ink/chatgpt/github/生成海报.png"/></td>
+        <td><img src="https://ai.oss.mj.ink/chatgpt/github/发布社区.png"/></td>
+        <td><img src="https://ai.oss.mj.ink/chatgpt/github/发布海报2.png" /></td>
         </tr>
     </table>
+
+
 
 **我的部分**，用户可在此部分进行签到获取积分以及查看历史作品、发布作品、点赞作品等
 
 ### 2.3 AI画廊展馆
 
 ```html
-P1分类：通用   风格：MJ风格   比例：1:1   尺寸：512*512   生成数量：3张
-文字描述：用诗词来形容的美女：问纤腰如柳，飘逸生姿。盈盈眸中承星月，繁花似锦绘眉尖。
+P1分类：通用   风格：自定义   比例：1:1   尺寸：512*512   生成数量：3张
+文字描述：杰作 高质量 少女
 ```
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/美女图1.png" /></td>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/美女图2.png" /></td>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/美女图3.png" /></td>
+        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/少女1.png" /></td>
+        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/少女4.png" /></td>
+        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/少女2.png" /></td>
     </tr>
 </table>
 
+
+
+
 ```
-P2分类：动漫   风格：动漫   比例：1:1   尺寸：512*512   生成数量：3张
-文字描述：黑丝长腿美女
+P2分类：通用   风格：自定义   比例：1:1   尺寸：512*512   生成数量：3张
+文字描述：卡通少女
 ```
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/黑丝1.png" /></td>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/黑丝2.png" /></td>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/黑丝3.png" /></td>
+        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/卡通少女2.png" /></td>
+        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/卡通少女1.png" /></td>
+        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/卡通少女3.png" /></td>
     </tr>
 </table>
 
+
+
+
 ```
-P3分类：场景   风格：史诗大片   比例：1:1   尺寸：512*512   生成数量：3张
-文字描述：山间的狼群。
+P3分类：通用   风格：漫画   比例：1:1   尺寸：512*512   生成数量：3张
+文字描述：卡通猫咪
 ```
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/狼群1.png" /></td>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/狼群2.png" /></td>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/狼群3.png" /></td>
+        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/卡通猫咪2.png" /></td>
+        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/卡通猫咪1.png" /></td>
+        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/卡通猫咪3.png" /></td>
     </tr>
 </table>
 
+
+
 ```
-P4分类：中国风   风格：国画   比例：1:1   尺寸：512*512   生成数量：3张
-文字描述：有意境有诗意的山水、屋舍、小桥、人家
+P4分类：通用   风格：写实主义   比例：1:1   尺寸：512*512   生成数量：3张
+文字描述：鲜花
 ```
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/山水画1.png" /></td>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/山水画2.png" /></td>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/%E5%B1%B1%E6%B0%B4%E7%94%BB3.png" /></td>
+        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/鲜花4.png" /></td>
+        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/新鲜花2.png" /></td>
+        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/新鲜花3.png" /></td>
     </tr>
 </table>
 
+
+
+
 ```
-P5分类：艺术家   风格：布拉德利   比例：1:1   尺寸：512*512   生成数量：3张
-文字描述：抽象艺术
+P5分类：中国风   风格：国画   比例：1:1   尺寸：512*512   生成数量：3张
+文字描述：中国山水画
 ```
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/抽象艺术1.png" /></td>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/抽象艺术2.png" /></td>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/抽象艺术3.png" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/水墨画1.png" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/水墨画2.png" /></td>
+        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/水墨画3.png" /></td>
     </tr>
 </table>
+
+
+
+
+```
+P6分类：场景   风格：史诗大片   比例：1:1   尺寸：512*512   生成数量：3张
+文字描述：机器人
+```
+
+<table align="center">
+    <tr>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/机器人1.png" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/机器人2.png" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/机器人3.png" /></td>
+    </tr>
+</table>
+
+
+
+```
+P7分类：场景  风格：赛博朋克   比例：1:1   尺寸：512*512  
+文字描述：赛博朋克世界的人
+```
+
+<table align="center">
+    <tr>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/赛博朋克1.png" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/赛博朋克2.png" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/赛博朋克3.png" /></td>
+    </tr>
+</table>
+
 
 
 
@@ -264,7 +309,7 @@ P5分类：艺术家   风格：布拉德利   比例：1:1   尺寸：512*512  
 
 之后我们还需要配置nacos文件，**打开nacos,新增chatgpt_open命名空间，空间id为chatgpt_open**,而后分别新增配置blade.yaml、blade-dev.yaml文件。
 
-如图：(在这里关于一些中间件的地址已有示例，具体还需与个人本地的地址相对应进行配置)
+如图：(在这里关于部分中间件的地址于yaml文件中已有示例，具体还需与个人本地的地址相对应进行配置)
 
 <table>
     <tr>
@@ -343,7 +388,7 @@ P5分类：艺术家   风格：布拉德利   比例：1:1   尺寸：512*512  
     </tr>
 </table>
 
-进入页面需要认证，点击发送验证码，输入123456即可(有需要可添加上阿里云短信配置即可)。
+进入页面需要认证，点击发送验证码，输入123456即可(有需要可在nacos配置文件中添加阿里云短信配置)。
 
 <table>
     <tr>
@@ -373,22 +418,11 @@ P5分类：艺术家   风格：布拉德利   比例：1:1   尺寸：512*512  
     </tr>
 </table>
 
-## 加入技术讨论群
 
- <div align=center>
-    <td ><img height="430" width="330" src="https://ai.oss.mj.ink/chatgpt/github/jishu9.jpg"/></td>
- </div>
+## 添加客服微信：
+添加后邀请您加入技术交流群 （广告勿扰）
 
-## 添加客服微信
-
- <div align=center>
-    <td ><img height="300" width="300" src="https://ai.oss.mj.ink/chatgpt/github/客服微信.png"/></td>
-    <td ><img height="300" width="300" src="https://ai.oss.mj.ink/chatgpt/github/客服微信2.png"/></td>
- </div>
-
-
-
-
-
-
-
+ <div align=center >
+    <td ><img height="250" width="250" src="https://ai.oss.mj.ink/chatgpt/github/客服微信.png"/></td>
+     <td ><img height="250" width="250" src="https://ai.oss.mj.ink/chatgpt/github/客服微信2.png"/></td>  
+</div>
