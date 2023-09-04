@@ -12,7 +12,7 @@
 
 ## 超级AI大脑产品架构图
 
-<img src="https://ai.oss.mj.ink/chatgpt/github/架构图.png" />
+<img src="./images/架构图.png" />
 
 ## 在线体验
 
@@ -105,11 +105,12 @@ P1分类：通用   风格：自定义   比例：1:1   尺寸：512*512   生�
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/少女1.png" /></td>
+        <td height="220" width="210"><img src="./images/少女1.png" /></td>
         <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/少女4.png" /></td>
         <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/少女2.png" /></td>
     </tr>
 </table>
+
 
 
 
@@ -121,11 +122,12 @@ P2分类：通用   风格：自定义   比例：1:1   尺寸：512*512   生�
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/卡通少女2.png" /></td>
-        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/卡通少女1.png" /></td>
-        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/卡通少女3.png" /></td>
+        <td height="220" width="210"><img src="./images/卡通少女2.png" /></td>
+        <td height="220" width="210"><img src="./images/卡通少女1.png" /></td>
+        <td height="220" width="210"><img src="./images/卡通少女3.png" /></td>
     </tr>
 </table>
+
 
 
 
@@ -137,11 +139,12 @@ P3分类：通用   风格：漫画   比例：1:1   尺寸：512*512   生成�
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/卡通猫咪2.png" /></td>
+        <td height="220" width="210"><img src="./images/卡通猫咪2.png" /></td>
         <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/卡通猫咪1.png" /></td>
         <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/卡通猫咪3.png" /></td>
     </tr>
 </table>
+
 
 
 
@@ -153,10 +156,11 @@ P4分类：通用   风格：写实主义   比例：1:1   尺寸：512*512   �
 <table align="center">
     <tr>
         <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/鲜花4.png" /></td>
-        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/新鲜花2.png" /></td>
-        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/新鲜花3.png" /></td>
+        <td height="220" width="210"><img src="./images/新鲜花2.png" /></td>
+        <td height="220" width="210"><img src="./images/新鲜花3.png" /></td>
     </tr>
 </table>
+
 
 
 
@@ -184,11 +188,12 @@ P6分类：场景   风格：史诗大片   比例：1:1   尺寸：512*512   �
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/机器人1.png" /></td>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/机器人2.png" /></td>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/机器人3.png" /></td>
+        <td height="220" width="210"><img src="./images/机器人1.png" /></td>
+        <td height="220" width="210"><img src="./images/机器人2.png" /></td>
+        <td height="220" width="210"><img src="./images/机器人3.png" /></td>
     </tr>
 </table>
+
 
 
 
@@ -201,9 +206,10 @@ P7分类：场景  风格：赛博朋克   比例：1:1   尺寸：512*512
     <tr>
         <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/赛博朋克1.png" /></td>
         <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/赛博朋克2.png" /></td>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/赛博朋克3.png" /></td>
+        <td height="220" width="210"><img src="./images/赛博朋克3.png" /></td>
     </tr>
 </table>
+
 
 
 
