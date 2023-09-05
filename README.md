@@ -106,10 +106,11 @@ P1分类：通用   风格：自定义   比例：1:1   尺寸：512*512   生�
 <table align="center">
     <tr>
         <td height="220" width="210"><img src="./images/少女1.png" /></td>
-        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/少女4.png" /></td>
-        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/少女2.png" /></td>
+        <td height="220" width="210"><img src="./images/少女4.png" /></td>
+        <td height="220" width="210"><img src="./images/少女2.png" /></td>
     </tr>
 </table>
+
 
 
 
@@ -140,10 +141,11 @@ P3分类：通用   风格：漫画   比例：1:1   尺寸：512*512   生成�
 <table align="center">
     <tr>
         <td height="220" width="210"><img src="./images/卡通猫咪2.png" /></td>
-        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/卡通猫咪1.png" /></td>
-        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/卡通猫咪3.png" /></td>
+        <td height="220" width="210"><img src="./images/卡通猫咪1.png" /></td>
+        <td height="220" width="210"><img src="./images/卡通猫咪3.png" /></td>
     </tr>
 </table>
+
 
 
 
@@ -155,11 +157,12 @@ P4分类：通用   风格：写实主义   比例：1:1   尺寸：512*512   �
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/鲜花4.png" /></td>
+        <td height="220" width="210"><img src="./images/鲜花4.png" /></td>
         <td height="220" width="210"><img src="./images/新鲜花2.png" /></td>
         <td height="220" width="210"><img src="./images/新鲜花3.png" /></td>
     </tr>
 </table>
+
 
 
 
@@ -172,11 +175,12 @@ P5分类：中国风   风格：国画   比例：1:1   尺寸：512*512   生�
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/水墨画1.png" /></td>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/水墨画2.png" /></td>
-        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/水墨画3.png" /></td>
+        <td height="220" width="210"><img src="./images/水墨画1.png" /></td>
+        <td height="220" width="210"><img src="./images/水墨画2.png" /></td>
+        <td height="220" width="210"><img src="./images/水墨画3.png" /></td>
     </tr>
 </table>
+
 
 
 
@@ -204,11 +208,12 @@ P7分类：场景  风格：赛博朋克   比例：1:1   尺寸：512*512
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/赛博朋克1.png" /></td>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/赛博朋克2.png" /></td>
+        <td height="220" width="210"><img src="./images/赛博朋克1.png" /></td>
+        <td height="220" width="210"><img src="./images/赛博朋克2.png" /></td>
         <td height="220" width="210"><img src="./images/赛博朋克3.png" /></td>
     </tr>
 </table>
+
 
 
 
@@ -432,3 +437,4 @@ P7分类：场景  风格：赛博朋克   比例：1:1   尺寸：512*512
     <td ><img height="250" width="250" src="https://ai.oss.mj.ink/chatgpt/github/客服微信.png"/></td>
      <td ><img height="250" width="250" src="https://ai.oss.mj.ink/chatgpt/github/客服微信2.png"/></td>  
 </div>
+
