@@ -44,10 +44,10 @@
 
 <table>
     <tr>
-        <td><img src="https://ai.oss.mj.ink/chatgpt/github/前台1.jpg"/></td>
-       <td><img src="https://ai.oss.mj.ink/chatgpt/github/%E5%89%8D%E5%8F%B02.jpg"/></td>
-        <td><img src="https://ai.oss.mj.ink/chatgpt/github/前台3.jpg"/></td>
-        <td><img src="https://ai.oss.mj.ink/chatgpt/github/前台4.jpg"/></td>
+        <td><img src="https://ai.oss.mj.ink/chatgpt/github/desk1.png"/></td>
+       <td><img src="https://ai.oss.mj.ink/chatgpt/github/desk2.png"/></td>
+        <td><img src="https://ai.oss.mj.ink/chatgpt/github/desk3.png"/></td>
+        <td><img src="https://ai.oss.mj.ink/chatgpt/github/desk4.png"/></td>
     </tr>
 </table>
 
