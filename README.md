@@ -46,7 +46,7 @@
     <tr>
         <td><img src="https://ai.oss.mj.ink/chatgpt/github/desk1.png"/></td>
        <td><img src="https://ai.oss.mj.ink/chatgpt/github/desk2.png"/></td>
-        <td><img src="https://ai.oss.mj.ink/chatgpt/github/desk3.png"/></td>
+        <td><img src="./images/desk3.png"/></td>
         <td><img src="https://ai.oss.mj.ink/chatgpt/github/desk4.png"/></td>
     </tr>
 </table>
