@@ -87,7 +87,8 @@ public class WebServiceImpl implements IWebService {
 	@Autowired
 	private IWxPayService wxPayService;
 
-
+	@Autowired
+	private IErnieBotService ernieBotService;
 
 	//获取用户详情
 	@Override
@@ -424,8 +425,10 @@ public class WebServiceImpl implements IWebService {
 		}else{
 			if (Func.equals(chatgptModel, "text-davinci-003")) {
 				chatGPTService.sendChatGptMessage(modelType, wxuserId, id, question, startMessageId);
-			} else {
+			} else if (Func.equals(chatgptModel,"gpt-3.5-turbo")){
 				chatGPTService.sendChatGptTurboMessage(modelType, wxuserId, id, question, startMessageId, now);
+			}  else if(Func.equals(chatgptModel,"ernie-bot-turbo"))  {
+				ernieBotService.sendErnieBotTurboMessage( wxuserId, id, question, startMessageId, now);
 			}
 		}
 
