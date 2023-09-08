@@ -1,0 +1,260 @@
+#服务器配置
+server:
+  undertow:
+    threads:
+      # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接, 默认设置每个CPU核心一个线程
+      io: 16
+      # 阻塞任务线程池, 当执行类似servlet请求阻塞操作, undertow会从这个线程池中取得线程,它的值设置取决于系统的负载
+      worker: 4000
+    # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理
+    buffer-size: 10240
+    # 是否分配的直接内存
+    direct-buffers: true
+
+#spring配置
+spring:
+  profiles: 
+    active: dev
+  cloud:
+    sentinel:
+      eager: true
+  devtools:
+    restart:
+      log-condition-evaluation-delta: false
+    livereload:
+      port: 23333
+
+#feign配置
+feign:
+  sentinel:
+    enabled: true
+  okhttp:
+    enabled: true
+  httpclient:
+    enabled: false
+
+#hystrix配置
+hystrix:
+  threadpool:
+    default:
+      coreSize: 3000
+      maxQueueSize: 10000
+      queueSizeRejectionThreshold: 80000
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 50000
+
+#ribbon配置
+ribbon:
+  #对当前实例的重试次数
+  MaxAutoRetries: 1
+  #切换实例的重试次数
+  MaxAutoRetriesNextServer: 2
+  #请求处理的超时时间
+  ReadTimeout: 60000
+  #请求连接的超时时间
+  ConnectTimeout: 60000
+  #对所有操作请求都进行重试
+  OkToRetryOnAllOperations: true
+
+#对外暴露端口
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+#knife4j配置
+knife4j:
+  #启用
+  enable: true
+  #基础认证
+  basic:
+    enable: false
+    username: blade
+    password: blade
+  #增强配置
+  setting:
+    enableSwaggerModels: true
+    enableDocumentManage: true
+    enableHost: false
+    enableHostText: http://localhost
+    enableRequestCache: true
+    enableFilterMultipartApis: false
+    enableFilterMultipartApiMethodType: POST
+    language: zh-CN
+    enableFooter: false
+    enableFooterCustom: true
+    footerCustomContent: Copyright © 2021 BladeX All Rights Reserved
+
+#swagger公共信息
+swagger:
+  title: BladeX 接口文档系统
+  description: BladeX 接口文档系统
+  version: 2.9.1.RELEASE
+  license: Powered By BladeX
+  license-url: https://bladex.vip
+  terms-of-service-url: https://bladex.vip
+  contact:
+    name: smallchill
+    email: smallchill@163.com
+    url: https://gitee.com/smallc
+
+#blade配置
+blade:
+  context:
+    headers:
+      allowed:
+        - X-Real-IP
+        - x-real-ip
+        - x-forwarded-for
+        - authorization
+        - Authorization
+        - User-Agent
+        - user-agent
+        - Hosthost
+        - mj-lang
+        - blade-auth
+  #token配置
+  token:
+    #是否有状态
+    state: true
+    single: false
+    sign-key: MJKJ-ONLINE
+  #redis序列化方式
+  redis:
+    serializer-type: protostuff
+  #接口配置
+  api:
+    #报文加密配置
+    crypto:
+      #启用报文加密配置
+      enabled: true
+      #使用AesUtil.genAesKey()生成
+      aes-key: O2BEeIv399qHQNhD6aGW8R8DEj4bqHXm
+      #使用DesUtil.genDesKey()生成
+      des-key: jMVCBsFGDQr1USHo
+  #jackson配置
+  jackson:
+    #null自动转空值
+    null-to-empty: true
+    #大数字自动转字符串
+    big-num-to-string: true
+    #支持text文本请求,与报文加密同时开启
+    support-text-plain: false
+  #xss配置
+  xss:
+    enabled: false
+    skip-url:
+      - /cgform-api/editData/**
+      - /cgform-api/save/**
+      - /chat/open/wxPay/**
+  #安全框架配置
+  secure:
+    #接口放行
+    skip-url:
+      - /open-chat/chat/open/**
+      - /open-chat/sys/sys/dict/getDictItems/**
+      - /open-chat/cgform-api/getData/**
+      - /open-chat/cgform-api/detailData/**
+      - /open-chat/desform-api/desform/**
+      - /open-message/message/**
+      - /open-chat/chat/ai/level/list
+      - /open-chat/chat/ai/problem/list
+    #授权认证配置
+    auth:
+      - method: ALL
+        pattern: /weixin/**
+        expression: "hasAuth()"
+      - method: POST
+        pattern: /dashboard/upload
+        expression: "hasTimeAuth(9, 17)"
+      - method: POST
+        pattern: /dashboard/submit
+        expression: "hasAnyRole('administrator', 'admin', 'user')"
+    #基础认证配置
+    basic:
+      - method: ALL
+        pattern: /dashboard/info
+        username: "blade"
+        password: "blade"
+    #动态签名认证配置
+    sign:
+      - method: ALL
+        pattern: /dashboard/sign
+        crypto: "sha1"
+    #多终端认证配置
+    client:
+      - client-id: sword
+        path-patterns:
+          - /sword/**
+      - client-id: saber
+        path-patterns:
+          - /saber/**
+  #多租户配置
+  tenant:
+    #多租户增强
+    enhance: true
+    #多租户授权保护
+    license: false
+    #动态数据源功能
+    dynamic-datasource: false
+    #动态数据源全局扫描
+    dynamic-global: false
+    #多租户字段名
+    column: tenant_id
+    #排除多租户逻辑
+    exclude-tables:
+      - blade_client
+      - blade_code
+      - blade_datasource
+      - blade_dict
+      - blade_menu
+      - blade_param
+      - blade_process_leave
+      - blade_region
+      - blade_report_file
+      - blade_role_menu
+      - blade_role_scope
+      - blade_scope_api
+      - blade_scope_data
+      - blade_top_menu_setting
+      - blade_user_app
+      - blade_user_dept
+      - blade_user_other
+      - blade_user_web
+      - blade_tenant
+      - act_de_model
+      - ACT_DE_MODEL
+      - design_desform_data
+      - design_desform_head
+      - design_desform_route
+      - onl_cgform_button
+      - onl_cgform_enhance_java
+      - onl_cgform_enhance_js
+      - onl_cgform_enhance_sql
+      - onl_cgform_field
+      - onl_cgform_head
+      - onl_cgform_index
+      - onl_cgform_valid
+      - sys_tabs_data
+      - sys_form_data
+      - sys_statement_data
+      - sys_dict_item
+      - sys_category
+      - sys_check_rule
+      - sys_dict
+      - sys_fill_rule
+      
+#mjkj专用配置 微信开放平台后台登录
+mjkj:
+    debug: true
+    wx_open_appId: ''
+    wx_open_appSecret: ''
+    wx_open_redirectUri: ''

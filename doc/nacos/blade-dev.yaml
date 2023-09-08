@@ -1,0 +1,128 @@
+#spring配置
+spring:
+  redis:
+    ##redis 单机环境配置
+    host: 127.0.0.1
+    port: 6379
+    password: 
+    database: 3
+    ssl: false
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      # MySql、PostgreSQL、SqlServer校验
+      validation-query: select 1
+      # Oracle校验
+      #validation-query: select 1 from dual
+
+#项目模块集中配置
+blade:
+  #分布式锁配置
+  lock:
+    enabled: false
+    address: redis://127.0.0.1:6379
+  #多团队协作服务配置
+  ribbon:
+    rule:
+      #开启配置
+      enabled: true
+      #负载均衡优先调用的ip段
+      prior-ip-pattern:
+        - 192.168.0.*
+        - 127.0.0.1
+  #通用开发生产环境数据库地址(特殊情况可在对应的子工程里配置覆盖)
+  datasource:
+    dev:
+      # MySql
+      url: jdbc:mysql://127.0.0.1:3306/mjkj_chatgpt?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&tinyInt1isBit=false&allowMultiQueries=true&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+      username: root
+      password: root
+knife4j:
+  #启用
+  enable: true
+
+#mqtt配置
+mqtt:
+  server:
+    ip: 0.0.0.0            # 服务端 ip 默认：0.0.0.0
+    port: 8828                  # 端口，默认：1883
+    websocket-port: 5883        # websocket 端口
+
+#minio相关参数 根据自己需要填写 
+minio:
+  endpoint: ''
+  accessKey: ''
+  secretKey: ''
+  bucketName: ''
+#短信验证码 阿里云短信 ，全部必填
+mjkjsms:
+  templateId: ''
+  signName: ''
+  accessKey: ''
+  secretKey: ''
+
+wx:
+  miniapp:
+    configs:
+    - appid: '' #微信小程序的appid 根据自己需要填写 
+      secret: '' #微信小程序的Secret 根据自己需要填写 
+      token: #微信小程序消息服务器配置的token
+      aesKey: #微信小程序消息服务器配置的EncodingAESKey
+      msgDataFormat: JSON
+  pay: #支付相关 全部必填 根据自己需要填写 
+    appId: '' # 默认openId
+    mchId: '' # 商户号
+    partnerKey: '' # 密钥
+    certPath: ''# 退款证书 必填
+    domain: '' #域名 必填 
+  mp: #微信公众号 网页端扫码登录
+    configs:
+      - appId: '' # 根据自己需要填写 
+        secret: '' # 根据自己需要填写 
+        token: ''
+        aesKey: ''
+chatgpt:
+  debug: 'true'
+  # 微信开放平台
+  openWxClientId: '' # 根据自己需要填写 
+  openWxClientSecret: ''# 根据自己需要填写 
+  #chatgptModel: 'gpt-3.5-turbo'
+  chatgptModel: 'ernie-bot-turbo'
+  httpUrl: 'http://127.0.0.1:9885/chatgpt/api/getContent'
+  chatgptUrl: 'https://api.openai.com/v1/chat/completions'
+  # 文本长度
+  chatgptMaxToken: 2048
+  chatgptRequestMaxToken: 2048
+  # 文本的多样性 默认是1
+  chatgptTopP: 1
+  #上传
+  uploadUrl: D:/upload/image
+  #logo
+  logoUrl: D:/upload/image/logo.png
+  #海报背景
+  posterBgUrl: https://ai-chat-gpt.oss-cn-guangzhou.aliyuncs.com/poster/shareTemplate.png
+  # 移除头部
+  startTitleRemove: '。,；,:,：,？, ,，,\n'
+  # 机器人个人提问信息
+  wechatRotGeRenTip: 温馨提示：更多好玩请关注《超级AI大脑》公众号，即可体验
+  # 机器人名称
+  wechatRotGeRenName: 超级AI大脑,WeiXiao
+  # 图片模型 chatgpt   flagstudio
+  imageModel: flagstudio
+   # 机器人图片模型 chatgpt   flagstudio
+  imageModelWechatRot: flagstudio
+  # 这里获取flagstudio.baai.ac.c
+  flagstudioToken: ''
+   # 画图指令
+  imagePromptStart: '画,帮我画,制作,帮我制作,生成,帮我生成'
+  imagePromptEnd: '图片-512x512,海报-432x768,头像-200x200'
+  imageStyle: 'MJ风格'
+
+  #文心一言
+erniebot:
+  URL: 'https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/eb-instant?access_token='
+  appKey: '这里填上你自己的文心一言appKey'
+  secretKey: '这里填上你自己的文心一言secretKey'
+  ernieBotMaxToken: 11200
+
