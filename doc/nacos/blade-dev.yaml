@@ -87,6 +87,7 @@ chatgpt:
   # 微信开放平台
   openWxClientId: '' # 根据自己需要填写 
   openWxClientSecret: ''# 根据自己需要填写 
+  #在这里切换模型
   #chatgptModel: 'gpt-3.5-turbo'
   chatgptModel: 'ernie-bot-turbo'
   httpUrl: 'http://127.0.0.1:9885/chatgpt/api/getContent'
