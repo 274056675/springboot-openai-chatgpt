@@ -59,7 +59,7 @@
 
 <table>
     <tr>
-        <td><img src="https://ai.oss.mj.ink/chatgpt/github/首页1.jpg" /></td>
+        <td><img src="./images/首页1.jpg" /></td>
         <td><img src="https://ai.oss.mj.ink/chatgpt/github/%E5%89%8D%E5%8F%B02.jpg" /></td>
         <td><img src="https://ai.oss.mj.ink/chatgpt/github/首页3.jpg"/></td>
     </tr>
