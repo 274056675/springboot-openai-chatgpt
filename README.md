@@ -14,6 +14,11 @@
 
 <img src="./images/架构图.png" />
 
+## 演示环境
+　　　　[后端：http://gpt.ht.mj.ink:8899](http://gpt.ht.mj.ink:8899)
+
+　　　　[前端：http://gpt.h5.mj.ink:8899](http://gpt.h5.mj.ink:8899)
+
 ## 在线体验
 
 1. Web端在线体验地址(点击图片可访问)：http://www.mj.ink
