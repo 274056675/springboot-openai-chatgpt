@@ -230,13 +230,13 @@ public class ExportBase {
 		excelEntity.setMergeRely(excel.mergeRely());
 		excelEntity.setReplace(excel.replace());
 		if(StringUtils.isNotEmpty(excel.dicCode())){
-			AutoPoiDictServiceI jeecgDictService = null;
+			AutoPoiDictServiceI mjkjDictService = null;
 			try {
-				jeecgDictService = ApplicationContextUtil.getContext().getBean(AutoPoiDictServiceI.class);
+				mjkjDictService = ApplicationContextUtil.getContext().getBean(AutoPoiDictServiceI.class);
 			} catch (Exception e) {
 			}
-			if(jeecgDictService!=null){
-				 String[] dictReplace = jeecgDictService.queryDict(excel.dictTable(), excel.dicCode(), excel.dicText());
+			if(mjkjDictService!=null){
+				 String[] dictReplace = mjkjDictService.queryDict(excel.dictTable(), excel.dicCode(), excel.dicText());
 				 if(excelEntity.getReplace()!=null && dictReplace!=null && dictReplace.length!=0){
 					 excelEntity.setReplace(dictReplace);
 				 }

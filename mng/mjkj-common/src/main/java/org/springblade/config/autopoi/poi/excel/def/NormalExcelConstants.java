@@ -7,7 +7,7 @@ public interface NormalExcelConstants extends BasePOIConstants {
 	/**
 	 * 单Sheet导出
 	 */
-	public final static String JEECG_ENTITY_EXCEL_VIEW = "jeecgEntityExcelView";
+	public final static String MJKJ_ENTITY_EXCEL_VIEW = "mjkjEntityExcelView";
 	/**
 	 * 数据列表
 	 */

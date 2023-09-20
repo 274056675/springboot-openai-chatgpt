@@ -8,7 +8,7 @@ public interface TemplateWordConstants extends BasePOIConstants {
 	/**
 	 * 模板导出
 	 */
-	public final static String JEECG_TEMPLATE_WORD_VIEW = "jeecgTemplateWordView";
+	public final static String MJKJ_TEMPLATE_WORD_VIEW = "mjkjTemplateWordView";
 	/**
 	 * 数据列表
 	 */

@@ -109,7 +109,7 @@ public class CodeGenerateOneToMany extends FileProvider implements IGenerate {
 		Map<String,Object> localMap = dtaMapMethod();
 
 		String templatepath = DbConfig.templatepath;
-		if (strSubStartEnd(templatepath, "/").equals("jeecg/code-template")) {
+		if (strSubStartEnd(templatepath, "/").equals("mjkj/code-template")) {
 			templatepath = "/" + strSubStartEnd(templatepath, "/") + "/onetomany";
 			DbConfig.setTemplatepath(templatepath);
 		}

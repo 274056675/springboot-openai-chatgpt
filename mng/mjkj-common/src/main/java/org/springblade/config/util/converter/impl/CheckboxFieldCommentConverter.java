@@ -17,11 +17,11 @@ import java.util.List;
  */
 public class CheckboxFieldCommentConverter extends FieldFieldCommentConverter {
 
-    public CheckboxFieldCommentConverter(CgformField onlCgformField) {
+    public CheckboxFieldCommentConverter(CgformField mjkjCgformField) {
         IDictService dictService = SpringContextUtils.getBean(IDictService.class);
-        String dictTable = onlCgformField.getDictTable();
-        String dictText = onlCgformField.getDictText();
-        String dictField = onlCgformField.getDictField();
+        String dictTable = mjkjCgformField.getDictTable();
+        String dictText = mjkjCgformField.getDictText();
+        String dictField = mjkjCgformField.getDictField();
         List<DictModel> arrayList = new ArrayList<>();
         if (ConvertUtils.isNotEmpty(dictTable)) {
             arrayList = dictService.queryTableDictItemsByCode(dictTable, dictText, dictField);
@@ -30,7 +30,7 @@ public class CheckboxFieldCommentConverter extends FieldFieldCommentConverter {
         }
 
         this.dictList = arrayList;
-        this.filed = onlCgformField.getDbFieldName();
+        this.filed = mjkjCgformField.getDbFieldName();
     }
 
     @Override

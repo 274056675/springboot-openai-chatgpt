@@ -17,13 +17,13 @@ import java.util.Map;
 
 /**
  * Entity 实体数据对象导出
- * 
+ *
  */
 @SuppressWarnings("unchecked")
-@Controller(NormalExcelConstants.JEECG_ENTITY_EXCEL_VIEW)
-public class JeecgEntityExcelView extends MiniAbstractExcelView {
+@Controller(NormalExcelConstants.MJKJ_ENTITY_EXCEL_VIEW)
+public class MjkjEntityExcelView extends MiniAbstractExcelView {
 
-	public JeecgEntityExcelView() {
+	public MjkjEntityExcelView() {
 		super();
 	}
 

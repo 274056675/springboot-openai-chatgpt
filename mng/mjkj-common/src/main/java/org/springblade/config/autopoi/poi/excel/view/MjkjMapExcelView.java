@@ -20,10 +20,10 @@ import java.util.Map;
  *
  */
 @SuppressWarnings("unchecked")
-@Controller(MapExcelConstants.JEECG_MAP_EXCEL_VIEW)
-public class JeecgMapExcelView extends MiniAbstractExcelView {
+@Controller(MapExcelConstants.MJKJ_MAP_EXCEL_VIEW)
+public class MjkjMapExcelView extends MiniAbstractExcelView {
 
-	public JeecgMapExcelView() {
+	public MjkjMapExcelView() {
 		super();
 	}
 

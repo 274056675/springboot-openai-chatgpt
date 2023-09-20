@@ -335,8 +335,8 @@ public class QueryGenerator {
      * <p>使用此方法 需要有如下几点注意:
      * <br>1.使用QueryWrapper 而非LambdaQueryWrapper;
      * <br>2.实例化QueryWrapper时不可将实体传入参数
-     * <br>错误示例:如QueryWrapper<JeecgDemo> queryWrapper = new QueryWrapper<JeecgDemo>(jeecgDemo);
-     * <br>正确示例:QueryWrapper<JeecgDemo> queryWrapper = new QueryWrapper<JeecgDemo>();
+     * <br>错误示例:如QueryWrapper<MjkjDemo> queryWrapper = new QueryWrapper<MjkjDemo>(mjkjDemo);
+     * <br>正确示例:QueryWrapper<MjkjDemo> queryWrapper = new QueryWrapper<MjkjDemo>();
      * <br>3.也可以不使用这个方法直接调用 {@link #initQueryWrapper}直接获取实例
      */
     public static void installMplus(QueryWrapper<?> queryWrapper,Object searchObj,Map<String, String[]> parameterMap) {
@@ -469,7 +469,7 @@ public class QueryGenerator {
     public static Map<String, SysPermissionDataRuleModel> getRuleMap() {
         Map<String, SysPermissionDataRuleModel> ruleMap = new HashMap<String, SysPermissionDataRuleModel>();
        /*todo 数据权限
-       List<SysPermissionDataRuleModel> list =JeecgDataAutorUtils.loadDataSearchConditon();
+       List<SysPermissionDataRuleModel> list =MjkjDataAutorUtils.loadDataSearchConditon();
         if(list != null&&list.size()>0){
             if(list.get(0)==null){
                 return ruleMap;

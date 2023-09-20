@@ -36,11 +36,11 @@ public interface ICgformFieldService extends BaseService<CgformField> {
      * 查询可用字段
      * @param tableName
      * @param isList
-     * @param onlCgformFieldList
+     * @param mjkjCgformFieldList
      * @param needList
      * @return
      */
-    public List<CgformField> queryAvailableFields(String tableName, boolean isList, List<CgformField> onlCgformFieldList, List<String> needList);
+    public List<CgformField> queryAvailableFields(String tableName, boolean isList, List<CgformField> mjkjCgformFieldList, List<String> needList);
 
 
 
@@ -148,7 +148,7 @@ public interface ICgformFieldService extends BaseService<CgformField> {
     public List<Map<String, Object>> querySubFormData(List<CgformField> fieldList, String tableName, String linkField, String value);
 
 
-    public String queryTreeChildIds(CgformHead onlcgformhead, String dataIdStrs);
+    public String queryTreeChildIds(CgformHead mjkjcgformhead, String dataIdStrs);
 
     /**
      * 删除表单

@@ -88,8 +88,8 @@ public class EnhanceJsUtil {
         return js;
     }
 
-    public static String getJsFunction(String cgJs, List<CgformButton> onlCgformButtonList) {
-        cgJs = getCgJs(cgJs, onlCgformButtonList);
+    public static String getJsFunction(String cgJs, List<CgformButton> mjkjCgformButtonList) {
+        cgJs = getCgJs(cgJs, mjkjCgformButtonList);
         String js = "function OnlineEnhanceJs(getAction,postAction,deleteAction){return {_getAction:getAction,_postAction:postAction,_deleteAction:deleteAction," + cgJs + "}}";
         log.info("最终的增强JS", js);
         return js;
@@ -125,12 +125,12 @@ public class EnhanceJsUtil {
         return cgJs;
     }
 
-    public static void enhanceJs(CgformEnhanceJs onlCgformEnhanceJs, String var1, List<CgformField> fields) {
-        if (Func.isEmpty(onlCgformEnhanceJs) || Func.isEmpty(onlCgformEnhanceJs.getCgJs())) {
+    public static void enhanceJs(CgformEnhanceJs mjkjCgformEnhanceJs, String var1, List<CgformField> fields) {
+        if (Func.isEmpty(mjkjCgformEnhanceJs) || Func.isEmpty(mjkjCgformEnhanceJs.getCgJs())) {
             return;
         }
 
-        String cgJs = " " + onlCgformEnhanceJs.getCgJs();
+        String cgJs = " " + mjkjCgformEnhanceJs.getCgJs();
         log.info("one enhanceJs begin==> " + cgJs);
         Pattern pattern = Pattern.compile("(\\s{1}onlChange\\s*\\(\\)\\s*\\{)");
         Matcher matcher = pattern.matcher(cgJs);
@@ -146,17 +146,17 @@ public class EnhanceJsUtil {
         }
 
         log.info("one enhanceJs end==> " + cgJs);
-        onlCgformEnhanceJs.setCgJs(cgJs);
+        mjkjCgformEnhanceJs.setCgJs(cgJs);
 
     }
 
-    public static void getJsFunction(CgformEnhanceJs onlCgformEnhanceJs, String var1, List<CgformField> fields) {
-        if (Func.isEmpty(onlCgformEnhanceJs) || Func.isEmpty(onlCgformEnhanceJs.getCgJs())) {
+    public static void getJsFunction(CgformEnhanceJs mjkjCgformEnhanceJs, String var1, List<CgformField> fields) {
+        if (Func.isEmpty(mjkjCgformEnhanceJs) || Func.isEmpty(mjkjCgformEnhanceJs.getCgJs())) {
             return;
         }
 
-        log.info(" sub enhanceJs begin==> " + onlCgformEnhanceJs);
-        String cgJs = onlCgformEnhanceJs.getCgJs();
+        log.info(" sub enhanceJs begin==> " + mjkjCgformEnhanceJs);
+        String cgJs = mjkjCgformEnhanceJs.getCgJs();
         String onlChangeStr = var1 + "_" + "onlChange";
         Pattern pattern = Pattern.compile("(" + onlChangeStr + "\\s*\\(\\)\\s*\\{)");
         Matcher matcher = pattern.matcher(cgJs);
@@ -172,7 +172,7 @@ public class EnhanceJsUtil {
         }
 
         log.info(" sub enhanceJs end==> " + cgJs);
-        onlCgformEnhanceJs.setCgJs(cgJs);
+        mjkjCgformEnhanceJs.setCgJs(cgJs);
 
     }
 }

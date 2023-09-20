@@ -67,8 +67,8 @@ public class ExcelController extends BaseController {
 	@ApiOperation(value = "功能测试 - 导出", notes = "导出")
 	@GetMapping({"/exportXls/{headId}"})
 	public void exportXls(@PathVariable("headId") Long headId, HttpServletRequest request, HttpServletResponse response) {
-		CgformHead onlCgformHead = cgformHeadService.getById(headId);
-		if (Func.isEmpty(onlCgformHead)) {
+		CgformHead mjkjCgformHead = cgformHeadService.getById(headId);
+		if (Func.isEmpty(mjkjCgformHead)) {
 			return;
 		}
 
@@ -89,12 +89,12 @@ public class ExcelController extends BaseController {
 
 		Map<String, Object> param = SqlSymbolUtil.getParameterMap(request);
 
-		String tableTxt = onlCgformHead.getTableTxt();
+		String tableTxt = mjkjCgformHead.getTableTxt();
 		Map<String, Object> hashMap = super.paramStr2Map(request);
 		hashMap.put("pageSize", -521);
 		List<Map<String, Object>> recordsList=null;
-		if(!Func.equals(onlCgformHead.getFormCategory(),"view")) {//不是显示表
-			Map<String, Object> autolistPage = cgformFieldService.queryAutolistPage(onlCgformHead.getTableName(), onlCgformHead.getId(), hashMap, null);
+		if(!Func.equals(mjkjCgformHead.getFormCategory(),"view")) {//不是显示表
+			Map<String, Object> autolistPage = cgformFieldService.queryAutolistPage(mjkjCgformHead.getTableName(), mjkjCgformHead.getId(), hashMap, null);
 			recordsList = (List<Map<String, Object>>) autolistPage.get("records");//数据
 		}
 		if(Func.isEmpty(recordsList)){
@@ -108,11 +108,11 @@ public class ExcelController extends BaseController {
 				param.putAll(map);
 			}
 			//导出增强
-			javaService.executeEnhanceList(onlCgformHead,  MjkjConstant.ENHANCE_EXPORT, recordsList, param);
+			javaService.executeEnhanceList(mjkjCgformHead,  MjkjConstant.ENHANCE_EXPORT, recordsList, param);
 			//sql增强
-			sqlService.executeEnhanceSqlList(onlCgformHead, MjkjConstant.ENHANCE_EXPORT,param);
+			sqlService.executeEnhanceSqlList(mjkjCgformHead, MjkjConstant.ENHANCE_EXPORT,param);
 			//sql增强
-			sqlService.executeEnhanceSqlList(onlCgformHead,MjkjConstant.ENHANCE_QUERYANEXPORT, param);
+			sqlService.executeEnhanceSqlList(mjkjCgformHead,MjkjConstant.ENHANCE_QUERYANEXPORT, param);
 
 			if (Func.isNotEmpty(param.get("dataTotal")) && Func.isNotEmpty(param.get("dataRecords"))) {
 				recordsList = (List<Map<String, Object>>) param.get("dataRecords");
@@ -143,8 +143,8 @@ public class ExcelController extends BaseController {
 
 		List<ExcelExportEntity> list = super.excelField(templateList, "id");
 		//当前是主表
-		if (onlCgformHead.getTableType() == 2 && ConvertUtils.isEmpty(hashMap.get("exportSingleOnly"))) {
-			String subTableStr = onlCgformHead.getSubTableStr();
+		if (mjkjCgformHead.getTableType() == 2 && ConvertUtils.isEmpty(hashMap.get("exportSingleOnly"))) {
+			String subTableStr = mjkjCgformHead.getSubTableStr();
 			if (ConvertUtils.isNotEmpty(subTableStr)) {
 				String[] subTableStrs = subTableStr.split(",");
 				for (String str : subTableStrs) {
@@ -154,7 +154,7 @@ public class ExcelController extends BaseController {
 		}
 
 		Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams((String) null, tableTxt), list, (Collection) idList);
-		super.outpuExcel(onlCgformHead, workbook, request, response);//输出到浏览器
+		super.outpuExcel(mjkjCgformHead, workbook, request, response);//输出到浏览器
 	}
 
 

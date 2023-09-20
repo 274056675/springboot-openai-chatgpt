@@ -7,8 +7,6 @@ import java.util.List;
 
 /**
  * IApiScopeClientFallback
- *
- *
  */
 @Component
 public class IApiScopeClientFallback implements IApiScopeClient {

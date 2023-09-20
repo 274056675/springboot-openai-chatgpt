@@ -9,8 +9,6 @@ import org.springframework.cloud.client.SpringCloudApplication;
 
 /**
  * 用户认证服务器
- *
- *
  */
 @EnableBladeFeign
 @SpringCloudApplication

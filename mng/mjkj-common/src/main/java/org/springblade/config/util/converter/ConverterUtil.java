@@ -22,11 +22,11 @@ public class ConverterUtil {
 	 *
 	 * @param id
 	 * @param mapList 主表数据(map集合)
-	 * @param onlCgformFields 字段集合
+	 * @param mjkjCgformFields 字段集合
 	 */
-    public static void converter(int id, List<Map<String, Object>> mapList, List<CgformField> onlCgformFields) {
+    public static void converter(int id, List<Map<String, Object>> mapList, List<CgformField> mjkjCgformFields) {
     	// 值转换器
-        Map<String, FieldCommentConverter> fieldCommentConverters = ControlTypeUtil.getFieldCommentConverters(onlCgformFields);
+        Map<String, FieldCommentConverter> fieldCommentConverters = ControlTypeUtil.getFieldCommentConverters(mjkjCgformFields);
 
         for (Map<String, Object> stringObjectMap : mapList) {
             Iterator<Entry<String,Object>> iterator1 = stringObjectMap.entrySet().iterator();

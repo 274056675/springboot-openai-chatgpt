@@ -22,38 +22,38 @@ public class ControlTypeUtil {
 
 	/**
 	 *
-	 * @param onlCgformField 表额外字段数据(单条)
+	 * @param mjkjCgformField 表额外字段数据(单条)
 	 * @return
 	 */
-    public static FieldCommentConverter getFieldCommentConverter(CgformField onlCgformField) {
-        String fieldShowType = onlCgformField.getFieldShowType();
+    public static FieldCommentConverter getFieldCommentConverter(CgformField mjkjCgformField) {
+        String fieldShowType = mjkjCgformField.getFieldShowType();
         FieldCommentConverter object = null;
         switch(fieldShowType) {
 	        case "list":
             case "radio"://单选框
-                object = new RadioFieldCommentConverter(onlCgformField);
+                object = new RadioFieldCommentConverter(mjkjCgformField);
                 break;
             case "list_multi"://下拉多选框
             case "checkbox"://多选框
-                object = new CheckboxFieldCommentConverter(onlCgformField);
+                object = new CheckboxFieldCommentConverter(mjkjCgformField);
                 break;
             case "sel_search"://下拉搜索框
-                object = new SelSearchFieldCommentConverter(onlCgformField);
+                object = new SelSearchFieldCommentConverter(mjkjCgformField);
                 break;
             case "sel_tree"://自定义树控件
-                object = new SelTreeFieldCommentConverter(onlCgformField);
+                object = new SelTreeFieldCommentConverter(mjkjCgformField);
                 break;
             case "cat_tree"://分类字典树
-                object = new CatTreeFieldCommentConverter(onlCgformField);
+                object = new CatTreeFieldCommentConverter(mjkjCgformField);
                 break;
             case "link_down"://联动组件
-                object = new LinkDownFieldCommentConverter(onlCgformField);
+                object = new LinkDownFieldCommentConverter(mjkjCgformField);
                 break;
             case "sel_depart"://部门选择
-                object = new SelDepartFieldCommentConverter(onlCgformField);
+                object = new SelDepartFieldCommentConverter(mjkjCgformField);
                 break;
             case "sel_user"://用户选择
-                object = new SelUserFieldCommentConverter(onlCgformField);
+                object = new SelUserFieldCommentConverter(mjkjCgformField);
                 break;
             default:
         }
@@ -63,28 +63,28 @@ public class ControlTypeUtil {
 
 	/**
 	 *
-	 * @param onlCgformFields 字段集合
+	 * @param mjkjCgformFields 字段集合
 	 * @return Map
 	 */
-	public static Map<String, FieldCommentConverter> getFieldCommentConverters(List<CgformField> onlCgformFields) {
+	public static Map<String, FieldCommentConverter> getFieldCommentConverters(List<CgformField> mjkjCgformFields) {
 		// 创建map
         Map<String, FieldCommentConverter> hashMap = new HashMap<>();
 
         // 遍历字段集合,进行值转换
-        for (CgformField onlCgformField : onlCgformFields) {
+        for (CgformField mjkjCgformField : mjkjCgformFields) {
             FieldCommentConverter fieldCommentConverter;
             // 如果值转换器字段的数据不为null
-            if (ConvertUtils.isNotEmpty(onlCgformField.getConverter())) {
+            if (ConvertUtils.isNotEmpty(mjkjCgformField.getConverter())) {
             	// 根据值转换器的值(推测为类的全限定名,比如"java.lang.String")获取fieldCommentConverter对象
-                fieldCommentConverter = getFieldCommentConverter(onlCgformField.getConverter().trim());
+                fieldCommentConverter = getFieldCommentConverter(mjkjCgformField.getConverter().trim());
             } else {
             	// 值转换器的数据为null
-                fieldCommentConverter = getFieldCommentConverter(onlCgformField);
+                fieldCommentConverter = getFieldCommentConverter(mjkjCgformField);
             }
 
             if (fieldCommentConverter != null) {
             	// 如果值转换对象存在,map.put(字段名字,值转换对象)
-                hashMap.put(onlCgformField.getDbFieldName(), fieldCommentConverter);
+                hashMap.put(mjkjCgformField.getDbFieldName(), fieldCommentConverter);
             }
         }
 

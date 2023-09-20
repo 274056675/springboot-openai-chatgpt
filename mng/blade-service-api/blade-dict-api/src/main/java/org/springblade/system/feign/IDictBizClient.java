@@ -13,8 +13,6 @@ import java.util.List;
 
 /**
  * Feign接口类
- *
- *
  */
 @FeignClient(
 	value = AppConstant.APPLICATION_SYSTEM_NAME,

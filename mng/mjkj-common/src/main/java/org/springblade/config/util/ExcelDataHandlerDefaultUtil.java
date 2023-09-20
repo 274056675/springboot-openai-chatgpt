@@ -14,15 +14,15 @@ import java.util.Map;
  * Excel处理时间公共类
  */
 public class ExcelDataHandlerDefaultUtil extends ExcelDataHandlerDefaultImpl {
-	Map<String, CgformField> onlCgformFieldMap;
+	Map<String, CgformField> mjkjCgformFieldMap;
 	String online;
 
 	public ExcelDataHandlerDefaultUtil(List<CgformField> fields) {
-		this.onlCgformFieldMap = this.getOnlCgformFieldMapByFields(fields);
+		this.mjkjCgformFieldMap = this.getMjkjCgformFieldMapByFields(fields);
 		this.online = "online";
 	}
 
-	private Map<String, CgformField> getOnlCgformFieldMapByFields(List<CgformField> fields) {
+	private Map<String, CgformField> getMjkjCgformFieldMapByFields(List<CgformField> fields) {
 		Map<String, CgformField> result = new HashMap<>();
 		Iterator<CgformField> iterator = fields.iterator();
 
@@ -51,8 +51,8 @@ public class ExcelDataHandlerDefaultUtil extends ExcelDataHandlerDefaultImpl {
 	}
 
 	private String getKey(String originKey) {
-		return this.onlCgformFieldMap.containsKey(originKey)
-				? "$mainTable$" + ((CgformField) this.onlCgformFieldMap.get(originKey)).getDbFieldName()
+		return this.mjkjCgformFieldMap.containsKey(originKey)
+				? "$mainTable$" + ((CgformField) this.mjkjCgformFieldMap.get(originKey)).getDbFieldName()
 				: "$subTable$" + originKey;
 	}
 }

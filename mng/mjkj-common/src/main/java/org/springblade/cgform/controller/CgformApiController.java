@@ -128,8 +128,8 @@ public class CgformApiController extends BaseController {
 			return R.fail("实体不存在");
 		}
 		//获取js增强
-		CgformEnhanceJs onlCgformEnhanceJs = jsService.queryEnhanceJs(headId, "form");
-		JSONObject jsonObject = onlineService.queryOnlineFormObj(head, onlCgformEnhanceJs);
+		CgformEnhanceJs mjkjCgformEnhanceJs = jsService.queryEnhanceJs(headId, "form");
+		JSONObject jsonObject = onlineService.queryOnlineFormObj(head, mjkjCgformEnhanceJs);
 		if (head.getTableType() != CgformConstant.ONLINE_TABLE_TYPE_MAIN) {//表类型: 1单表、2主表、3附表
 			return R.data(jsonObject);
 		}
@@ -150,13 +150,13 @@ public class CgformApiController extends BaseController {
 			if (subHeadList.size() > 0) {
 				Collections.sort(subHeadList, new Comparator<CgformHead>() {
 					@Override
-					public int compare(CgformHead onlCgformHead1, CgformHead onlCgformHead2) {
-						Integer orderNum1 = onlCgformHead1.getTabOrderNum();
+					public int compare(CgformHead mjkjCgformHead1, CgformHead mjkjCgformHead2) {
+						Integer orderNum1 = mjkjCgformHead1.getTabOrderNum();
 						if (orderNum1 == null) {
 							orderNum1 = 0;
 						}
 
-						Integer orderNum2 = onlCgformHead2.getTabOrderNum();
+						Integer orderNum2 = mjkjCgformHead2.getTabOrderNum();
 						if (orderNum2 == null) {
 							orderNum2 = 0;
 						}
@@ -169,7 +169,7 @@ public class CgformApiController extends BaseController {
 				while (iterator.hasNext()) {
 					CgformHead subHead = iterator.next();
 					List<CgformField> availableFields = this.cgformFieldService.queryAvailableFields(subHead.getId(), subHead.getTableName(), (String) null, false);
-					EnhanceJsUtil.getJsFunction(onlCgformEnhanceJs, subHead.getTableName(), availableFields);
+					EnhanceJsUtil.getJsFunction(mjkjCgformEnhanceJs, subHead.getTableName(), availableFields);
 					JSONObject jsonObject2 = new JSONObject();
 					List<String> disabledFields = new ArrayList<>();
 					if (1 == subHead.getRelationType()) {//一对一关系
@@ -189,8 +189,8 @@ public class CgformApiController extends BaseController {
 			}
 		}
 
-		if (onlCgformEnhanceJs != null && ConvertUtils.isNotEmpty(onlCgformEnhanceJs.getCgJs())) {
-			String enhanceJs = EnhanceJsUtil.getCgJs(onlCgformEnhanceJs.getCgJs());
+		if (mjkjCgformEnhanceJs != null && ConvertUtils.isNotEmpty(mjkjCgformEnhanceJs.getCgJs())) {
+			String enhanceJs = EnhanceJsUtil.getCgJs(mjkjCgformEnhanceJs.getCgJs());
 			String str = StringEscapeUtils.unescapeHtml(enhanceJs);
 
 			jsonObject.put("enhanceJs", str);
@@ -206,19 +206,19 @@ public class CgformApiController extends BaseController {
 	@ApiOperation(value = "功能测试 - 获取数据列表-ok", notes = "获取数据列表")
 	public R<Map<String, Object>> getData(@PathVariable("headId") Long headId, HttpServletRequest req) {
 		// 根据headId查询表单
-		CgformHead onlCgformHead = cgformHeadService.getById(headId);
-		if (Func.isEmpty(onlCgformHead)) {
+		CgformHead mjkjCgformHead = cgformHeadService.getById(headId);
+		if (Func.isEmpty(mjkjCgformHead)) {
 			return R.fail("实体不存在");
 		}
 		//判断该接口是否要的登录
-		String nologinSelect = onlCgformHead.getNologinSelect();
+		String nologinSelect = mjkjCgformHead.getNologinSelect();
 		if(Func.equals(nologinSelect,"0")){//需要登录
 			BladeUser user = AuthUtil.getUser();
 			if(Func.isEmpty(user)){
 				return R.fail("登录已过期，请重新登录");
 			}
 			//登录成功，判断改表是否对外开放
-			String noViewRoleStrList = onlCgformHead.getNoViewDataRole();
+			String noViewRoleStrList = mjkjCgformHead.getNoViewDataRole();
 			if(Func.isNotEmpty(noViewRoleStrList)){//有设置某一个角色不允许访问
 				List<Long> roleList = Func.toLongList(noViewRoleStrList);
 
@@ -237,10 +237,10 @@ public class CgformApiController extends BaseController {
 
 
 		try {
-			String tableName = onlCgformHead.getTableName();
+			String tableName = mjkjCgformHead.getTableName();
 			Map<String, Object> params = SqlSymbolUtil.getParameterMap(req);//获取查询参数
 			Map<String, Object> resultMap =new HashMap<>();
-			if(Func.equals(onlCgformHead.getFormCategory(),"view")){//显示表
+			if(Func.equals(mjkjCgformHead.getFormCategory(),"view")){//显示表
 				resultMap.put("total",0);
 				resultMap.put("records",new ArrayList<>());
 			}else{
@@ -253,11 +253,11 @@ public class CgformApiController extends BaseController {
 				dataList = new ArrayList<>();
 			}
 			//走增强
-			javaService.executeEnhanceList(onlCgformHead, MjkjConstant.ENHANCE_QUERY, dataList, params);
+			javaService.executeEnhanceList(mjkjCgformHead, MjkjConstant.ENHANCE_QUERY, dataList, params);
 			//sql增强
-			sqlService.executeEnhanceSqlList(onlCgformHead, MjkjConstant.ENHANCE_QUERY, params);
+			sqlService.executeEnhanceSqlList(mjkjCgformHead, MjkjConstant.ENHANCE_QUERY, params);
 			//sql增强
-			sqlService.executeEnhanceSqlList(onlCgformHead, MjkjConstant.ENHANCE_QUERYANEXPORT, params);
+			sqlService.executeEnhanceSqlList(mjkjCgformHead, MjkjConstant.ENHANCE_QUERYANEXPORT, params);
 			//分页
 			if (Func.isNotEmpty(params.get("dataTotal")) && Func.isNotEmpty(params.get("dataRecords"))) {
 				resultMap.put("total", params.get("dataTotal"));
@@ -529,18 +529,18 @@ public class CgformApiController extends BaseController {
 	public R deleteForm(@PathVariable("headId") Long headId, @PathVariable("dataId") String dataIds) {
 		try {
 			// 获取表单对象
-			CgformHead onlCgformHead = cgformHeadService.getById(headId);
-			if (onlCgformHead == null) {
+			CgformHead mjkjCgformHead = cgformHeadService.getById(headId);
+			if (mjkjCgformHead == null) {
 				return R.fail("实体不存在");
 			}
-			String tableName = onlCgformHead.getTableName();
+			String tableName = mjkjCgformHead.getTableName();
 			//普通人不允许操作
 			List<String> noSaveOrUpdateTableList = Func.toStrList(noSaveOrUpdateStr);
 			if(noSaveOrUpdateTableList.contains(tableName) && !AuthUtil.isAdministrator()){//属于检测表，但是当前又不是超级管理员
 				return R.fail("该表只允许超级管理员操作");
 			}
 			//登录成功，判断改表是否对外开放
-			String noRoleStrList = onlCgformHead.getNoOperationDataRole();
+			String noRoleStrList = mjkjCgformHead.getNoOperationDataRole();
 			if(Func.isNotEmpty(noRoleStrList)){//有设置某一个角色不允许访问
 				List<Long> roleList = Func.toLongList(noRoleStrList);
 
@@ -554,18 +554,18 @@ public class CgformApiController extends BaseController {
 				}
 			}
 
-			if(!Func.equals(onlCgformHead.getFormCategory(),"view")) {//不是显示表
-				if ("Y".equals(onlCgformHead.getIsTree())) {//树结构
-					dataIds = this.cgformFieldService.queryTreeChildIds(onlCgformHead, dataIds);
+			if(!Func.equals(mjkjCgformHead.getFormCategory(),"view")) {//不是显示表
+				if ("Y".equals(mjkjCgformHead.getIsTree())) {//树结构
+					dataIds = this.cgformFieldService.queryTreeChildIds(mjkjCgformHead, dataIds);
 				}
 			}
 
 			//主副表多记录不支持增强
 			if (dataIds.indexOf(",") > 0) {
 				// 删除多条数据
-				if (onlCgformHead.getTableType() == 2) {//主表
-					if(!Func.equals(onlCgformHead.getFormCategory(),"view")) {//不是显示表
-						this.cgformFieldService.deleteAutoListMainAndSub(onlCgformHead, dataIds);
+				if (mjkjCgformHead.getTableType() == 2) {//主表
+					if(!Func.equals(mjkjCgformHead.getFormCategory(),"view")) {//不是显示表
+						this.cgformFieldService.deleteAutoListMainAndSub(mjkjCgformHead, dataIds);
 					}
 				} else {
 					String[] ids = dataIds.split(",");
@@ -671,10 +671,10 @@ public class CgformApiController extends BaseController {
 		List<CgformHead> resultList = new ArrayList<>();
 		String[] tableNames = tableName.split(",");
 		for (String tn : tableNames) {
-			CgformHead onlCgformHead = cgformHeadService.getOne(new QueryWrapper<CgformHead>()
+			CgformHead mjkjCgformHead = cgformHeadService.getOne(new QueryWrapper<CgformHead>()
 				.eq("table_name", tn));
-			if (onlCgformHead != null) {
-				resultList.add(onlCgformHead);
+			if (mjkjCgformHead != null) {
+				resultList.add(mjkjCgformHead);
 			}
 		}
 		return R.data(resultList);
@@ -725,11 +725,11 @@ public class CgformApiController extends BaseController {
 		try {
 			LambdaQueryWrapper<CgformHead> wrapper = new LambdaQueryWrapper<>();
 			wrapper.eq(CgformHead::getTableName, tableName);
-			CgformHead onlCgformHead = cgformHeadService.getOne(wrapper);
-			if (Func.isEmpty(onlCgformHead)) {
+			CgformHead mjkjCgformHead = cgformHeadService.getOne(wrapper);
+			if (Func.isEmpty(mjkjCgformHead)) {
 				throw new Exception(tableName + " 不存在！");
 			} else {
-				return this.getForm(onlCgformHead.getId(), dataId, request);
+				return this.getForm(mjkjCgformHead.getId(), dataId, request);
 			}
 		} catch (Exception e) {
 			log.error("Online表单查询异常，" + e.getMessage(), e);

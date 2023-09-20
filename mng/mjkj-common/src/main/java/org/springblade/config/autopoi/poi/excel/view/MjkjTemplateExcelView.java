@@ -19,10 +19,10 @@ import java.util.Map;
  *
  */
 @SuppressWarnings("unchecked")
-@Controller(TemplateExcelConstants.JEECG_TEMPLATE_EXCEL_VIEW)
-public class JeecgTemplateExcelView extends MiniAbstractExcelView {
+@Controller(TemplateExcelConstants.MJKJ_TEMPLATE_EXCEL_VIEW)
+public class MjkjTemplateExcelView extends MiniAbstractExcelView {
 
-	public JeecgTemplateExcelView() {
+	public MjkjTemplateExcelView() {
 		super();
 	}
 

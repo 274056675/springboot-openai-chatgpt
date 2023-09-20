@@ -8,7 +8,7 @@ public interface TemplateExcelConstants extends BasePOIConstants {
 	/**
 	 * 模板导出
 	 */
-	public final static String JEECG_TEMPLATE_EXCEL_VIEW = "jeecgTemplateExcelView";
+	public final static String MJKJ_TEMPLATE_EXCEL_VIEW = "mjkjTemplateExcelView";
 	/**
 	 * 数据列表
 	 */

@@ -10,8 +10,8 @@ import org.springblade.cgform.entity.CgformField;
 public class SelSearchFieldCommentConverter extends TableFieldCommentConverter
 {
 
-    public SelSearchFieldCommentConverter(CgformField onlcgformfield)
+    public SelSearchFieldCommentConverter(CgformField mjkjcgformfield)
     {
-        super(onlcgformfield.getDictTable(), onlcgformfield.getDictField(), onlcgformfield.getDictText());
+        super(mjkjcgformfield.getDictTable(), mjkjcgformfield.getDictField(), mjkjcgformfield.getDictText());
     }
 }

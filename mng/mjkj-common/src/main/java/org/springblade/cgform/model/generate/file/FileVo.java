@@ -41,7 +41,7 @@ public class FileVo
         String classpath = this.getClass().getResource(this.templatePath).getFile().replaceAll("%20", " ");
         log.debug("-------classpath-------" + classpath);
         if (classpath.indexOf("/BOOT-INF/classes!") != -1) {
-        	classpath = System.getProperty("user.dir") + File.separator + "config/jeecg/code-template-online/".replace("/", File.separator);
+        	classpath = System.getProperty("user.dir") + File.separator + "config/mjkj/code-template-online/".replace("/", File.separator);
             log.debug("---JAR--config--classpath-------" + classpath);
         }
         this.setTemplateRootDirs(new File(classpath));

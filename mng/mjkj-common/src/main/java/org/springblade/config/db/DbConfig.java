@@ -12,8 +12,8 @@ import java.util.ResourceBundle;
  */
 @Slf4j
 public class DbConfig {
-	private static final String DATABASE_CONFIG = "jeecg/jeecg_database";
-	private static final String CODE_CONFIG = "jeecg/jeecg_config";
+	private static final String DATABASE_CONFIG = "mjkj/mjkj_database";
+	private static final String CODE_CONFIG = "mjkj/mjkj_config";
 	private static ResourceBundle DATABASE_RESOURCE_BUNDLE;
 	private static ResourceBundle CODE_RESOURCE_BUNDLE;
 	public static String dbType;
@@ -155,15 +155,15 @@ public class DbConfig {
 		}
 		DbConfig.dbType = "mysql";
 		DbConfig.driver = "com.mysql.jdbc.Driver";
-		DbConfig.url = "jdbc:mysql://localhost:3306/jeecg-boot?useUnicode=true&characterEncoding=UTF-8";
+		DbConfig.url = "jdbc:mysql://localhost:3306/mjkj-boot?useUnicode=true&characterEncoding=UTF-8";
 		DbConfig.username = "root";
 		DbConfig.password = "root";
-		DbConfig.dbName = "jeecg-boot";
-		DbConfig.projectPath = "c:/workspace/jeecg";
-		DbConfig.bussiPackage = "com.jeecg";
+		DbConfig.dbName = "mjkj-boot";
+		DbConfig.projectPath = "c:/workspace/mjkj";
+		DbConfig.bussiPackage = "com.mjkj";
 		DbConfig.sourceRoot = "src";
 		DbConfig.webRoot = "WebRoot";
-		DbConfig.templatepath = "/jeecg/code-template/";
+		DbConfig.templatepath = "/mjkj/code-template/";
 		DbConfig.dbFiledConvert = true;
 		DbConfig.pageFieldRequiredNum = "4";
 		DbConfig.pageSearchFiledNum = "3";

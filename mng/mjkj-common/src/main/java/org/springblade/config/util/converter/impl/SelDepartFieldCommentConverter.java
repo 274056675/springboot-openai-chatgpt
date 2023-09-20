@@ -16,13 +16,13 @@ import java.util.List;
  */
 public class SelDepartFieldCommentConverter extends FieldFieldCommentConverter {
 
-    public SelDepartFieldCommentConverter(CgformField onlCgformField) {
+    public SelDepartFieldCommentConverter(CgformField mjkjCgformField) {
         IDictService sysBaseApi = SpringContextUtils.getBean(IDictService.class);
         String sysDepart = "blade_dept";
         String departName = "dept_name";
         String id = "id";
         this.dictList = sysBaseApi.queryTableDictItemsByCode(sysDepart, departName, id);
-        this.filed = onlCgformField.getDbFieldName();
+        this.filed = mjkjCgformField.getDbFieldName();
     }
 
     @Override

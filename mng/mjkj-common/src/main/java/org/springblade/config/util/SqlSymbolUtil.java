@@ -61,23 +61,23 @@ public class SqlSymbolUtil {
 	 * 获取查询sql
 	 *
 	 * @param tableName
-	 * @param onlCgformFields
+	 * @param mjkjCgformFields
 	 * @param map
 	 * @return
 	 */
-	public static String getSelectSql(String tableName, List<CgformField> onlCgformFields, Map<String, Object> map) {
+	public static String getSelectSql(String tableName, List<CgformField> mjkjCgformFields, Map<String, Object> map) {
 		StringBuffer whereSb = new StringBuffer();//where条件字段
 		StringBuffer selectSb = new StringBuffer();//查询字段
 
-		for (CgformField onlCgformField : onlCgformFields) {
-			String dbFieldName = onlCgformField.getDbFieldName();
-			String dbType = onlCgformField.getDbType();
-			if (onlCgformField.getIsShowList() == 1) {
+		for (CgformField mjkjCgformField : mjkjCgformFields) {
+			String dbFieldName = mjkjCgformField.getDbFieldName();
+			String dbType = mjkjCgformField.getDbType();
+			if (mjkjCgformField.getIsShowList() == 1) {
 				selectSb.append("," + dbFieldName);
 			}
 
 
-			if (Func.isNotEmpty(onlCgformField.getMainField())) {
+			if (Func.isNotEmpty(mjkjCgformField.getMainField())) {
 				boolean flag = !DataTypeUtil.isNumberType(dbType);
 				String sql = QueryGenerator.getSingleQueryConditionSql(dbFieldName, "", map.get(dbFieldName), flag);
 				if (!"".equals(sql)) {
@@ -85,10 +85,10 @@ public class SqlSymbolUtil {
 				}
 			}
 
-			if (onlCgformField.getIsQuery() != 1) {//是否查询条件0否 1是
+			if (mjkjCgformField.getIsQuery() != 1) {//是否查询条件0否 1是
 				continue;
 			}
-			if ("single".equals(onlCgformField.getQueryMode())) {//查询模式
+			if ("single".equals(mjkjCgformField.getQueryMode())) {//查询模式
 				if (map.get(dbFieldName) != null) {
 					boolean flag = DataTypeUtil.isNotNumberType(dbType);
 					String sql = QueryGenerator.getSingleQueryConditionSql(dbFieldName, "", map.get(dbFieldName), flag);
@@ -135,12 +135,12 @@ public class SqlSymbolUtil {
 	/**
 	 * 判断表名称和表说明是否一样
 	 *
-	 * @param onlCgformHead
-	 * @param newOnlCgformHead
+	 * @param mjkjCgformHead
+	 * @param newMjkjCgformHead
 	 * @return
 	 */
-	public static boolean onlCgformHeadEquals(CgformHead onlCgformHead, CgformHead newOnlCgformHead) {
-		return !equals(onlCgformHead.getTableName(), newOnlCgformHead.getTableName()) || !equals(onlCgformHead.getTableTxt(), newOnlCgformHead.getTableTxt());
+	public static boolean mjkjCgformHeadEquals(CgformHead mjkjCgformHead, CgformHead newMjkjCgformHead) {
+		return !equals(mjkjCgformHead.getTableName(), newMjkjCgformHead.getTableName()) || !equals(mjkjCgformHead.getTableTxt(), newMjkjCgformHead.getTableTxt());
 	}
 
 	/**
@@ -166,12 +166,12 @@ public class SqlSymbolUtil {
 	/**
 	 * java增强，判断是否是java类
 	 *
-	 * @param onlCgformEnhanceJava
+	 * @param mjkjCgformEnhanceJava
 	 * @return
 	 */
-	public static boolean isExistJava(CgformEnhanceJava onlCgformEnhanceJava) {
-		String javaType = onlCgformEnhanceJava.getCgJavaType();
-		String javaValue = onlCgformEnhanceJava.getCgJavaValue();
+	public static boolean isExistJava(CgformEnhanceJava mjkjCgformEnhanceJava) {
+		String javaType = mjkjCgformEnhanceJava.getCgJavaType();
+		String javaValue = mjkjCgformEnhanceJava.getCgJavaValue();
 		if (Func.isEmpty(javaValue)) {
 			return true;
 		}
@@ -217,7 +217,7 @@ public class SqlSymbolUtil {
 		Iterator<CgformField> iterator = availableFieldsList.iterator();
 
 		while (true) {
-			CgformField onlCgformField;
+			CgformField mjkjCgformField;
 			String dbFieldName;
 			do {
 				do {
@@ -230,35 +230,35 @@ public class SqlSymbolUtil {
 							return JsonschemaUtil.getJsonSchema(jsonSchemaDescrip, hiddenList);
 						}
 					}
-					onlCgformField = iterator.next();
-					dbFieldName = onlCgformField.getDbFieldName();
+					mjkjCgformField = iterator.next();
+					dbFieldName = mjkjCgformField.getDbFieldName();
 				} while ("id".equals(dbFieldName));
 			} while (arrayList2.contains(dbFieldName));
 
-			String dbFieldTxt = onlCgformField.getDbFieldTxt();
-			if ("1".equals(onlCgformField.getFieldMustInput())) {//字段是否必填
+			String dbFieldTxt = mjkjCgformField.getDbFieldTxt();
+			if ("1".equals(mjkjCgformField.getFieldMustInput())) {//字段是否必填
 				mustAddList.add(dbFieldName);
 			}
 
-			String fieldShowType = onlCgformField.getFieldShowType();
+			String fieldShowType = mjkjCgformField.getFieldShowType();
 			CommonProperty property = null;
 			if ("switch".equals(fieldShowType)) {
-				property = new SwitchProperty(dbFieldName, dbFieldTxt, onlCgformField.getFieldExtendJson());
+				property = new SwitchProperty(dbFieldName, dbFieldTxt, mjkjCgformField.getFieldExtendJson());
 			} else if (isListType(fieldShowType)) {
 				List<DictModel> dictModelList = new ArrayList<>();
-				if (Func.isNotEmpty(onlCgformField.getDictTable())) {
-					dictModelList = dictService.queryTableDictItemsByCode(onlCgformField.getDictTable(), onlCgformField.getDictText(), onlCgformField.getDictField());
-				} else if (Func.isNotEmpty(onlCgformField.getDictField())) {
-					dictModelList = dictItemService.queryDictItemsByCode(onlCgformField.getDictField());
+				if (Func.isNotEmpty(mjkjCgformField.getDictTable())) {
+					dictModelList = dictService.queryTableDictItemsByCode(mjkjCgformField.getDictTable(), mjkjCgformField.getDictText(), mjkjCgformField.getDictField());
+				} else if (Func.isNotEmpty(mjkjCgformField.getDictField())) {
+					dictModelList = dictItemService.queryDictItemsByCode(mjkjCgformField.getDictField());
 				}
 
-				property = new StringProperty(dbFieldName, dbFieldTxt, fieldShowType, onlCgformField.getDbLength(), dictModelList);
-				if (DataTypeUtil.isNumberType(onlCgformField.getDbType())) {
+				property = new StringProperty(dbFieldName, dbFieldTxt, fieldShowType, mjkjCgformField.getDbLength(), dictModelList);
+				if (DataTypeUtil.isNumberType(mjkjCgformField.getDbType())) {
 					property.setType("number");
 				}
-			} else if (DataTypeUtil.isNumberType(onlCgformField.getDbType())) {
+			} else if (DataTypeUtil.isNumberType(mjkjCgformField.getDbType())) {
 				NumberProperty numberProperty = new NumberProperty(dbFieldName, dbFieldTxt, "number");
-				if (CgformValidPatternEnum.INTEGER.getType().equals(onlCgformField.getFieldValidType())) {
+				if (CgformValidPatternEnum.INTEGER.getType().equals(mjkjCgformField.getFieldValidType())) {
 					numberProperty.setPattern(CgformValidPatternEnum.INTEGER.getPattern());
 				}
 
@@ -266,26 +266,26 @@ public class SqlSymbolUtil {
 			} else {
 				if (!"popup".equals(fieldShowType)) {//表单控件类型
 					if ("sel_search".equals(fieldShowType)) {//下拉搜索
-						property = new DictProperty(dbFieldName, dbFieldTxt, onlCgformField.getDictTable(), onlCgformField.getDictField(), onlCgformField.getDictText());
+						property = new DictProperty(dbFieldName, dbFieldTxt, mjkjCgformField.getDictTable(), mjkjCgformField.getDictField(), mjkjCgformField.getDictText());
 					} else if ("link_down".equals(fieldShowType)) {//联动
-						LinkDownProperty linkDownProperty = new LinkDownProperty(dbFieldName, dbFieldTxt, onlCgformField.getDictTable());
+						LinkDownProperty linkDownProperty = new LinkDownProperty(dbFieldName, dbFieldTxt, mjkjCgformField.getDictTable());
 						setOtherColumns(linkDownProperty, availableFieldsList, arrayList2);
 						property = linkDownProperty;
 					} else {
 						if ("sel_tree".equals(fieldShowType)) {//树控件
-							String dictText = onlCgformField.getDictText();
+							String dictText = mjkjCgformField.getDictText();
 							if (Func.isNotEmpty(dictText)) {
 								String[] dictTexts = dictText.split(",");
-								String dictTable = onlCgformField.getDictTable() + "," + dictTexts[2] + "," + dictTexts[0];
-								TreeSelectProperty treeSelectProperty = new TreeSelectProperty(dbFieldName, dbFieldTxt, dictTable, dictTexts[1], onlCgformField.getDictField());
+								String dictTable = mjkjCgformField.getDictTable() + "," + dictTexts[2] + "," + dictTexts[0];
+								TreeSelectProperty treeSelectProperty = new TreeSelectProperty(dbFieldName, dbFieldTxt, dictTable, dictTexts[1], mjkjCgformField.getDictField());
 								if (dictTexts.length > 3) {
 									treeSelectProperty.setHasChildField(dictTexts[3]);
 								}
 								property = treeSelectProperty;
 							}
 						} else if ("cat_tree".equals(fieldShowType)) {//分类字典树
-							String dictText = onlCgformField.getDictText();
-							String dictField = onlCgformField.getDictField();
+							String dictText = mjkjCgformField.getDictText();
+							String dictField = mjkjCgformField.getDictField();
 							String dictTable = "0";
 							if (Func.isNotEmpty(dictField) && !"0".equals(dictField)) {
 								dictTable = categoryMapper.queryCategoryIdByCode(dictField);
@@ -305,9 +305,9 @@ public class SqlSymbolUtil {
 							treeSelectProperty.setPidComponent(1);
 							property = treeSelectProperty;
 						} else {
-							StringProperty stringProperty = new StringProperty(dbFieldName, dbFieldTxt, fieldShowType, onlCgformField.getDbLength());
-							if (Func.isNotEmpty(onlCgformField.getFieldValidType())) {
-								CgformValidPatternEnum cgformValidPatternEnum = CgformValidPatternEnum.getPatternInfoByType(onlCgformField.getFieldValidType());
+							StringProperty stringProperty = new StringProperty(dbFieldName, dbFieldTxt, fieldShowType, mjkjCgformField.getDbLength());
+							if (Func.isNotEmpty(mjkjCgformField.getFieldValidType())) {
+								CgformValidPatternEnum cgformValidPatternEnum = CgformValidPatternEnum.getPatternInfoByType(mjkjCgformField.getFieldValidType());
 								if (Func.isNotEmpty(cgformValidPatternEnum)) {
 									if (CgformValidPatternEnum.NOTNULL == cgformValidPatternEnum) {
 										mustAddList.add(dbFieldName);
@@ -316,7 +316,7 @@ public class SqlSymbolUtil {
 										stringProperty.setErrorInfo(cgformValidPatternEnum.getMsg());
 									}
 								} else {
-									stringProperty.setPattern(onlCgformField.getFieldValidType());
+									stringProperty.setPattern(mjkjCgformField.getFieldValidType());
 									stringProperty.setErrorInfo("输入的值不合法");
 								}
 							}
@@ -325,8 +325,8 @@ public class SqlSymbolUtil {
 						}
 					}
 				} else {
-					PopupProperty popupProperty = new PopupProperty(dbFieldName, dbFieldTxt, onlCgformField.getDictTable(), onlCgformField.getDictText(), onlCgformField.getDictField());
-					String dictField = onlCgformField.getDictText();
+					PopupProperty popupProperty = new PopupProperty(dbFieldName, dbFieldTxt, mjkjCgformField.getDictTable(), mjkjCgformField.getDictText(), mjkjCgformField.getDictField());
+					String dictField = mjkjCgformField.getDictText();
 					if (Func.isNotEmpty(dictField)) {
 						String[] dictFields = dictField.split(",");
 						for (String dictField1 : dictFields) {
@@ -334,7 +334,7 @@ public class SqlSymbolUtil {
 								continue;
 							}
 							HiddenProperty hiddenProperty = new HiddenProperty(dictField1, dictField1);
-							hiddenProperty.setOrder(onlCgformField.getOrderNum());
+							hiddenProperty.setOrder(mjkjCgformField.getOrderNum());
 							hiddenList.add(hiddenProperty);
 						}
 					}
@@ -343,13 +343,13 @@ public class SqlSymbolUtil {
 				}
 			}
 			//隐藏字段  是否是只读（1是 0否）
-			if (onlCgformField.getIsReadOnly() == 1 || disabledFieldsLiast != null && disabledFieldsLiast.indexOf(dbFieldName) >= 0) {
+			if (mjkjCgformField.getIsReadOnly() == 1 || disabledFieldsLiast != null && disabledFieldsLiast.indexOf(dbFieldName) >= 0) {
 				property.setDisabled(true);
 			}
 
 			if (Func.isNotEmpty(property)) {
-				property.setOrder(onlCgformField.getOrderNum());
-				property.setDefVal(onlCgformField.getFieldDefaultValue());
+				property.setOrder(mjkjCgformField.getOrderNum());
+				property.setDefVal(mjkjCgformField.getFieldDefaultValue());
 				hiddenList.add(property);
 			}
 
@@ -377,12 +377,12 @@ public class SqlSymbolUtil {
 	/**
 	 * 字段是否存在
 	 *
-	 * @param onlCgformField
-	 * @param onlCgformFieldList
+	 * @param mjkjCgformField
+	 * @param mjkjCgformFieldList
 	 * @return
 	 */
-	public static boolean isExistField(String onlCgformField, List<CgformField> onlCgformFieldList) {
-		Iterator<CgformField> iterator = onlCgformFieldList.iterator();
+	public static boolean isExistField(String mjkjCgformField, List<CgformField> mjkjCgformFieldList) {
+		Iterator<CgformField> iterator = mjkjCgformFieldList.iterator();
 
 		CgformField field;
 		do {
@@ -391,7 +391,7 @@ public class SqlSymbolUtil {
 			}
 
 			field = iterator.next();
-		} while (!onlCgformField.equals(field.getDbFieldName()));
+		} while (!mjkjCgformField.equals(field.getDbFieldName()));
 
 		return true;
 	}
@@ -644,19 +644,19 @@ public class SqlSymbolUtil {
 			boolean idFlag = false;
 
 			for (int i = 0; i < size; ++i) {
-				CgformField onlCgformField = fieldList.get(i);
-				if ("id".equals(onlCgformField.getDbFieldName())) {
+				CgformField mjkjCgformField = fieldList.get(i);
+				if ("id".equals(mjkjCgformField.getDbFieldName())) {
 					idFlag = true;
 				}
 
-				if ("cat_tree".equals(onlCgformField.getFieldShowType()) && Func.isNotEmpty(onlCgformField.getDictText())) {
-					sbf.append(onlCgformField.getDictText() + ",");
+				if ("cat_tree".equals(mjkjCgformField.getFieldShowType()) && Func.isNotEmpty(mjkjCgformField.getDictText())) {
+					sbf.append(mjkjCgformField.getDictText() + ",");
 				}
 
 				if (i == size - 1) {
-					sbf.append(onlCgformField.getDbFieldName() + " ");
+					sbf.append(mjkjCgformField.getDbFieldName() + " ");
 				} else {
-					sbf.append(onlCgformField.getDbFieldName() + ",");
+					sbf.append(mjkjCgformField.getDbFieldName() + ",");
 				}
 			}
 
@@ -670,9 +670,9 @@ public class SqlSymbolUtil {
 		sbf.append(" FROM " + getSubstring(tableName));
 	}
 
-	public static List<DictModel> getYNDict(CgformField onlCgformField) {
+	public static List<DictModel> getYNDict(CgformField mjkjCgformField) {
 		ArrayList<DictModel> dictModels = new ArrayList<>();
-		String fieldExtendJson = onlCgformField.getFieldExtendJson();
+		String fieldExtendJson = mjkjCgformField.getFieldExtendJson();
 		String y = "是";
 		String n = "否";
 		JSONArray jsonArray = JSONArray.parseArray("[\"Y\",\"N\"]");
@@ -711,8 +711,8 @@ public class SqlSymbolUtil {
 		Set<String> set = getByShowType(fieldList);//获取要显示的类型
 		Iterator<CgformField> iterator = fieldList.iterator();
 		while (iterator.hasNext()) {
-			CgformField onlCgformField = iterator.next();
-			String dbFieldName = onlCgformField.getDbFieldName();
+			CgformField mjkjCgformField = iterator.next();
+			String dbFieldName = mjkjCgformField.getDbFieldName();
 			//这几个字段不操作
 			if (Func.isEmpty(dbFieldName)) {
 				continue;
@@ -724,28 +724,28 @@ public class SqlSymbolUtil {
 				}
 			} else {
 				//创建人，创建时间，创建部门给予默认值
-				appendUserData(onlCgformField, createUser, jsonObject, "CREATE_USER", "UPDATE_USER", "CREATE_DEPT", "CREATE_TIME", "UPDATE_TIME", "TENANT_ID", "STATUS", "IS_DELETED");
+				appendUserData(mjkjCgformField, createUser, jsonObject, "CREATE_USER", "UPDATE_USER", "CREATE_DEPT", "CREATE_TIME", "UPDATE_TIME", "TENANT_ID", "STATUS", "IS_DELETED");
 
-				if (onlCgformField.getIsShowForm() == 1
-					|| Func.isNotEmpty(onlCgformField.getMainField())
-					|| Func.isNotEmpty(onlCgformField.getDbDefaultVal())) {
+				if (mjkjCgformField.getIsShowForm() == 1
+					|| Func.isNotEmpty(mjkjCgformField.getMainField())
+					|| Func.isNotEmpty(mjkjCgformField.getDbDefaultVal())) {
 					if (jsonObject.get(dbFieldName) == null) {
-						if (Func.isEmpty(onlCgformField.getDbDefaultVal())) {
+						if (Func.isEmpty(mjkjCgformField.getDbDefaultVal())) {
 							continue;
 						}
-						jsonObject.put(dbFieldName, onlCgformField.getDbDefaultVal());
+						jsonObject.put(dbFieldName, mjkjCgformField.getDbDefaultVal());
 					}
 				}
 
 				if ("".equals(jsonObject.get(dbFieldName))) {
-					String str = onlCgformField.getDbType();
+					String str = mjkjCgformField.getDbType();
 					if (DataTypeUtil.isNumberType(str) || DataTypeUtil.isDateType(str)) {
 						continue;
 					}
 				}
 
 				// 拼接SQL: xxx = #{yyy}
-				String str = DataTypeUtil.getSql(databaseType, onlCgformField, jsonObject, hashMap);
+				String str = DataTypeUtil.getSql(databaseType, mjkjCgformField, jsonObject, hashMap);
 				if (fieldSql.length() == 0) {
 					fieldSql.append(dbFieldName);
 					valueSql.append(str);
@@ -781,8 +781,8 @@ public class SqlSymbolUtil {
 		List<String> fieldSqlList=new ArrayList<>();
 		Iterator<CgformField> iterator = fieldList.iterator();
 		while (iterator.hasNext()) {
-			CgformField onlCgformField = iterator.next();
-			String dbFieldName = onlCgformField.getDbFieldName();
+			CgformField mjkjCgformField = iterator.next();
+			String dbFieldName = mjkjCgformField.getDbFieldName();
 			fieldSqlList.add(dbFieldName);
 		}
 		BladeUser user = AuthUtil.getUser();
@@ -833,8 +833,8 @@ public class SqlSymbolUtil {
 	}
 
 	//默认值
-	public static void appendUserData(CgformField onlCgformField, BladeUser loginUser, JSONObject jsonObject, String... strings) {
-		String dbFieldName = onlCgformField.getDbFieldName();
+	public static void appendUserData(CgformField mjkjCgformField, BladeUser loginUser, JSONObject jsonObject, String... strings) {
+		String dbFieldName = mjkjCgformField.getDbFieldName();
 
 
 		for (int i = 0; i < strings.length; ++i) {
@@ -897,7 +897,7 @@ public class SqlSymbolUtil {
 					jsonObject.put(dbFieldName, deptId);
 					return;
 				case 3:
-					onlCgformField.setFieldShowType("datetime");
+					mjkjCgformField.setFieldShowType("datetime");
 					jsonObject.put(dbFieldName, DateUtil.format(DateUtil.now(), DateUtil.PATTERN_DATETIME));
 					return;
 				case 4:
@@ -908,7 +908,7 @@ public class SqlSymbolUtil {
 					jsonObject.put(dbFieldName, updateUserId);
 					return;
 				case 5:
-					onlCgformField.setFieldShowType("datetime");
+					mjkjCgformField.setFieldShowType("datetime");
 					jsonObject.put(dbFieldName, DateUtil.format(DateUtil.now(), DateUtil.PATTERN_DATETIME));
 					return;
 				case 6:
@@ -935,37 +935,37 @@ public class SqlSymbolUtil {
 	/**
 	 * 获取要显示的字段列表
 	 *
-	 * @param onlCgformFields
+	 * @param mjkjCgformFields
 	 * @return
 	 */
-	public static Set<String> getByShowType(List<CgformField> onlCgformFields) {
+	public static Set<String> getByShowType(List<CgformField> mjkjCgformFields) {
 		Set<String> hashSet = new HashSet<>();
-		Iterator<CgformField> iterator = onlCgformFields.iterator();
+		Iterator<CgformField> iterator = mjkjCgformFields.iterator();
 
 
 		while (iterator.hasNext()) {
-			CgformField onlCgformField = iterator.next();
-			if ("popup".equals(onlCgformField.getFieldShowType())) {//Popup弹框
-				String dictText = onlCgformField.getDictText();
+			CgformField mjkjCgformField = iterator.next();
+			if ("popup".equals(mjkjCgformField.getFieldShowType())) {//Popup弹框
+				String dictText = mjkjCgformField.getDictText();
 				if (Func.isNotEmpty(dictText)) {
 					hashSet.addAll(Arrays.stream(dictText.split(",")).collect(Collectors.toSet()));
 				}
 			}
 
-			if ("cat_tree".equals(onlCgformField.getFieldShowType())) {//分类字典树
-				String dictText = onlCgformField.getDictText();
+			if ("cat_tree".equals(mjkjCgformField.getFieldShowType())) {//分类字典树
+				String dictText = mjkjCgformField.getDictText();
 				if (Func.isNotEmpty(dictText)) {
 					hashSet.add(dictText);
 				}
 			}
 		}
 
-		iterator = onlCgformFields.iterator();
+		iterator = mjkjCgformFields.iterator();
 
 		while (iterator.hasNext()) {
-			CgformField onlCgformField = iterator.next();
-			String fieldName = onlCgformField.getDbFieldName();
-			if (onlCgformField.getIsShowForm() == 1 && hashSet.contains(fieldName)) {//把显示字段移除
+			CgformField mjkjCgformField = iterator.next();
+			String fieldName = mjkjCgformField.getDbFieldName();
+			if (mjkjCgformField.getIsShowForm() == 1 && hashSet.contains(fieldName)) {//把显示字段移除
 				hashSet.remove(fieldName);
 			}
 		}
@@ -1116,37 +1116,37 @@ public class SqlSymbolUtil {
 		return resultStr;
 	}
 
-	public static Map<String, Object> getUpdateSql(String tableName, List<CgformField> onlCgformFields, JSONObject jsonObject) {
+	public static Map<String, Object> getUpdateSql(String tableName, List<CgformField> mjkjCgformFields, JSONObject jsonObject) {
 		StringBuffer stringBuilder = new StringBuffer();
 		Map<String, Object> hashMap = new HashMap<>();
 		String databaseType = getDatabaseType();
 		BladeUser createUser = AuthUtil.getUser();//操作人
-		Set<String> showType = getByShowType(onlCgformFields);
-		Iterator<CgformField> iterator = onlCgformFields.iterator();
+		Set<String> showType = getByShowType(mjkjCgformFields);
+		Iterator<CgformField> iterator = mjkjCgformFields.iterator();
 
 		while (iterator.hasNext()) {
-			CgformField onlCgformField = iterator.next();
-			String dbFieldName = onlCgformField.getDbFieldName();
+			CgformField mjkjCgformField = iterator.next();
+			String dbFieldName = mjkjCgformField.getDbFieldName();
 			if (Func.isEmpty(dbFieldName)) {
-				log.info("--------online修改表单数据遇见空名称的字段------->>" + onlCgformField.getId());
+				log.info("--------online修改表单数据遇见空名称的字段------->>" + mjkjCgformField.getId());
 				continue;
 			}
 
-			appendUserData(onlCgformField, createUser, jsonObject, "UPDATE_USER", "UPDATE_TIME");
+			appendUserData(mjkjCgformField, createUser, jsonObject, "UPDATE_USER", "UPDATE_TIME");
 
 			if (showType.contains(dbFieldName) && jsonObject.get(dbFieldName) != null && !"".equals(jsonObject.getString(dbFieldName))) {
-				String str = DataTypeUtil.getSql(databaseType, onlCgformField, jsonObject, hashMap);
+				String str = DataTypeUtil.getSql(databaseType, mjkjCgformField, jsonObject, hashMap);
 				stringBuilder.append(dbFieldName + "=" + str + ",");
 			} else if (!"id".equals(dbFieldName)) {
 				if ("".equals(jsonObject.get(dbFieldName))) {
-					String str = onlCgformField.getDbType();
+					String str = mjkjCgformField.getDbType();
 					if (DataTypeUtil.isNumberType(str) || DataTypeUtil.isDateType(str)) {
 						continue;
 					}
 				}
 
-				if (!Func.isNotEmpty(onlCgformField.getMainTable()) || !Func.isNotEmpty(onlCgformField.getMainField())) {
-					String str = DataTypeUtil.getSql(databaseType, onlCgformField, jsonObject, hashMap);
+				if (!Func.isNotEmpty(mjkjCgformField.getMainTable()) || !Func.isNotEmpty(mjkjCgformField.getMainField())) {
+					String str = DataTypeUtil.getSql(databaseType, mjkjCgformField, jsonObject, hashMap);
 					stringBuilder.append(dbFieldName + "=" + str + ",");
 				}
 			}
@@ -1167,24 +1167,24 @@ public class SqlSymbolUtil {
 
 	/**
 	 * @param tableName
-	 * @param onlCgformFields
+	 * @param mjkjCgformFields
 	 * @param jsonObject
 	 * @param updateFieldList 要更新的字段
 	 * @return
 	 */
-	public static Map<String, Object> getUpdateSql(String tableName, List<CgformField> onlCgformFields, JSONObject jsonObject, String[] updateFieldList) {
+	public static Map<String, Object> getUpdateSql(String tableName, List<CgformField> mjkjCgformFields, JSONObject jsonObject, String[] updateFieldList) {
 		StringBuffer stringBuilder = new StringBuffer();
 		Map<String, Object> hashMap = new HashMap<>();
 		String databaseType = getDatabaseType();
 		BladeUser createUser = AuthUtil.getUser();//操作人
-		Set<String> showType = getByShowType(onlCgformFields);
-		Iterator<CgformField> iterator = onlCgformFields.iterator();
+		Set<String> showType = getByShowType(mjkjCgformFields);
+		Iterator<CgformField> iterator = mjkjCgformFields.iterator();
 
 		while (iterator.hasNext()) {
-			CgformField onlCgformField = iterator.next();
-			String dbFieldName = onlCgformField.getDbFieldName();
+			CgformField mjkjCgformField = iterator.next();
+			String dbFieldName = mjkjCgformField.getDbFieldName();
 			if (Func.isEmpty(dbFieldName)) {
-				log.info("--------online修改表单数据遇见空名称的字段------->>" + onlCgformField.getId());
+				log.info("--------online修改表单数据遇见空名称的字段------->>" + mjkjCgformField.getId());
 				continue;
 			}
 			//要更新的字段
@@ -1198,21 +1198,21 @@ public class SqlSymbolUtil {
 				continue;
 			}
 
-			appendUserData(onlCgformField, createUser, jsonObject, "UPDATE_USER", "UPDATE_TIME");
+			appendUserData(mjkjCgformField, createUser, jsonObject, "UPDATE_USER", "UPDATE_TIME");
 
 			if (showType.contains(dbFieldName) && jsonObject.get(dbFieldName) != null && !"".equals(jsonObject.getString(dbFieldName))) {
-				String str = DataTypeUtil.getSql(databaseType, onlCgformField, jsonObject, hashMap);
+				String str = DataTypeUtil.getSql(databaseType, mjkjCgformField, jsonObject, hashMap);
 				stringBuilder.append(dbFieldName + "=" + str + ",");
-			} else if (onlCgformField.getIsShowForm() == 1 && !"id".equals(dbFieldName)) {
+			} else if (mjkjCgformField.getIsShowForm() == 1 && !"id".equals(dbFieldName)) {
 				if ("".equals(jsonObject.get(dbFieldName))) {
-					String str = onlCgformField.getDbType();
+					String str = mjkjCgformField.getDbType();
 					if (DataTypeUtil.isNumberType(str) || DataTypeUtil.isDateType(str)) {
 						continue;
 					}
 				}
 
-				if (!Func.isNotEmpty(onlCgformField.getMainTable()) || !Func.isNotEmpty(onlCgformField.getMainField())) {
-					String str = DataTypeUtil.getSql(databaseType, onlCgformField, jsonObject, hashMap);
+				if (!Func.isNotEmpty(mjkjCgformField.getMainTable()) || !Func.isNotEmpty(mjkjCgformField.getMainField())) {
+					String str = DataTypeUtil.getSql(databaseType, mjkjCgformField, jsonObject, hashMap);
 					stringBuilder.append(dbFieldName + "=" + str + ",");
 				}
 			}
@@ -1312,27 +1312,27 @@ public class SqlSymbolUtil {
 	}
 
 	//查本表
-	public static String getByDataType(List<CgformField> onlCgformField, Map<String, Object> params, List<String> needList) {
+	public static String getByDataType(List<CgformField> mjkjCgformField, Map<String, Object> params, List<String> needList) {
 		StringBuffer sbf = new StringBuffer();
 		String databaseType = getDatabaseType();//获取数据库类型
-		Iterator<CgformField> iterator2 = onlCgformField.iterator();
+		Iterator<CgformField> iterator2 = mjkjCgformField.iterator();
 		while (iterator2.hasNext()){
-			CgformField onlCgF = iterator2.next();
+			CgformField mjkjCgF = iterator2.next();
 
-			String dbFieldName = onlCgF.getDbFieldName();
-			String dbType = onlCgF.getDbType();
-			Integer isQuery = onlCgF.getIsQuery();
+			String dbFieldName = mjkjCgF.getDbFieldName();
+			String dbType = mjkjCgF.getDbType();
+			Integer isQuery = mjkjCgF.getIsQuery();
 
-			if (Func.isNotEmpty(onlCgF.getMainField()) && Func.isNotEmpty(onlCgF.getMainTable())) {
+			if (Func.isNotEmpty(mjkjCgF.getMainField()) && Func.isNotEmpty(mjkjCgF.getMainTable())) {
 				isQuery=1;
-				onlCgF.setQueryMode("single");
+				mjkjCgF.setQueryMode("single");
 			}
 			if(Func.isEmpty(isQuery) || isQuery!=1){
 				continue;
 			}
 
 			String andSql="";
-			if ("single".equals(onlCgF.getQueryMode())) {//单个，精确查询
+			if ("single".equals(mjkjCgF.getQueryMode())) {//单个，精确查询
 				Object queryValue = params.get(dbFieldName);
 				if(Func.isEmpty(queryValue)){
 					continue;
@@ -1399,20 +1399,20 @@ public class SqlSymbolUtil {
 	}
 
 	//查增强sql
-	public static String getEnhanceByDataType(List<CgformField> onlCgformField, Map<String, Object> params, List<String> needList) {
+	public static String getEnhanceByDataType(List<CgformField> mjkjCgformField, Map<String, Object> params, List<String> needList) {
 		StringBuffer sbf = new StringBuffer();
 		String databaseType = getDatabaseType();//获取数据库类型
-		Iterator<CgformField> iterator2 = onlCgformField.iterator();
+		Iterator<CgformField> iterator2 = mjkjCgformField.iterator();
 		while (iterator2.hasNext()){
-			CgformField onlCgF = iterator2.next();
+			CgformField mjkjCgF = iterator2.next();
 
-			String dbFieldName = onlCgF.getDbFieldName();
-			String dbType = onlCgF.getDbType();
-			Integer isQuery = onlCgF.getIsQuery();
+			String dbFieldName = mjkjCgF.getDbFieldName();
+			String dbType = mjkjCgF.getDbType();
+			Integer isQuery = mjkjCgF.getIsQuery();
 
-			if (Func.isNotEmpty(onlCgF.getMainField()) && Func.isNotEmpty(onlCgF.getMainTable())) {
+			if (Func.isNotEmpty(mjkjCgF.getMainField()) && Func.isNotEmpty(mjkjCgF.getMainTable())) {
 				isQuery=1;
-				onlCgF.setQueryMode("single");
+				mjkjCgF.setQueryMode("single");
 			}
 			if(Func.isEmpty(isQuery) || isQuery!=1){
 				continue;
@@ -1420,7 +1420,7 @@ public class SqlSymbolUtil {
 
 			String eq="#eq#";
 			String andSql="";
-			if ("single".equals(onlCgF.getQueryMode())) {//单个，精确查询
+			if ("single".equals(mjkjCgF.getQueryMode())) {//单个，精确查询
 				Object queryValue = params.get(dbFieldName);
 				if(Func.isEmpty(queryValue)){
 					continue;
@@ -1505,7 +1505,7 @@ public class SqlSymbolUtil {
 	public static String getByParams(Map<String, Object> params) {
 		Object object = params.get("superQueryParams");
 		if (object != null && !StringUtils.isBlank(object.toString())) {
-			ICgformFieldService onlCgformFieldService = SpringContextUtils.getBean(ICgformFieldService.class);
+			ICgformFieldService mjkjCgformFieldService = SpringContextUtils.getBean(ICgformFieldService.class);
 			String s = null;
 
 			try {
@@ -1536,17 +1536,17 @@ public class SqlSymbolUtil {
 					String field2 = fields[1];
 					JSONObject jsonObject1 = hashMap.get(field1);
 					if (jsonObject1 == null) {
-						List<CgformField> cgformFields = onlCgformFieldService.queryFormFieldsByTableName(field1);
+						List<CgformField> cgformFields = mjkjCgformFieldService.queryFormFieldsByTableName(field1);
 						jsonObject1 = new JSONObject(3);
 						Iterator<CgformField> iterator = cgformFields.iterator();
 
 						while (iterator.hasNext()) {
-							CgformField onlCgformField = iterator.next();
-							if (StringUtils.isNotBlank(onlCgformField.getMainTable())) {
+							CgformField mjkjCgformField = iterator.next();
+							if (StringUtils.isNotBlank(mjkjCgformField.getMainTable())) {
 								jsonObject1.put("subTableName", field1);
-								jsonObject1.put("subField", onlCgformField.getDbFieldName());
-								jsonObject1.put("mainTable", onlCgformField.getMainTable());
-								jsonObject1.put("mainField", onlCgformField.getMainField());
+								jsonObject1.put("subField", mjkjCgformField.getDbFieldName());
+								jsonObject1.put("mainTable", mjkjCgformField.getMainTable());
+								jsonObject1.put("mainField", mjkjCgformField.getMainField());
 							}
 						}
 
@@ -1727,23 +1727,23 @@ public class SqlSymbolUtil {
 		return " to_date('" + dateStr + "','yyyy-MM-dd')";
 	}
 
-	public static String getSelectSql(String tbname, List<CgformField> onlCgformFields, String id) {
-		return getSelectSql(tbname, onlCgformFields, "id", id);
+	public static String getSelectSql(String tbname, List<CgformField> mjkjCgformFields, String id) {
+		return getSelectSql(tbname, mjkjCgformFields, "id", id);
 	}
 
-	public static String getSelectSqlAllData(String tbname, List<CgformField> onlCgformFields) {
-		return getSelectAllDataSql(tbname, onlCgformFields);
+	public static String getSelectSqlAllData(String tbname, List<CgformField> mjkjCgformFields) {
+		return getSelectAllDataSql(tbname, mjkjCgformFields);
 	}
 
 
-	public static String getSelectAllDataSql(String tbname, List<CgformField> onlCgformFields) {
+	public static String getSelectAllDataSql(String tbname, List<CgformField> mjkjCgformFields) {
 		StringBuffer stringBuilder = new StringBuffer();
 		stringBuilder.append("SELECT ");
-		int size = onlCgformFields.size();
+		int size = mjkjCgformFields.size();
 		boolean idFlag = false;
 
 		for (int i = 0; i < size; ++i) {
-			String dbFieldName = onlCgformFields.get(i).getDbFieldName();
+			String dbFieldName = mjkjCgformFields.get(i).getDbFieldName();
 			if ("id".equals(dbFieldName)) {
 				idFlag = true;
 			}
@@ -1764,14 +1764,14 @@ public class SqlSymbolUtil {
 	}
 
 
-	public static String getSelectSql(String tbname, List<CgformField> onlCgformFields, String field, String value) {
+	public static String getSelectSql(String tbname, List<CgformField> mjkjCgformFields, String field, String value) {
 		StringBuffer stringBuilder = new StringBuffer();
 		stringBuilder.append("SELECT ");
-		int size = onlCgformFields.size();
+		int size = mjkjCgformFields.size();
 		boolean idFlag = false;
 
 		for (int i = 0; i < size; ++i) {
-			String dbFieldName = onlCgformFields.get(i).getDbFieldName();
+			String dbFieldName = mjkjCgformFields.get(i).getDbFieldName();
 			if ("id".equals(dbFieldName)) {
 				idFlag = true;
 			}

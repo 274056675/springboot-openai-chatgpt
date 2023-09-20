@@ -18,7 +18,7 @@ import org.springblade.config.autopoi.poi.excel.ExcelImportUtil;
 import org.springblade.config.autopoi.poi.excel.def.NormalExcelConstants;
 import org.springblade.config.autopoi.poi.excel.entity.ExportParams;
 import org.springblade.config.autopoi.poi.excel.entity.ImportParams;
-import org.springblade.config.autopoi.poi.excel.view.JeecgEntityExcelView;
+import org.springblade.config.autopoi.poi.excel.view.MjkjEntityExcelView;
 import org.springblade.config.util.FillRuleUtil;
 import org.springblade.config.util.SqlInjectionUtil;
 import org.springblade.cgform.entity.*;
@@ -466,7 +466,7 @@ public class SystemController extends BladeController {
 		}
 
 		// Step.3 AutoPoi 导出Excel
-		ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
+		ModelAndView mv = new ModelAndView(new MjkjEntityExcelView());
 		mv.addObject(NormalExcelConstants.FILE_NAME, "填值规则"); //此处设置的filename无效 ,前端会重更新设置一下
 		mv.addObject(NormalExcelConstants.CLASS, FillRule.class);
 		mv.addObject(NormalExcelConstants.PARAMS, new ExportParams(  "填值规则报表", "导出人:" + AuthUtil.getNickName(), "填值规则"));
@@ -631,7 +631,7 @@ public class SystemController extends BladeController {
 		}
 
 		// Step.3 AutoPoi 导出Excel
-		ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
+		ModelAndView mv = new ModelAndView(new MjkjEntityExcelView());
 		mv.addObject(NormalExcelConstants.FILE_NAME, "填值规则"); //此处设置的filename无效 ,前端会重更新设置一下
 		mv.addObject(NormalExcelConstants.CLASS, CheckRule.class);
 		mv.addObject(NormalExcelConstants.PARAMS, new ExportParams(  "填值规则报表", "导出人:" + AuthUtil.getNickName(), "填值规则"));

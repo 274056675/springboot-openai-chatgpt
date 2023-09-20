@@ -134,18 +134,18 @@ public class BaseController extends BladeController {
     /**
      * 输出excel到浏览器
      *
-     * @param onlCgformHead
+     * @param mjkjCgformHead
      * @param workbook
      * @param request
      * @param response
      */
-    protected void outpuExcel(CgformHead onlCgformHead, Workbook workbook, HttpServletRequest request, HttpServletResponse response) {
+    protected void outpuExcel(CgformHead mjkjCgformHead, Workbook workbook, HttpServletRequest request, HttpServletResponse response) {
         ServletOutputStream servletOutputStream = null;
 
         try {
             response.setContentType("application/x-msdownload;charset=utf-8");
             String browse = BrowserUtils.checkBrowse(request);
-            String name = onlCgformHead.getTableTxt() + "-v" + onlCgformHead.getTableVersion();
+            String name = mjkjCgformHead.getTableTxt() + "-v" + mjkjCgformHead.getTableVersion();
             if (browse.contains("MSIE")&&"MSIE".equalsIgnoreCase(browse.substring(0, 4))) {
                 response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(name, "UTF-8") + ".xls");
             } else {

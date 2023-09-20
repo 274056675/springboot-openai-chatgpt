@@ -18,10 +18,10 @@ public class CatTreeFieldCommentConverter extends TableFieldCommentConverter {
     private String treeText;
 
 
-    public CatTreeFieldCommentConverter(CgformField onlCgformField) {
+    public CatTreeFieldCommentConverter(CgformField mjkjCgformField) {
         super("sys_category", "id", "name");
-        this.treeText = onlCgformField.getDictText();
-        this.field = onlCgformField.getDbFieldName();
+        this.treeText = mjkjCgformField.getDictText();
+        this.field = mjkjCgformField.getDbFieldName();
     }
 
     @Override

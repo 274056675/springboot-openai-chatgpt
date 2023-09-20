@@ -16,6 +16,6 @@ public interface IOnlineService {
     OnlineConfigModel queryOnlineConfig(CgformHead head);
 
     //获取字段内容
-    JSONObject queryOnlineFormObj(CgformHead onlcgformhead, CgformEnhanceJs onlcgformenhancejs);
+    JSONObject queryOnlineFormObj(CgformHead mjkjcgformhead, CgformEnhanceJs mjkjcgformenhancejs);
 
 }

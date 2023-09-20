@@ -9,11 +9,11 @@ import org.springblade.cgform.entity.CgformField;
  */
 public class SelTreeFieldCommentConverter extends TableFieldCommentConverter {
 
-	public SelTreeFieldCommentConverter(CgformField onlCgformField) {
+	public SelTreeFieldCommentConverter(CgformField mjkjCgformField) {
 
-		String dictText = onlCgformField.getDictText();
+		String dictText = mjkjCgformField.getDictText();
 		String[] strings = dictText.split(",");
-		this.setTable(onlCgformField.getDictTable());
+		this.setTable(mjkjCgformField.getDictTable());
 		this.setCode(strings[0]);
 		this.setText(strings[2]);
 	}

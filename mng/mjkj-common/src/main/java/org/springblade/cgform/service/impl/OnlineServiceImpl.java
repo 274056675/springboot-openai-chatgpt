@@ -61,15 +61,15 @@ public class OnlineServiceImpl implements IOnlineService {
 
 		// 根据表单基本属性id获取表单额外属性集合
         //处理属性
-        List<CgformField> onlCgformFields = this.getFields(headId);//属性列表
+        List<CgformField> mjkjCgformFields = this.getFields(headId);//属性列表
 		// 迭代器遍历字段属性集合
-        Iterator<CgformField> iterator = onlCgformFields.iterator();
+        Iterator<CgformField> iterator = mjkjCgformFields.iterator();
         while (iterator.hasNext()) {
         	// 获取对象
-            CgformField onlCgformField = iterator.next();
-            String dbFieldName = onlCgformField.getDbFieldName();//字段名称
-            String mainTable = onlCgformField.getMainTable();//外键主表名
-            String mainField = onlCgformField.getMainField();//外键主键字段
+            CgformField mjkjCgformField = iterator.next();
+            String dbFieldName = mjkjCgformField.getDbFieldName();//字段名称
+            String mainTable = mjkjCgformField.getMainTable();//外键主表名
+            String mainField = mjkjCgformField.getMainField();//外键主键字段
             if (Func.isNotEmpty(mainField) && Func.isNotEmpty(mainTable)) {
             	// 创建外部键对象,封装字段名称/外主键字段名
                 OnlForeignKey onlForeignKey = new OnlForeignKey(dbFieldName, mainField);
@@ -79,18 +79,18 @@ public class OnlineServiceImpl implements IOnlineService {
             //列表是否显示0否 1是
             if (!"id".equals(dbFieldName)
                     && !dbFieldNameList.contains(dbFieldName)) {
-                OnlColumn onlColumn = new OnlColumn(onlCgformField.getDbFieldTxt(), dbFieldName, onlCgformField.getFieldLength());
-                String dictField = onlCgformField.getDictField();
-                String fieldShowType = onlCgformField.getFieldShowType();//表单控件类型
+                OnlColumn onlColumn = new OnlColumn(mjkjCgformField.getDbFieldTxt(), dbFieldName, mjkjCgformField.getFieldLength());
+                String dictField = mjkjCgformField.getDictField();
+                String fieldShowType = mjkjCgformField.getFieldShowType();//表单控件类型
                 // 表单控件类型存在,且不为"popup"
 				if (Func.isNotEmpty(dictField) && !"popup".equals(fieldShowType)) {//Popup弹框
 					// 创建字典集合
                     List<DictModel> dictModelList = new ArrayList<>();
                     // 判断字段数据的字典表数据是否存在
-                    if (Func.isNotEmpty(onlCgformField.getDictTable())) {
+                    if (Func.isNotEmpty(mjkjCgformField.getDictTable())) {
                     	// 存在,根据字典表数据,字典表text/字典code查询表数据的字典
-                        dictModelList = dictService.queryTableDictItemsByCode(onlCgformField.getDictTable(), onlCgformField.getDictText(), dictField);
-                    } else if (Func.isNotEmpty(onlCgformField.getDictField())) {
+                        dictModelList = dictService.queryTableDictItemsByCode(mjkjCgformField.getDictTable(), mjkjCgformField.getDictText(), dictField);
+                    } else if (Func.isNotEmpty(mjkjCgformField.getDictField())) {
                         dictModelList = dictService.queryDictItemsByCode(dictField);
                     }
 
@@ -99,14 +99,14 @@ public class OnlineServiceImpl implements IOnlineService {
                 }
 
                 if (Func.equals(fieldShowType, "switch")) {//开关
-                    List<DictModel> sysDictOption = SqlSymbolUtil.getYNDict(onlCgformField);
+                    List<DictModel> sysDictOption = SqlSymbolUtil.getYNDict(mjkjCgformField);
                     dictOptions.put(dbFieldName, sysDictOption);
                     onlColumn.setCustomRender(dbFieldName);
                 }
 
 
                 if (Func.equals(fieldShowType, "link_down")) {//联动组件
-                    String dictTable = onlCgformField.getDictTable();
+                    String dictTable = mjkjCgformField.getDictTable();
                     if (Func.isNotEmpty(dictTable)) {
                         CommonEntity commonEntity = JSONObject.parseObject(dictTable, CommonEntity.class);
                         List<DictModel> tableDictOption = dictService.queryTableDictItemsByCode(commonEntity.getTable(), commonEntity.getTxt(), commonEntity.getKey());
@@ -114,15 +114,15 @@ public class OnlineServiceImpl implements IOnlineService {
                         onlColumn.setCustomRender(dbFieldName);
                         columns.add(onlColumn);
                         String linkField = commonEntity.getLinkField();
-                        this.linkFieldArr(onlCgformFields, dbFieldNameList, columns, dbFieldName, linkField);
+                        this.linkFieldArr(mjkjCgformFields, dbFieldNameList, columns, dbFieldName, linkField);
                     }
                 }
 
                 if (Func.equals(fieldShowType, "sel_tree")) {//自定义树控件
-                    String dictText = onlCgformField.getDictText();
+                    String dictText = mjkjCgformField.getDictText();
                     if(Func.isNotEmpty(dictText)){
-                        String[] dictTexts = onlCgformField.getDictText().split(",");
-                        List<DictModel> tableDictItems = dictService.queryTableDictItemsByCode(onlCgformField.getDictTable(), dictTexts[2], dictTexts[0]);
+                        String[] dictTexts = mjkjCgformField.getDictText().split(",");
+                        List<DictModel> tableDictItems = dictService.queryTableDictItemsByCode(mjkjCgformField.getDictTable(), dictTexts[2], dictTexts[0]);
                         dictOptions.put(dbFieldName, tableDictItems);
                         onlColumn.setCustomRender(dbFieldName);
                     }
@@ -130,12 +130,12 @@ public class OnlineServiceImpl implements IOnlineService {
                 }
 
                 if ("cat_tree".equals(fieldShowType)) {//分类字典树
-                    String dictTable = onlCgformField.getDictText();
+                    String dictTable = mjkjCgformField.getDictText();
                     if (Func.isNotEmpty(dictTable)) {
-                        String dictCode = onlCgformField.getDictField();
+                        String dictCode = mjkjCgformField.getDictField();
                         Long idByCode = dictService.getIdByCode(dictCode);
                         String filterSql = "(id ="+idByCode+" or pstr like '" + idByCode + "#%" + "')";
-                        //String filterSql = SqlSymbolUtil.getFilterSql(onlCgformField.getDictField());
+                        //String filterSql = SqlSymbolUtil.getFilterSql(mjkjCgformField.getDictField());
                         List<DictModel> tableDictOption = dictService.queryFilterTableDictInfo("sys_category", "name", "id", filterSql);
                         dictOptions.put(dbFieldName, tableDictOption);
                         onlColumn.setCustomRender(dbFieldName);
@@ -150,7 +150,7 @@ public class OnlineServiceImpl implements IOnlineService {
                     onlColumn.setCustomRender(dbFieldName);
                 }
 
-                if ("sel_user".equals(onlCgformField.getFieldShowType())) {//用户选择
+                if ("sel_user".equals(mjkjCgformField.getFieldShowType())) {//用户选择
                     List<ChatgptBludeUser> chatgptBludeUserList = userService.list();
                     userOptions.put(dbFieldName, chatgptBludeUserList);
                     onlColumn.setCustomRender(dbFieldName);
@@ -172,18 +172,18 @@ public class OnlineServiceImpl implements IOnlineService {
                 }
 
                 //js增强
-                String jsEnhance = onlCgformField.getJsEnhance();
+                String jsEnhance = mjkjCgformField.getJsEnhance();
                 if (!Func.isEmpty(jsEnhance)) {
-                    onlColumn.setJsEnhance(onlCgformField.getJsEnhance());
+                    onlColumn.setJsEnhance(mjkjCgformField.getJsEnhance());
                 }
 
-                if (Func.isNotBlank(onlCgformField.getFieldHref())) {
+                if (Func.isNotBlank(mjkjCgformField.getFieldHref())) {
                     String dictTable = "fieldHref_" + dbFieldName;
                     onlColumn.setHrefSlotName(dictTable);
-                    fieldHrefSlots.add(new HrefSlots(dictTable, onlCgformField.getFieldHref()));
+                    fieldHrefSlots.add(new HrefSlots(dictTable, mjkjCgformField.getFieldHref()));
                 }
 
-                if ("1".equals(onlCgformField.getSortFlag())) {//是否支持排序1是0否
+                if ("1".equals(mjkjCgformField.getSortFlag())) {//是否支持排序1是0否
                     onlColumn.setSorter(true);
                 }
 
@@ -243,12 +243,12 @@ public class OnlineServiceImpl implements IOnlineService {
     }
 
     @Override
-    public JSONObject queryOnlineFormObj(CgformHead head, CgformEnhanceJs onlCgformEnhanceJs) {
+    public JSONObject queryOnlineFormObj(CgformHead head, CgformEnhanceJs mjkjCgformEnhanceJs) {
         JSONObject result = new JSONObject();
         //获取要显示的字段
         List<CgformField> availableFields = fieldService.queryAvailableFields(head.getId(), head.getTableName(), (String) null, false);
-        List<String> disabledFields = new ArrayList<>();//获取要隐藏的字段 todo 权限 this.onlCgformFieldService.queryDisabledFields(head.getTableName());
-        EnhanceJsUtil.enhanceJs(onlCgformEnhanceJs, head.getTableName(), availableFields);//js增强
+        List<String> disabledFields = new ArrayList<>();//获取要隐藏的字段 todo 权限 this.mjkjCgformFieldService.queryDisabledFields(head.getTableName());
+        EnhanceJsUtil.enhanceJs(mjkjCgformEnhanceJs, head.getTableName(), availableFields);//js增强
         FieldModel fieldModel = null;
         if ("Y".equals(head.getIsTree())) {//树形结构
             fieldModel = new FieldModel();
@@ -270,10 +270,10 @@ public class OnlineServiceImpl implements IOnlineService {
             result.put("cgButtonList", buttons);
         }
 
-        if (onlCgformEnhanceJs != null && ConvertUtils.isNotEmpty(onlCgformEnhanceJs.getCgJs())) {
-            String cgJs = EnhanceJsUtil.getCgJs(onlCgformEnhanceJs.getCgJs(), buttons);
-            onlCgformEnhanceJs.setCgJs(cgJs);
-            result.put("enhanceJs", EnhanceJsUtil.getCgJs(onlCgformEnhanceJs.getCgJs()));
+        if (mjkjCgformEnhanceJs != null && ConvertUtils.isNotEmpty(mjkjCgformEnhanceJs.getCgJs())) {
+            String cgJs = EnhanceJsUtil.getCgJs(mjkjCgformEnhanceJs.getCgJs(), buttons);
+            mjkjCgformEnhanceJs.setCgJs(cgJs);
+            result.put("enhanceJs", EnhanceJsUtil.getCgJs(mjkjCgformEnhanceJs.getCgJs()));
         }
 
         return result;
@@ -287,7 +287,7 @@ public class OnlineServiceImpl implements IOnlineService {
         return fieldService.list(lambdaQueryWrapper);
     }
 
-    private void linkFieldArr(List<CgformField> onlCgformFields, List<String> dbFieldNameList, List<OnlColumn> onlColumns, String render, String linkFields) {
+    private void linkFieldArr(List<CgformField> mjkjCgformFields, List<String> dbFieldNameList, List<OnlColumn> onlColumns, String render, String linkFields) {
         if (ConvertUtils.isEmpty(linkFields)) {
             return;
         }
@@ -295,14 +295,14 @@ public class OnlineServiceImpl implements IOnlineService {
 
         for (int i = 0; i < linkFieldArr.length; ++i) {
             String linkField = linkFieldArr[i];
-            Iterator<CgformField> iterator = onlCgformFields.iterator();
+            Iterator<CgformField> iterator = mjkjCgformFields.iterator();
 
             while (iterator.hasNext()) {
-                CgformField onlCgformField = iterator.next();
-                String dbFieldName = onlCgformField.getDbFieldName();
-                if (1 == onlCgformField.getIsShowList() && linkField.equals(dbFieldName)) {
+                CgformField mjkjCgformField = iterator.next();
+                String dbFieldName = mjkjCgformField.getDbFieldName();
+                if (1 == mjkjCgformField.getIsShowList() && linkField.equals(dbFieldName)) {
                     dbFieldNameList.add(linkField);
-                    OnlColumn onlColumn = new OnlColumn(onlCgformField.getDbFieldTxt(), dbFieldName, onlCgformField.getFieldLength());
+                    OnlColumn onlColumn = new OnlColumn(mjkjCgformField.getDbFieldTxt(), dbFieldName, mjkjCgformField.getFieldLength());
                     onlColumn.setCustomRender(render);
                     onlColumns.add(onlColumn);
                     break;

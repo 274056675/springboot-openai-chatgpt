@@ -159,7 +159,7 @@ public class SqlHelper {
                                 	updateTableSql.add(sql + var14);
                                 }
 
-                                String var15 = this.getUpdateOnlCgformFieldSql(var10, var11.getColumnId());
+                                String var15 = this.getUpdateMjkjCgformFieldSql(var10, var11.getColumnId());
                                 updateTableSql.add(var15);
                                 if (!var13.equals(var11)) {
                                 	updateTableSql.add(sql + this.getUpdateColumnSql(var11, var13));
@@ -329,7 +329,7 @@ public class SqlHelper {
         return dbTableHandle.getCommentSql(columnMeta);
     }
 
-    private String getUpdateOnlCgformFieldSql(String oldDbFieldName, String id) {
+    private String getUpdateMjkjCgformFieldSql(String oldDbFieldName, String id) {
         return "update onl_cgform_field set DB_FIELD_NAME_OLD = '" + oldDbFieldName + "' where ID ='" + id + "'";
     }
 

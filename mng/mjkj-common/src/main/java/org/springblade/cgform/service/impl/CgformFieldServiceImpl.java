@@ -74,7 +74,7 @@ public class CgformFieldServiceImpl extends BaseServiceImpl<CgformFieldMapper, C
         String str = "online:" + tbname + "%";
         // LoginUser var7 = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         //String var8 = var7.getId();
-        List hideList = new ArrayList(); //((OnlCgformFieldMapper)this.baseMapper).selectOnlineHideColumns(var8, var6);
+        List hideList = new ArrayList(); //((MjkjCgformFieldMapper)this.baseMapper).selectOnlineHideColumns(var8, var6);
         boolean flag = true;
         if (hideList == null || hideList.size() == 0 || hideList.get(0) == null) {
             flag = false;
@@ -500,9 +500,9 @@ public class CgformFieldServiceImpl extends BaseServiceImpl<CgformFieldMapper, C
     }
 
     @Override
-    public String queryTreeChildIds(CgformHead head, String dataIdStrs) {
-        String treeParentIdField = head.getTreeParentIdField();
-        String tableName = head.getTableName();
+    public String queryTreeChildIds(CgformHead mjkjcgformhead, String dataIdStrs) {
+        String treeParentIdField = mjkjcgformhead.getTreeParentIdField();
+        String tableName = mjkjcgformhead.getTableName();
         String[] dataIds = dataIdStrs.split(",");
         StringBuffer sb = new StringBuffer();
         for (String dataId : dataIds) {

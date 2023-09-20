@@ -48,6 +48,6 @@ public interface IMjkjBladexClient {
 
 	//根据邀请码获取用户id
 	@GetMapping(GET_WXUSERID_BY_INVITE_CODE)
-	R<Map<String,Object>> getWxuseridByInvitecode(@RequestParam("invitecode") String invitecode);
+	R<Map<String, Object>> getWxuseridByInvitecode(@RequestParam("invitecode") String invitecode);
 
 }

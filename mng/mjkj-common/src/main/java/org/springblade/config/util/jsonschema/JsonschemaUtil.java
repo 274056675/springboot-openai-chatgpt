@@ -32,7 +32,6 @@ public class JsonschemaUtil {
 			properties.put(map.get("key").toString(), map.get("prop"));
 		}
 		obj.put("properties", properties);
-		//鬼知道这里为什么报错 org.jeecg.modules.system.model.DictModel cannot be cast to org.jeecg.modules.system.model.DictModel
 		log.info("---JSONSchema--->"+obj.toJSONString());
 		return obj;
 	}

@@ -19,8 +19,8 @@ public class LinkDownFieldCommentConverter extends TableFieldCommentConverter {
 
     private String linkField;
 
-    public LinkDownFieldCommentConverter(CgformField onlCgformField) {
-        String dictTable = onlCgformField.getDictTable();
+    public LinkDownFieldCommentConverter(CgformField mjkjCgformField) {
+        String dictTable = mjkjCgformField.getDictTable();
         CommonEntity linkDown = JSONObject.parseObject(dictTable, CommonEntity.class);
         this.setTable(linkDown.getTable());
         this.setCode(linkDown.getKey());

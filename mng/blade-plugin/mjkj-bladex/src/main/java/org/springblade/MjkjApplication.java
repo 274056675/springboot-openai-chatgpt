@@ -8,8 +8,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * 启动器
- *
- *
  */
 @EnableAsync
 @EnableBladeFeign
@@ -17,6 +15,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 public class MjkjApplication {
 
 	public static void main(String[] args) {
+
 		BladeApplication.run("open-chat", MjkjApplication.class, args);
 	}
 

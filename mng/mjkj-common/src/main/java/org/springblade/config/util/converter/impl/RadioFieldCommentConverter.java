@@ -18,13 +18,13 @@ public class RadioFieldCommentConverter extends FieldFieldCommentConverter {
 
 	/**
 	 *
-	 * @param onlCgformField 表额外字段数据(单条)
+	 * @param mjkjCgformField 表额外字段数据(单条)
 	 */
-	public RadioFieldCommentConverter(CgformField onlCgformField) {
+	public RadioFieldCommentConverter(CgformField mjkjCgformField) {
 		IDictService dictService = SpringContextUtils.getBean(IDictService.class);
-		String dictTable = onlCgformField.getDictTable();
-		String dictText = onlCgformField.getDictText();
-		String dictField = onlCgformField.getDictField();
+		String dictTable = mjkjCgformField.getDictTable();
+		String dictText = mjkjCgformField.getDictText();
+		String dictField = mjkjCgformField.getDictField();
 		List<DictModel> arrayList = new ArrayList<>();
 		if (ConvertUtils.isNotEmpty(dictTable)) {
 			arrayList = dictService.queryTableDictItemsByCode(dictTable, dictText, dictField);
@@ -33,6 +33,6 @@ public class RadioFieldCommentConverter extends FieldFieldCommentConverter {
 		}
 
 		this.dictList = arrayList;
-		this.filed = onlCgformField.getDbFieldName();
+		this.filed = mjkjCgformField.getDbFieldName();
 	}
 }

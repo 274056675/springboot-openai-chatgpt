@@ -53,13 +53,13 @@ public class ImportBaseService {
 		//update-begin-author:taoYan date:20180202 for:TASK #2067 【bug excel 问题】excel导入字典文本翻译问题
 		excelEntity.setMultiReplace(excel.multiReplace());
 		if(StringUtils.isNotEmpty(excel.dicCode())){
-			AutoPoiDictServiceI jeecgDictService = null;
+			AutoPoiDictServiceI mjkjDictService = null;
 			try {
-				jeecgDictService = ApplicationContextUtil.getContext().getBean(AutoPoiDictServiceI.class);
+				mjkjDictService = ApplicationContextUtil.getContext().getBean(AutoPoiDictServiceI.class);
 			} catch (Exception e) {
 			}
-			if(jeecgDictService!=null){
-				 String[] dictReplace = jeecgDictService.queryDict(excel.dictTable(), excel.dicCode(), excel.dicText());
+			if(mjkjDictService!=null){
+				 String[] dictReplace = mjkjDictService.queryDict(excel.dictTable(), excel.dicCode(), excel.dicText());
 				 if(excelEntity.getReplace()!=null && dictReplace!=null && dictReplace.length!=0){
 					 excelEntity.setReplace(dictReplace);
 				 }

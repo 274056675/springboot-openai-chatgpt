@@ -28,18 +28,18 @@ public class DataTypeUtil {
 	/**
 	 * 拼接SQL: xxx = #{yyy}
 	 * @param databaseType 数据表字段类型
-	 * @param onlCgformField 数据表字段
+	 * @param mjkjCgformField 数据表字段
 	 * @param jsonObject 数据
 	 * @param map 空HashMap
 	 * @return
 	 */
-	public static String getSql(String databaseType, CgformField onlCgformField, JSONObject jsonObject, Map<String, Object> map) {
+	public static String getSql(String databaseType, CgformField mjkjCgformField, JSONObject jsonObject, Map<String, Object> map) {
 		// 获取数据表字段类型,转小写
-		String dbType = onlCgformField.getDbType().toLowerCase();
+		String dbType = mjkjCgformField.getDbType().toLowerCase();
 		// 获取数据表字段名
-		String dbFieldName = onlCgformField.getDbFieldName();
+		String dbFieldName = mjkjCgformField.getDbFieldName();
 		// 获取数据表控件类型
-		String fieldShowType = onlCgformField.getFieldShowType();
+		String fieldShowType = mjkjCgformField.getFieldShowType();
 		if (jsonObject.get(dbFieldName) == null) {
 			return "null";
 		} else if (DbType.INT.toLowerCase().equals(dbType)) {//int

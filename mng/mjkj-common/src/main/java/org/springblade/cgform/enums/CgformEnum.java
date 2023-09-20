@@ -13,23 +13,23 @@ public enum CgformEnum {
     /**
      * 单表
      */
-    ONE(1, "one", "/jeecg/code-template-online", "default.one", "经典风格"),
+    ONE(1, "one", "/mjkj/code-template-online", "default.one", "经典风格"),
     /**
      * 多表
      */
-    MANY(2, "many", "/jeecg/code-template-online", "default.onetomany", "经典风格"),
+    MANY(2, "many", "/mjkj/code-template-online", "default.onetomany", "经典风格"),
     /**
      * 多表
      */
-    ERP(2, "erp", "/jeecg/code-template-online", "erp.onetomany", "ERP风格"),
+    ERP(2, "erp", "/mjkj/code-template-online", "erp.onetomany", "ERP风格"),
     /**
      * 多表（内嵌子表风格）
      */
-    INNER_TABLE(2, "innerTable", "/jeecg/code-template-online", "inner-table.onetomany", "内嵌子表风格"),
+    INNER_TABLE(2, "innerTable", "/mjkj/code-template-online", "inner-table.onetomany", "内嵌子表风格"),
     /**
      * 树形列表
      */
-    TREE(3, "tree", "/jeecg/code-template-online", "default.tree", "树形列表");
+    TREE(3, "tree", "/mjkj/code-template-online", "default.tree", "树形列表");
 
     /**
      * 类型 1/单表 2/一对多 3/树

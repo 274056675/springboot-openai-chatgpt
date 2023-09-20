@@ -78,13 +78,13 @@ public class CodeGenerateOne extends FileProvider implements IGenerate {
 	}
 
 	public List<String> generateCodeFile(String stylePath) throws Exception {
-		log.debug("----jeecg---Code----Generation----[?表模型:" + tableVo.getTableName() + "]------- 生成中。。。");
+		log.debug("------Code----Generation----[?表模型:" + tableVo.getTableName() + "]------- 生成中。。。");
 
 		String str1 = DbConfig.projectPath;
 		Map<String,Object> localMap = dtaMapMethod();
 
 		String templatepath = DbConfig.templatepath;
-		if (strSubStartEnd(templatepath, "/").equals("jeecg/code-template")) {
+		if (strSubStartEnd(templatepath, "/").equals("mjkj/code-template")) {
 			templatepath = "/" + strSubStartEnd(templatepath, "/") + "/one";
 			DbConfig.setTemplatepath(templatepath);
 		}
@@ -111,8 +111,8 @@ public class CodeGenerateOne extends FileProvider implements IGenerate {
 		localTableVo.setTableName("demo");
 		localTableVo.setPrimaryKeyPolicy("uuid");
 		localTableVo.setEntityPackage("test");
-		localTableVo.setEntityName("JeecgDemo");
-		localTableVo.setFtlDescription("jeecg ??demo");
+		localTableVo.setEntityName("MjkjDemo");
+		localTableVo.setFtlDescription("mjkj ??demo");
 		try {
 			new CodeGenerateOne(localTableVo).generateCodeFile(null);
 		} catch (Exception localException) {
