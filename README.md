@@ -23,7 +23,7 @@
 
 1. Web端在线体验地址(点击图片可访问)：http://www.mj.ink
 
-     <a href="http://www.mj.ink"><img src="https://ai.oss.mj.ink/chatgpt/github/Snipaste_2023-05-05_23-46-35.png" /></a>
+     <a href="http://www.mj.ink"><a href="http://www.mj.ink"><img src="./images/PC端聊天.png" /></a>
 
 2. 微信关注超级AI大脑公众号及手机扫码下载App
 
@@ -35,7 +35,7 @@
 3. 新用户第一次登录即为注册，可微信进行登录。如图：
 
  <div align=left>
-    <td ><img height="" width="" src="https://ai.oss.mj.ink/chatgpt/github/首页.png"/></td>
+     <td ><img height="" width="" src="./images/PC端登录页.png"/></td>
  </div>
 
 
@@ -56,6 +56,29 @@
     </tr>
 </table>
 
+### 1.2PC端界面展示
+
+###### 聊天页
+
+<img src="./images/PC端聊天.png" />
+
+
+
+###### 绘画广场
+
+<img src="./images/PC端绘画广场_20230922100319.png" />
+
+
+
+###### PC端绘画界面
+
+<img src="./images/PC端绘画界面2.png" />
+
+
+
+###### PC端绘画生成
+
+<img src="./images/PC端绘画生成.png" />
 ## 2.主要功能点展示
 
 ### 2.1 AI聊天工具箱
