@@ -29,7 +29,7 @@
 
 |                          微信公众号                          |                           Android                            |                             IOS                              |
 | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
-| <img height="200" width="200" src="https://ai.oss.mj.ink/chatgpt/github/wxgzh.jpg"/> | <img height="200" width="200" src="https://ai.oss.mj.ink/chatgpt/github/安卓218.png"/> | <a href="https://apps.apple.com/cn/app/id6448979172"><img height="200" width="200" src="https://ai.oss.mj.ink/chatgpt/github/ios.png"/></a> |
+| <img height="200" width="200" src="https://ai.oss.mj.ink/chatgpt/github/wxgzh.jpg"/> | <img height="200" width="200" src="https://ai.oss.mj.ink/chatgpt/github/安卓219.png"/> | <a href="https://apps.apple.com/cn/app/id6448979172"><img height="200" width="200" src="https://ai.oss.mj.ink/chatgpt/github/ios.png"/></a> |
 |                        **微信公众号**                        |                         **Android**                          |                           **IOS**                            |
 
 3. 新用户第一次登录即为注册，可微信进行登录。如图：
