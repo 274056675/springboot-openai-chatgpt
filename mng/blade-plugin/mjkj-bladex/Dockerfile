@@ -7,6 +7,7 @@ RUN mkdir -p /blade/mjkjbladex
 WORKDIR /blade/mjkjbladex
 
 EXPOSE 9874
+#项目的启动端口号
 
 ADD ./target/mjkj-bladex.jar ./app.jar
 

@@ -1,7 +1,7 @@
 # springboot-openai-chatgpt
 
 #### Description
-一个基于Spring Boot的Web应用，使用了OpenAI的ChatGPT模型实现了智能聊天机器人。用户可以在界面上与聊天机器人进行对话，聊天机器人会根据用户的输入自动生成回复。同时，本仓库也提供了API接口，可以供其他应用程序调用使用。
+一个基于Spring Boot的Web应用，使用了OpenAI的ChatGPT模型及百度的文心一言模型实现了智能聊天机器人。用户可以在界面上与聊天机器人进行对话，聊天机器人会根据用户的输入自动生成回复。同时，本仓库也提供了API接口，可以供其他应用程序调用使用。
 
 #### Software Architecture
 Software architecture description

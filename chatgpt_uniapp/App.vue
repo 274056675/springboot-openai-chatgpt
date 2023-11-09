@@ -227,6 +227,7 @@
 		border-radius: 100upx;
 	}
 
+
 	//设置背景色
 	checkbox.red[checked] .wx-checkbox-input,
 	checkbox.red.checked .uni-checkbox-input {

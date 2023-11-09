@@ -7,6 +7,7 @@ RUN mkdir -p /blade/gateway
 WORKDIR /blade/gateway
 
 EXPOSE 9872
+#项目的启动端口号
 
 ADD ./target/blade-gateway.jar ./app.jar
 

@@ -13,7 +13,7 @@ RUN mkdir -p /blade/auth
 WORKDIR /blade/auth
 
 EXPOSE 9871
-
+#项目的启动端口号
 ADD ./target/blade-auth.jar ./app.jar
 
 ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "app.jar"]
