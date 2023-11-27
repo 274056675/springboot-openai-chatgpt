@@ -17,7 +17,7 @@
 ## 演示环境
 　　　　[后端：http://gpt.ht.mj.ink:8899](http://gpt.ht.mj.ink:8899)
 
-　　　　[前端：http://gpt.h5.mj.ink:8899](http://gpt.h5.mj.ink:8899)
+　　　　[前端：http://www.mj.ink](http://www.mj.ink)
 
 ## 在线体验
 
