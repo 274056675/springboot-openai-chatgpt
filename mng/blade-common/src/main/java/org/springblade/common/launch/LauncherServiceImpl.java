@@ -34,10 +34,15 @@ public class LauncherServiceImpl implements LauncherService {
 		PropsUtil.setProperty(props, "spring.cloud.sentinel.transport.dashboard", nacosUrl);
 		PropsUtil.setProperty(props, "spring.datasource.dynamic.enabled", "false");
 
+		//配置文件的m默认组名为：DEFAULT_GROUP,如果修改了这里要修改
 
+		String GROUP_STR="DEFAULT_GROUP";
+		PropsUtil.setProperty(props,"spring.cloud.nacos.discovery.group", GROUP_STR);
 		//chatgpt模块
+		//nacos上命名空间为：chatgpt_open，如果修改了这里也要修改
 		PropsUtil.setProperty(props, "spring.cloud.nacos.discovery.namespace", "chatgpt_open");
 		PropsUtil.setProperty(props, "spring.cloud.nacos.config.namespace", "chatgpt_open");
 	}
+
 
 }
