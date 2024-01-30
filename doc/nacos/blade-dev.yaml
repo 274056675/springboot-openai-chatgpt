@@ -4,7 +4,7 @@ spring:
     ##redis 单机环境配置
     host: 127.0.0.1
     port: 6379
-    password: 
+    password:
     database: 3
     ssl: false
 
@@ -48,19 +48,6 @@ mqtt:
     ip: 0.0.0.0            # 服务端 ip 默认：0.0.0.0
     port: 8828                  # 端口，默认：1883
     websocket-port: 5883        # websocket 端口
-
-#minio相关参数 根据自己需要填写 
-minio:
-  endpoint: ''
-  accessKey: ''
-  secretKey: ''
-  bucketName: ''
-#短信验证码 阿里云短信 ，dev环境验证码为123456
-mjkjsms:
-  templateId: ''
-  signName: ''
-  accessKey: ''
-  secretKey: ''
 
 
 chatgpt:
