@@ -19,6 +19,7 @@
         <module>mjkj-message-api</module>
     </modules>
 
+
     <dependencies>
         <dependency>
             <groupId>org.springblade</groupId>

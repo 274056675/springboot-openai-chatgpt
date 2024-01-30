@@ -82,7 +82,6 @@ under the License.
     <pluginGroup>com.your.plugins</pluginGroup>
     -->
   </pluginGroups>
-
   <!-- proxies
    | This is a list of proxies which can be used on this machine to connect to the network.
    | Unless otherwise specified (by system property or command-line switch), the first proxy
@@ -262,4 +261,3 @@ under the License.
   </activeProfiles>
   -->
 </settings>
-

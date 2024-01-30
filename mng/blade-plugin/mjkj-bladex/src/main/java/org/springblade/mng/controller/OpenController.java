@@ -26,7 +26,6 @@ import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.jackson.JsonUtil;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.RandomType;
-import org.springblade.mng.config.miniapp.WxPayProperties;
 import org.springblade.mng.param.WxOpenBindPhoneParam;
 import org.springblade.mng.param.WxopenAuthParam;
 import org.springblade.mng.utils.imagecode.SlidePuzzleUtil;
@@ -69,14 +68,6 @@ public class OpenController {
 	@Autowired
 	private IWebService webService;
 
-	@Lazy
-	@Autowired
-	private WxPayProperties wxPayProperties;
-
-	@Autowired
-	private IWxPayService wxPayService;
-
-
 	@ApiOperationSupport(order = 2)
 	@GetMapping({"/cssz/list"})
 	@ApiOperation(value = "获取参数设置列表", notes = "获取参数设置列表")
@@ -113,10 +104,7 @@ public class OpenController {
 			bladeRedis.del(redisKey);
 		}
 
-		String code = Func.random(6, RandomType.INT);
-		if (Func.equals(ChatgptConfig.getDebug(), "true")) {
-			code = "123456";
-		}
+		String code = "123456";
 		boolean flag = smsService.sendSms(phone, code);
 		if (flag) {
 			return R.data("成功");
@@ -355,41 +343,6 @@ public class OpenController {
 			return R.data(false);
 		}
 		return R.data(false);
-	}
-
-	@ApiOperation("微信支付成功回调")
-	@ApiOperationSupport(order = 3)
-	@RequestMapping(value = "/wxPay/payNotify", method = {RequestMethod.POST, RequestMethod.GET})
-	@ResponseBody
-	public String payNotify(HttpServletRequest request) {
-		String xmlMsg = HttpKit.readData(request);
-		Map<String, String> params = WxPayKit.xmlToMap(xmlMsg);
-
-		String returnCode = params.get("return_code");
-
-		String out_trade_no = params.get("out_trade_no");//商户订单号
-		String transaction_id = params.get("transaction_id");//微信支付订单号
-		// 注意重复通知的情况，同一订单号可能收到多次通知，请注意一定先判断订单状态
-		// 注意此处签名方式需与统一下单的签名类型一致
-		if (WxPayKit.verifyNotify(params, wxPayProperties.getPartnerKey(), SignType.HMACSHA256)) {
-			if (WxPayKit.codeIsOk(returnCode)) {
-				try {
-					wxPayService.payOrderSuccess(out_trade_no, transaction_id);
-
-					// 发送通知等
-					Map<String, String> xml = new HashMap<String, String>(2);
-					xml.put("return_code", "SUCCESS");
-					xml.put("return_msg", "OK");
-					return WxPayKit.toXml(xml);
-				} catch (Exception e) {
-					Map<String, String> xml = new HashMap<String, String>(2);
-					xml.put("return_code", "FAIL");
-					xml.put("return_msg", "订单有误");
-					return WxPayKit.toXml(xml);
-				}
-			}
-		}
-		return null;
 	}
 
 }

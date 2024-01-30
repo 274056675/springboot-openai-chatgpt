@@ -25,8 +25,6 @@ import org.springblade.config.exception.BusinessException;
 import org.springblade.config.util.ConvertUtils;
 import org.springblade.config.util.EnhanceJsUtil;
 import org.springblade.config.util.SqlSymbolUtil;
-import org.springblade.config.util.minio.MinioBladeFile;
-import org.springblade.config.util.minio.MinioUtils;
 import org.springblade.core.cache.utils.CacheUtil;
 import org.springblade.core.secure.BladeUser;
 import org.springblade.core.secure.utils.AuthUtil;
@@ -68,8 +66,6 @@ public class CgformApiController extends BaseController {
 	private final IOnlineService onlineService;
 
 
-	@Autowired
-	private MinioUtils minioUtils;
 
 	//比较重要的表，不允许新增修改删除，只有超级管理员才有权限
 	private final String noSaveOrUpdateStr="";
@@ -688,19 +684,6 @@ public class CgformApiController extends BaseController {
 		return R.data(list);
 	}
 
-	@ApiOperationSupport(order = 22)
-	@ApiOperation(value = "上传文件", notes = "上传文件")
-	@PostMapping("/upload/file")
-	public R putMinioObject(@RequestParam MultipartFile file, Integer type) {
-		try{
-			MinioBladeFile bladeFile = minioUtils.uploadInputStream(file.getOriginalFilename(), file.getInputStream());
-			CacheUtil.put("system:file", "key", "FILE_" + bladeFile.getLink(), file.getOriginalFilename());
-			return R.data(bladeFile);
-		}catch (Exception e){
-			e.printStackTrace();
-		}
-		return R.fail("上传失败");
-	}
 
 	@ApiOperationSupport(order = 23)
 	@ApiOperation(value = "根据link获取原名称", notes = "根据link获取原名称")

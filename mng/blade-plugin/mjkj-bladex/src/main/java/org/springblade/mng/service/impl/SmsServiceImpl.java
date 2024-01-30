@@ -1,20 +1,10 @@
 package org.springblade.mng.service.impl;
 
-import com.aliyuncs.DefaultAcsClient;
-import com.aliyuncs.IAcsClient;
-import com.aliyuncs.profile.DefaultProfile;
-import com.aliyuncs.profile.IClientProfile;
 import org.springblade.cgform.service.IMjkjBaseSqlService;
-import org.springblade.config.constant.ChatgptConfig;
-import org.springblade.config.constant.MjkjSmsConfig;
 import org.springblade.core.redis.cache.BladeRedis;
-import org.springblade.core.sms.AliSmsTemplate;
-import org.springblade.core.sms.SmsTemplate;
 import org.springblade.core.sms.model.SmsData;
 import org.springblade.core.sms.model.SmsResponse;
-import org.springblade.core.sms.props.SmsProperties;
 import org.springblade.core.tool.utils.DateUtil;
-import org.springblade.core.tool.utils.Func;
 import org.springblade.mng.service.ISmsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,22 +36,9 @@ public class SmsServiceImpl implements ISmsService {
 			Map<String, String> params = new HashMap<>();
 			params.put("code", code);
 
-			String templateId = MjkjSmsConfig.getTemplateId();
-
-			SmsProperties smsProperties = new SmsProperties();
-			smsProperties.setTemplateId(templateId.trim());
-			smsProperties.setAccessKey(MjkjSmsConfig.getAccessKey());
-			smsProperties.setSecretKey(MjkjSmsConfig.getSecretKey());
-			smsProperties.setRegionId("cn-hangzhou");
-			smsProperties.setSignName(MjkjSmsConfig.getSignName());
-			IClientProfile profile = DefaultProfile.getProfile(smsProperties.getRegionId(), smsProperties.getAccessKey(), smsProperties.getSecretKey());
-			IAcsClient acsClient = new DefaultAcsClient(profile);
-			SmsTemplate template = new AliSmsTemplate(smsProperties, acsClient, bladeRedis);
 
 
 			SmsData smsData = new SmsData(params);
-			smsData.setKey(templateId);
-
 
 			List<String> phones = new ArrayList<>();
 			phones.add(phone);
@@ -69,15 +46,10 @@ public class SmsServiceImpl implements ISmsService {
 			SmsResponse smsResponse =null;
 			String sendResult="";
 			boolean flag =false;
-			if(Func.equals(ChatgptConfig.getDebug(),"true")){//调试
-				smsResponse = new SmsResponse(true,200,null);
-				flag = true;
-				sendResult=flag?"成功":"失败";
-			}else{
-				smsResponse = template.sendMessage(smsData, phones);
-				flag = smsResponse.isSuccess();
-				sendResult=flag?"成功":"失败";
-			}
+			//调试
+			smsResponse = new SmsResponse(true,200,null);
+			flag = true;
+			sendResult=flag?"成功":"失败";
 
 			//保存日志
 			Date now = DateUtil.now();

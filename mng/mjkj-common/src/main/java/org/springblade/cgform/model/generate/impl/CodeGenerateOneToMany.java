@@ -25,7 +25,7 @@ public class CodeGenerateOneToMany extends FileProvider implements IGenerate {
 	private List<ColumnVo> mainColums;
 	private List<ColumnVo> originalMainColumns;
 	private List<SubTableVo> subTables;
-	
+
 	public CodeGenerateOneToMany(MainTableVo mainTableVo, List<SubTableVo> subTables) {
 		this.subTables = subTables;
 		this.mainTableVo = mainTableVo;

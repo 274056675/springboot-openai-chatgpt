@@ -64,7 +64,7 @@ public interface IWebService {
 	boolean checkSensitiveWord(String str);
 
 	//获取手机号码
-	String getPhoneNum(String code);
+
 
 	//增加用户次数  【注册->1】【分享->2】【分享注册->3】【提问->4】【5=人工】【6=广告奖励】【7=签到】【8=会员奖励】【9=更多好玩】【10=口令福利】
 	void  addWxuserQuestionNum(Long bladeUserId,String wxuserId,Integer serviceType,Integer num,String questionId,String remark);
@@ -80,11 +80,9 @@ public interface IWebService {
 
 	Map<String,Object> getWxuserMapByInvitecode(String invitecode);
 
-	//生成邀请码
-	String generateQrcode();
 
-	//生成文件二维码
-	String generateFileQrcode(String  fileCode);
+
+
 
 	//获取用户自定义设置
 	Map<String,Object> getWxUserSetting(String wxUserId);
@@ -99,13 +97,6 @@ public interface IWebService {
 	void addShareLog(String wxuserId,ChatLogShareMessageParam param);
 	//用户获取被分享的消息
 	List<Map<String, Object>> getShareLog(String onlyId);
-	/**
-	 * 处理用户提现
-	 * @param wxuserId
-	 * @param amount 提现金额
-	 * @param feeAmount 手续费
-	 */
-	void withdrawalHandle(String wxuserId, BigDecimal amount,BigDecimal feeAmount);
 
 	//获取本微信用户id下所有的子用户(推广)
 	List<Map<String, Object>> getChildUsers(String wxuserId);
@@ -113,7 +104,5 @@ public interface IWebService {
 	//获取历史聊天记录
 	IPage<Map<String, Object>>  getSubCouList(String wxuserId,IPage<Object> page);
 
-	//保存图片
-	void saveDALLEImages(String id,String prompt,String size);
 
 }

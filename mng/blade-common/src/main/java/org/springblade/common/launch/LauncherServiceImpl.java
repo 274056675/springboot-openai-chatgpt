@@ -44,5 +44,4 @@ public class LauncherServiceImpl implements LauncherService {
 		PropsUtil.setProperty(props, "spring.cloud.nacos.config.namespace", "chatgpt_open");
 	}
 
-
 }

@@ -55,41 +55,19 @@ minio:
   accessKey: ''
   secretKey: ''
   bucketName: ''
-#短信验证码 阿里云短信 ，全部必填
+#短信验证码 阿里云短信 ，dev环境验证码为123456
 mjkjsms:
   templateId: ''
   signName: ''
   accessKey: ''
   secretKey: ''
 
-wx:
-  miniapp:
-    configs:
-    - appid: '' #微信小程序的appid 根据自己需要填写 
-      secret: '' #微信小程序的Secret 根据自己需要填写 
-      token: #微信小程序消息服务器配置的token
-      aesKey: #微信小程序消息服务器配置的EncodingAESKey
-      msgDataFormat: JSON
-  pay: #支付相关 全部必填 根据自己需要填写 
-    appId: '' # 默认openId
-    mchId: '' # 商户号
-    partnerKey: '' # 密钥
-    certPath: ''# 退款证书 必填
-    domain: '' #域名 必填 
-  mp: #微信公众号 网页端扫码登录
-    configs:
-      - appId: '' # 根据自己需要填写 
-        secret: '' # 根据自己需要填写 
-        token: ''
-        aesKey: ''
+
 chatgpt:
   debug: 'true'
-  # 微信开放平台
-  openWxClientId: '' # 根据自己需要填写 
-  openWxClientSecret: ''# 根据自己需要填写 
   #在这里切换模型
-  #chatgptModel: 'gpt-3.5-turbo'
-  chatgptModel: 'ernie-bot-turbo'
+  chatgptModel: 'gpt-3.5-turbo'
+  #chatgptModel: 'ernie-bot-turbo'
   httpUrl: 'http://127.0.0.1:9885/chatgpt/api/getContent'
   chatgptUrl: 'https://api.openai.com/v1/chat/completions'
   # 文本长度
@@ -101,24 +79,7 @@ chatgpt:
   uploadUrl: D:/upload/image
   #logo
   logoUrl: D:/upload/image/logo.png
-  #海报背景
-  posterBgUrl: https://ai-chat-gpt.oss-cn-guangzhou.aliyuncs.com/poster/shareTemplate.png
-  # 移除头部
-  startTitleRemove: '。,；,:,：,？, ,，,\n'
-  # 机器人个人提问信息
-  wechatRotGeRenTip: 温馨提示：更多好玩请关注《超级AI大脑》公众号，即可体验
-  # 机器人名称
-  wechatRotGeRenName: 超级AI大脑,WeiXiao
-  # 图片模型 chatgpt   flagstudio
-  imageModel: flagstudio
-   # 机器人图片模型 chatgpt   flagstudio
-  imageModelWechatRot: flagstudio
-  # 这里获取flagstudio.baai.ac.c
-  flagstudioToken: ''
-   # 画图指令
-  imagePromptStart: '画,帮我画,制作,帮我制作,生成,帮我生成'
-  imagePromptEnd: '图片-512x512,海报-432x768,头像-200x200'
-  imageStyle: 'MJ风格'
+
 
   #文心一言
 erniebot:
@@ -126,5 +87,4 @@ erniebot:
   appKey: '这里填上你自己的文心一言appKey'
   secretKey: '这里填上你自己的文心一言secretKey'
   ernieBotMaxToken: 11200
-
 

@@ -13,6 +13,7 @@ scope：all
 code：VhYNLR
 redirect_uri： http://example.com
 
+
 二、 密码模式
 密码模式(password)主要针对自家应用，可信度较高，所以可以使用简便安全共存的模式，操作步骤如下
 1. 直接调用 http://localhost/blade-auth/oauth/token 传入对应的参数

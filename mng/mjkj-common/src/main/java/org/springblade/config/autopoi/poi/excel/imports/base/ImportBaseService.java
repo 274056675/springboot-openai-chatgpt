@@ -29,7 +29,7 @@ public class ImportBaseService {
 
 	/**
 	 * 把这个注解解析放到类型对象中
-	 * 
+	 *
 	 * @param targetId
 	 * @param field
 	 * @param excelEntity
@@ -79,7 +79,7 @@ public class ImportBaseService {
 
 	/**
 	 * 获取导入校验参数
-	 * 
+	 *
 	 * @param field
 	 * @return
 	 */
@@ -103,8 +103,8 @@ public class ImportBaseService {
 
 	/**
 	 * 获取需要导出的全部字段
-	 * 
-	 * 
+	 *
+	 *
 	 * @param exclusions
 	 * @param targetId
 	 *            目标ID
@@ -147,7 +147,7 @@ public class ImportBaseService {
 
 	/**
 	 * 追加集合名称到前面
-	 * 
+	 *
 	 * @param collection
 	 */
 	private void additionalCollectionName(ExcelCollectionParams collection) {
@@ -194,7 +194,7 @@ public class ImportBaseService {
 
 	/**
 	 * 判断在这个单元格显示的名称
-	 * 
+	 *
 	 * @param exportName
 	 * @param targetId
 	 * @return
@@ -235,7 +235,7 @@ public class ImportBaseService {
 
 	/**
 	 * 获取保存的Excel 的真实路径
-	 * 
+	 *
 	 * @param params
 	 * @param pojoClass
 	 * @return
@@ -252,7 +252,7 @@ public class ImportBaseService {
 
 	/**
 	 * 多个get 最后再set
-	 * 
+	 *
 	 * @param setMethods
 	 * @param object
 	 */
@@ -262,7 +262,7 @@ public class ImportBaseService {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param entity
 	 * @param object
 	 * @param value

@@ -7,7 +7,6 @@ RUN mkdir -p /blade/system
 WORKDIR /blade/system
 
 EXPOSE 9875
-#项目的启动端口号
 
 ADD ./target/blade-system.jar ./app.jar
 

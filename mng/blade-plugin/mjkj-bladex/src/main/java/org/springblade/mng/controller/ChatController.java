@@ -16,8 +16,6 @@ import org.apache.commons.collections.map.HashedMap;
 import org.springblade.cgform.service.IMjkjBaseSqlService;
 import org.springblade.common.utils.MjkjUtils;
 import org.springblade.config.constant.ChatgptConfig;
-import org.springblade.config.util.minio.MinioBladeFile;
-import org.springblade.config.util.minio.MinioUtils;
 import org.springblade.core.mp.support.Condition;
 import org.springblade.core.redis.cache.BladeRedis;
 import org.springblade.core.secure.utils.AuthUtil;
@@ -71,11 +69,7 @@ public class ChatController {
 	@Autowired
 	private IWalletService walletService;
 
-	@Autowired
-	private MinioUtils minioUtils;
 
-	@Autowired
-	private IWxPayService wxPayService;
 
 
 	@ApiOperationSupport(order = 1)
@@ -86,13 +80,6 @@ public class ChatController {
 		return R.data(wxUsrInfo);
 	}
 
-	@ApiOperationSupport(order = 2)
-	@GetMapping({"/getPhoneNum"})
-	@ApiOperation(value = "获取手机号码", notes = "获取手机号码")
-	public R getPhoneNum(String code) {
-		String phoneNum = webService.getPhoneNum(code);
-		return R.data(phoneNum);
-	}
 
 
 	@ApiOperationSupport(order = 3)
@@ -224,43 +211,6 @@ public class ChatController {
 		return R.data(wxUsrInfo);
 	}
 
-	@ApiOperationSupport(order = 7)
-	@GetMapping(value = "/buy/order")
-	@ApiOperation(value = "用户下单", notes = "用户下单")
-	public R buyOrder(String goodsId,String type) {//type=qrcode  二维码登录
-		Map<String, Object> goodsMap = baseSqlService.getTableById("chat_goods", goodsId);
-		if (Func.isEmpty(goodsMap)) {
-			return R.fail("商品不存在");
-		}
-		String goodsStatus = MjkjUtils.getMap2Str(goodsMap, "goods_status");
-		if (Func.isEmpty(goodsStatus) || !Func.equals(goodsStatus, "0")) {
-			return R.fail("商品状态有误");
-		}
-		Map<String, String> resultMap = wxPayService.addOrder(goodsId, type);
-
-		return R.data(resultMap.get("wx_result"));
-	}
-
-	@ApiOperationSupport(order = 7)
-	@GetMapping(value = "/buy/new/order")
-	@ApiOperation(value = "用户下单-新", notes = "用户下单-新")
-	public R buyNewOrder(String goodsId,String type) {//type=qrcode  二维码登录
-		Map<String, Object> goodsMap = baseSqlService.getTableById("chat_goods", goodsId);
-		if (Func.isEmpty(goodsMap)) {
-			return R.fail("商品不存在");
-		}
-		String goodsStatus = MjkjUtils.getMap2Str(goodsMap, "goods_status");
-		if (Func.isEmpty(goodsStatus) || !Func.equals(goodsStatus, "0")) {
-			return R.fail("商品状态有误");
-		}
-		Map<String, String> resultMap = wxPayService.addOrder(goodsId, type);
-		String wx_result = resultMap.get("wx_result");
-		String orderCode = resultMap.get("orderCode");
-
-		String redisKey="wxpay:orderCode"+orderCode;
-		bladeRedis.setEx(redisKey,"NOPAY", Duration.ofDays(7));//未支付 7天
-		return R.data(resultMap);
-	}
 
 
 
@@ -399,60 +349,6 @@ public class ChatController {
 		return R.data(shareDataMap);
 	}
 
-	@ApiOperationSupport(order = 22)
-	@GetMapping({"/generate/h5/qrcode"})
-	@ApiOperation(value = "生成推广二维码", notes = "生成推广二维码")
-	public  R  generateH5Qrcode()  {
-		try {
-			WxUserInfoModel wxUsrInfo = webService.getWxUsrInfo();
-			if (Func.isEmpty(wxUsrInfo)) {
-				return null;
-			}
-			//海报地址
-			String posterUrl = wxUsrInfo.getPosterUrl();
-			if (Func.isNotEmpty(posterUrl)) {
-				return R.data(posterUrl);//已经生成过，则直接返回
-			}
-			String wxName = wxUsrInfo.getWxName();
 
-			String inviteCode = wxUsrInfo.getInviteCode();//用户邀请码
-
-			List<Map<String, Object>> shareData = baseSqlService.getDataByTable("chat_share_data");
-			Map<String, Object> shareDataMap = shareData.get(0);
-			String httpUrl =MjkjUtils.getMap2Str(shareDataMap,"url");//地址路径
-
-
-
-			String posterBgUrl = ChatgptConfig.getPosterBgUrl();
-
-			//背景
-			ImageCombiner combiner = new ImageCombiner(posterBgUrl, OutputFormat.PNG);
-
-			//处理二维码
-			FileInputStream inputStream = MakeerWeimaUtils.generateQrCode(httpUrl,inviteCode);
-			BufferedImage qrcodeImage = ImageIO.read(inputStream);
-			combiner.addImageElement(qrcodeImage, 107, 333);
-
-			int length = wxName.length();
-			int x = 230 - (length * 10);
-			//处理头像
-			combiner.addTextElement(wxName, 24, x, 630).setColor(Color.BLACK);
-			//进行合成
-			combiner.combine();
-			combiner.getCombinedImageStream();
-			String fileName = IdWorker.getIdStr() + ".png";
-			MinioBladeFile bladeFile = minioUtils.uploadInputStream(fileName, combiner.getCombinedImageStream());
-			String link = bladeFile.getLink();
-			if (Func.isNotEmpty(link)) {//不为空
-				Map<String, Object> updateMap = new HashedMap();
-				updateMap.put("poster_url", link);
-				baseSqlService.baseUpdateData("chat_wxuser", updateMap, wxUsrInfo.getId());
-			}
-			return R.data(link);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return R.fail("暂无");
-	}
 }
 

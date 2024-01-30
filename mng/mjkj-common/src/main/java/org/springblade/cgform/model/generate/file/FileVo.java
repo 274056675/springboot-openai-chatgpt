@@ -13,30 +13,30 @@ public class FileVo
     private String templatePath;
     private List<File> templateRootDirs;
     private String stylePath;
-    
+
     public FileVo(String templatePath) {
         this.templateRootDirs = new ArrayList<File>();
         log.debug("----templatePath-----------------" + templatePath);
         log.debug("----stylePath-----------------" + this.stylePath);
         this.templatePath = templatePath;
     }
-    
+
     private void setTemplateRootDirs(File file) {
         this.setTemplateRootDirs(new File[] { file });
     }
-    
+
     private void setTemplateRootDirs(File... array) {
         this.templateRootDirs = Arrays.asList(array);
     }
-    
+
     public String getStylePath() {
         return this.stylePath;
     }
-    
+
     public void setStylePath(String stylePath) {
         this.stylePath = stylePath;
     }
-    
+
     public List<File> getTemplateRootDirs() {
         String classpath = this.getClass().getResource(this.templatePath).getFile().replaceAll("%20", " ");
         log.debug("-------classpath-------" + classpath);
@@ -47,11 +47,11 @@ public class FileVo
         this.setTemplateRootDirs(new File(classpath));
         return this.templateRootDirs;
     }
-    
+
     public void setTemplateRootDirs(List<File> templateRootDirs) {
         this.templateRootDirs = templateRootDirs;
     }
-    
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

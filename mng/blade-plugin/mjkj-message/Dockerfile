@@ -7,7 +7,6 @@ RUN mkdir -p /blade/message
 WORKDIR /blade/message
 
 EXPOSE 9873
-#项目的启动端口号
 
 ADD ./target/blade-message.jar ./app.jar
 

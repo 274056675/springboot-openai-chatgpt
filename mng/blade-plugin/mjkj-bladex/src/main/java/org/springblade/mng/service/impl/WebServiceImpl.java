@@ -1,32 +1,22 @@
 package org.springblade.mng.service.impl;
 
-import cn.binarywang.wx.miniapp.api.WxMaSecCheckService;
-import cn.binarywang.wx.miniapp.api.WxMaService;
-import cn.binarywang.wx.miniapp.api.WxMaUserService;
-import cn.binarywang.wx.miniapp.bean.WxMaPhoneNumberInfo;
-import cn.binarywang.wx.miniapp.bean.urllink.GenerateUrlLinkRequest;
+
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.http.HttpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import com.freewayso.image.combiner.ImageCombiner;
-import com.freewayso.image.combiner.enums.OutputFormat;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.map.HashedMap;
 import org.springblade.cgform.service.IMjkjBaseSqlService;
 import org.springblade.common.utils.MjkjUtils;
 import org.springblade.config.constant.ChatgptConfig;
-import org.springblade.config.util.minio.MinioBladeFile;
-import org.springblade.config.util.minio.MinioUtils;
 import org.springblade.core.log.exception.ServiceException;
 import org.springblade.core.redis.cache.BladeRedis;
 import org.springblade.core.secure.utils.AuthUtil;
 import org.springblade.core.tool.utils.DateUtil;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.RandomType;
-import org.springblade.mng.config.miniapp.WxMaConfiguration;
-import org.springblade.mng.config.miniapp.WxMaProperties;
 import org.springblade.mng.mapper.WebMapper;
 import org.springblade.mng.model.*;
 import org.springblade.mng.param.ChatLogShareMessageParam;
@@ -40,9 +30,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -67,12 +54,6 @@ public class WebServiceImpl implements IWebService {
 	private WebMapper webMapper;
 
 	@Autowired
-	private WxMaProperties wxMaProperties;//微信小程序
-
-	@Autowired
-	private MinioUtils minioUtils;
-
-	@Autowired
 	private BladeRedis bladeRedis;
 
 	@Autowired
@@ -83,9 +64,6 @@ public class WebServiceImpl implements IWebService {
 
 	@Autowired
 	private IWalletService walletService;
-
-	@Autowired
-	private IWxPayService wxPayService;
 
 	@Autowired
 	private IErnieBotService ernieBotService;
@@ -166,25 +144,25 @@ public class WebServiceImpl implements IWebService {
 		//微信专属连接
 		String wxShareUrl = MjkjUtils.getMap2Str(dataMap, "wx_share_url");
 		String inviteCode = MjkjUtils.getMap2Str(dataMap, "invite_code");
-
-		if(Func.isEmpty(wxShareUrl)){//需要生成专属连接
-			try{
-				String path = "/pages/index/index";
-				//获取微信那边二维码
-				final WxMaService wxService = WxMaConfiguration.getMaService(wxMaProperties.getConfigs().get(0).getAppid());
-				GenerateUrlLinkRequest request=new GenerateUrlLinkRequest();
-				request.setPath(path);
-				request.setQuery("inviteCode=" + inviteCode);
-				wxShareUrl= wxService.getLinkService().generateUrlLink(request);
-				if(Func.isNotEmpty(wxShareUrl)){
-					Map<String,Object> updateMap=new HashMap<>();
-					updateMap.put("wx_share_url",wxShareUrl);
-					baseSqlService.baseUpdateData("chat_wxuser",updateMap,wxuserId);
-				}
-			}catch (Exception e){
-				//e.printStackTrace();
-			}
-		}
+//
+//		if(Func.isEmpty(wxShareUrl)){//需要生成专属连接
+//			try{
+//				String path = "/pages/index/index";
+//				//获取微信那边二维码
+//				final WxMaService wxService = WxMaConfiguration.getMaService(wxMaProperties.getConfigs().get(0).getAppid());
+//				GenerateUrlLinkRequest request=new GenerateUrlLinkRequest();
+//				request.setPath(path);
+//				request.setQuery("inviteCode=" + inviteCode);
+//				wxShareUrl= wxService.getLinkService().generateUrlLink(request);
+//				if(Func.isNotEmpty(wxShareUrl)){
+//					Map<String,Object> updateMap=new HashMap<>();
+//					updateMap.put("wx_share_url",wxShareUrl);
+//					baseSqlService.baseUpdateData("chat_wxuser",updateMap,wxuserId);
+//				}
+//			}catch (Exception e){
+//				//e.printStackTrace();
+//			}
+//		}
 
 		String phone = MjkjUtils.getMap2Str(dataMap, "phone");
 		if(Func.isEmpty(wxName)){
@@ -369,7 +347,6 @@ public class WebServiceImpl implements IWebService {
 			throw new ServiceException("账户配置有误，请联系客服处理");
 		}
 
-		boolean imagesModel = MjkjUtils.promptIsImage(question);
 
 		//返回结果，如果有敏感字的话，直接返回
 		Map<String, Object> insertMap = new HashMap<>();
@@ -381,11 +358,8 @@ public class WebServiceImpl implements IWebService {
 		insertMap.put("blade_user_id", bladeUserId);
 		insertMap.put("view_type", ViewType.TEXT);
 		insertMap.put("model_type", modelType);
-		if(imagesModel){
-			insertMap.put("context_flag",0);//不支持上下文
-		}else{
-			insertMap.put("context_flag",1);//支持上下文
-		}
+		insertMap.put("context_flag",1);//支持上下文
+
 
 		baseSqlService.baseInsertData("chat_log_message", insertMap);
 
@@ -420,9 +394,6 @@ public class WebServiceImpl implements IWebService {
 		String chatgptModel = ChatgptConfig.getChatgptModel();
 
 		//生成图片
-		if(imagesModel){//图片
-			chatGPTService.sendImageMessage(modelType, wxuserId, id, question, startMessageId, now,"256x256");
-		}else{
 			if (Func.equals(chatgptModel, "text-davinci-003")) {
 				chatGPTService.sendChatGptMessage(modelType, wxuserId, id, question, startMessageId);
 			} else if (Func.equals(chatgptModel,"gpt-3.5-turbo")){
@@ -430,7 +401,6 @@ public class WebServiceImpl implements IWebService {
 			}  else if(Func.equals(chatgptModel,"ernie-bot-turbo"))  {
 				ernieBotService.sendErnieBotTurboMessage( wxuserId, id, question, startMessageId, now);
 			}
-		}
 
 
 
@@ -695,34 +665,19 @@ public class WebServiceImpl implements IWebService {
 	//校验敏感词
 	@Override
 	public boolean checkSensitiveWord(String str) {
-		try {
-			if (Func.isEmpty(str)) {
-				return false;
-			}
-			String appId = wxMaProperties.getConfigs().get(0).getAppid();
-			final WxMaService wxService = WxMaConfiguration.getMaService(appId);
-			WxMaSecCheckService secCheckService = wxService.getSecCheckService();
-			boolean b = secCheckService.checkMessage(str);
-			return b;
-		} catch (Exception e) {
-			//e.printStackTrace();
-		}
-		return false;
-	}
-
-	//获取手机号码
-	@Override
-	public String getPhoneNum(String code) {
-		try {
-			String appId = wxMaProperties.getConfigs().get(0).getAppid();
-			final WxMaService wxService = WxMaConfiguration.getMaService(appId);
-			WxMaUserService userService = wxService.getUserService();
-			WxMaPhoneNumberInfo newPhoneNoInfo = userService.getNewPhoneNoInfo(code);
-			return newPhoneNoInfo.getPhoneNumber();
-		} catch (Exception e) {
-
-		}
-		return "";
+//		try {
+//			if (Func.isEmpty(str)) {
+//				return false;
+//			}
+//			String appId = wxMaProperties.getConfigs().get(0).getAppid();
+//			final WxMaService wxService = WxMaConfiguration.getMaService(appId);
+//			WxMaSecCheckService secCheckService = wxService.getSecCheckService();
+//			boolean b = secCheckService.checkMessage(str);
+//			return b;
+//		} catch (Exception e) {
+//			//e.printStackTrace();
+//		}
+		return true;
 	}
 
 	//增加用户次数
@@ -811,90 +766,7 @@ public class WebServiceImpl implements IWebService {
 		return dataMap;
 	}
 
-	/**
-	 * 生成邀请码
-	 *
-	 * @return
-	 */
-	@Override
-	public String generateQrcode() {
-		try {
-			WxUserInfoModel wxUsrInfo = this.getWxUsrInfo();
-			if (Func.isEmpty(wxUsrInfo)) {
-				return null;
-			}
-			//海报地址
-			String posterWxUrl = wxUsrInfo.getPosterWxUrl();
-			if (Func.isNotEmpty(posterWxUrl)) {
-				return posterWxUrl;//已经生成过，则直接返回
-			}
-			String wxName = wxUsrInfo.getWxName();
 
-			String inviteCode = wxUsrInfo.getInviteCode();
-			String path = "/pages/index/index?inviteCode=" + inviteCode;
-			Integer width = 50;
-			//获取微信那边二维码
-			final WxMaService wxService = WxMaConfiguration.getMaService(wxMaProperties.getConfigs().get(0).getAppid());
-
-			String qrcodeFileUrl = ChatgptConfig.getUploadUrl();
-			File qrcodeFile = wxService.getQrcodeService().createWxaCode(path, null, width, qrcodeFileUrl, false, null, false);//二维码
-			String posterBgUrl = ChatgptConfig.getPosterBgUrl();
-
-			//背景
-			ImageCombiner combiner = new ImageCombiner(posterBgUrl, OutputFormat.PNG);
-			//处理二维码
-			BufferedImage qrcodeImage = ImageIO.read(qrcodeFile);
-			combiner.addImageElement(qrcodeImage, 107, 333);
-
-			int length = wxName.length();
-			int x = 230 - (length * 10);
-			//处理头像
-			combiner.addTextElement(wxName, 24, x, 630).setColor(Color.BLACK);
-			//进行合成
-			combiner.combine();
-			combiner.getCombinedImageStream();
-			String fileName = IdWorker.getIdStr() + ".png";
-			MinioBladeFile bladeFile = minioUtils.uploadInputStream(fileName, combiner.getCombinedImageStream());
-
-			String link = bladeFile.getLink();
-			if (Func.isNotEmpty(link)) {//不为空
-				Map<String, Object> updateMap = new HashedMap();
-				updateMap.put("poster_wx_url", link);
-				baseSqlService.baseUpdateData("chat_wxuser", updateMap, wxUsrInfo.getId());
-			}
-			return link;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	/**
-	 * 生成文件下载码
-	 *
-	 * @return
-	 */
-	@Override
-	public String generateFileQrcode(String fileCode) {
-		try {
-			//海报地址
-			String path = "/pages/index/index?fileCode=" + fileCode;
-			Integer width = 50;
-			//获取微信那边二维码
-			final WxMaService wxService = WxMaConfiguration.getMaService(wxMaProperties.getConfigs().get(0).getAppid());
-			String qrcodeFileUrl = ChatgptConfig.getUploadUrl();
-			File qrcodeFile = wxService.getQrcodeService().createWxaCode(path, null, width, qrcodeFileUrl, false, null, false);//二维码
-			InputStream in = new FileInputStream(qrcodeFile);
-
-			String fileName = IdWorker.getIdStr() + ".png";
-			MinioBladeFile bladeFile = minioUtils.uploadInputStream(fileName, in);
-			String link = bladeFile.getLink();
-			return link;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 	//获取用户自定义设置
 	@Override
@@ -1083,64 +955,6 @@ public class WebServiceImpl implements IWebService {
 		return result;
 	}
 
-	//处理用户提现
-	@Transactional
-	@Override
-	public void withdrawalHandle(String wxuserId, BigDecimal amount,BigDecimal feeAmount){
-		Map<String, Object> settingMap = baseSqlService.getDataOneByField("chat_wxuser_setting", "wxuser_id", wxuserId);
-		String qrCode = MjkjUtils.getMap2Str(settingMap, "withdrawal_qrcode");
-
-		Map<String, Object> wxUserMap = baseSqlService.getTableById("chat_wxuser", wxuserId);
-		String wxName = MjkjUtils.getMap2Str(wxUserMap, "wx_name");
-		String phone = MjkjUtils.getMap2Str(wxUserMap, "phone");
-
-
-		Date now = DateUtil.now();
-		BigDecimal dzAmount = amount.subtract(feeAmount);
-
-		//插入提现记录
-		String withdrawalId = IdWorker.getIdStr();
-		Map<String,Object> logWithdrawalMap=new HashMap<>();
-		logWithdrawalMap.put("id",withdrawalId);
-		logWithdrawalMap.put("wxuser_id",wxuserId);
-		logWithdrawalMap.put("view_wxname",wxName);
-		logWithdrawalMap.put("view_phone",phone);
-		logWithdrawalMap.put("code_url",qrCode);
-		logWithdrawalMap.put("withdrawal_amount",amount);//提现金额
-		logWithdrawalMap.put("received_amount",dzAmount);//到账金额
-		logWithdrawalMap.put("fee_amount",feeAmount);//手续费
-		logWithdrawalMap.put("withdrawal_time",now);//提现时间
-		logWithdrawalMap.put("withdrawal_state",0);//待审核
-		baseSqlService.baseInsertData("chat_withdrawal_log",logWithdrawalMap);
-
-		//扣除用户余额
-		walletService.subAmount(wxuserId,amount,"1");
-
-		//判断是否开启自动转账功能
-		Map<String, Object> autoMap = baseSqlService.getDataOneByField("chat_withdrawal_setting", "withdrawal_type", "withdrawal_auto");
-		String withdrawalAutoValue = MjkjUtils.getMap2Str(autoMap, "withdrawal_value");
-		if(Func.equals(withdrawalAutoValue,"true")){//开启自动转账功能-------
-			String wxResult = wxPayService.handleAutoWithdrawal(withdrawalId);
-			if(Func.equals(wxResult,"成功")){
-				//转账成功，则需要销账
-				Map<String,Object> updateMap=new HashMap<>();
-				updateMap.put("remark","转账成功");
-				updateMap.put("auditor","自动审核");
-				updateMap.put("auditor_blade_user_id",-1);
-				updateMap.put("auditor_time",now);
-				updateMap.put("withdrawal_state",1);//通过
-				baseSqlService.baseUpdateData("chat_withdrawal_log",updateMap,withdrawalId);
-			}else{//自动转账失败，需要走人工审核
-				Map<String,Object> updateMap=new HashMap<>();
-				updateMap.put("remark","【自动审核】，失败原因："+wxResult);
-				baseSqlService.baseUpdateData("chat_withdrawal_log",updateMap,withdrawalId);
-			}
-		}
-
-
-
-
-	}
 	/**
 	 * 获取本微信用户id下所有的子用户(推广)
 	 * @param wxuserId
@@ -1158,37 +972,6 @@ public class WebServiceImpl implements IWebService {
 	//获取下级要求数量
 	public IPage<Map<String, Object>>  getSubCouList(String wxuserId,IPage<Object> page){
 		return webMapper.getSubCouList(wxuserId,page);
-	}
-
-	//保存图片
-	@Async("asyncPoolTaskExecutor")
-	@Override
-	public void saveDALLEImages(String id,String prompt,String size){
-		String dalleImageUrl = chatGPTService.getDALLEImages(prompt, size);
-
-		try{
-			long time = System.currentTimeMillis();
-			String PNG=".png";
-			String qrcodeFileUrl = ChatgptConfig.getUploadUrl();
-
-			String savePath = qrcodeFileUrl+"/dalle_"+time+PNG;
-			// 发送GET请求下载图片
-			byte[] imageBytes = HttpUtil.downloadBytes(dalleImageUrl);
-			// 将字节数组保存为图片文件
-			File myFile = FileUtil.writeBytes(imageBytes, savePath);
-
-
-			InputStream inputStream = new FileInputStream(myFile);
-
-			MinioBladeFile bladeFile = minioUtils.uploadInputStream(time + PNG, inputStream);
-
-			String link = bladeFile.getLink();
-			Map<String,Object> updateMap=new HashMap<>();
-			updateMap.put("image_url",link);
-			baseSqlService.baseUpdateData("chat_images",updateMap,id);
-		}catch (Exception e){
-			e.printStackTrace();
-		}
 	}
 
 

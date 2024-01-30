@@ -19,8 +19,6 @@ public interface IChatGPTService {
 	//gpt3.5
 	void sendChatGptTurboMessage(String modelType, String wxUserId, String q_logMessageId, String question, Long startMessageId, Date sendTime);
 
-	//机器人发送图片
-	void sendImageMessage(String modelType, String wxUserId, String q_logMessageId, String question, Long startMessageId, Date sendTime, String size);
 
 	//发送实时消息，长连接等着返回
 	String sendNowTimeChatGptTurboMessage(List<MessageModel> messagesList);
@@ -32,7 +30,5 @@ public interface IChatGPTService {
 
 	List<ChatGptTurboResult.ChoiceModel> getChatGptTurboResponse(List<MessageModel> messagesList, AccountUseCouModel accountModel);
 
-	//flagstudio 生成图片
-	String getFlagstudioImages(String prompt);
 
 }

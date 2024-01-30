@@ -10,8 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springblade.cgform.service.IMjkjBaseSqlService;
 import org.springblade.common.utils.MjkjUtils;
 import org.springblade.config.constant.ChatgptConfig;
-import org.springblade.config.util.minio.MinioBladeFile;
-import org.springblade.config.util.minio.MinioUtils;
 import org.springblade.core.tool.jackson.JsonUtil;
 import org.springblade.core.tool.utils.DateUtil;
 import org.springblade.core.tool.utils.Func;
@@ -46,9 +44,6 @@ public class WechatRotServiceImpl implements IWechatRotService {
 
 	@Autowired
 	private IChatGPTService chatGPTService;
-
-	@Autowired
-	private MinioUtils minioUtils;
 
 	//机器人发送消息
 	@Override
@@ -111,117 +106,6 @@ public class WechatRotServiceImpl implements IWechatRotService {
 		updateMap.put("message_time_a",timea);
 		baseSqlService.baseUpdateData("chat_wechatbot_message",updateMap,messageId);
 		return content;
-	}
-
-	//机器人发送图片
-	@Override
-	public String sendImage(WechatUserParam param,String size,boolean autoEnglish){
-		String imageModel = ChatgptConfig.getImageModelWechatRot();//机器人模型
-		boolean gptModelFlag=true;
-		if(Func.equals(imageModel,"flagstudio")){
-			gptModelFlag=false;//不是gpt模型
-		}
-
-		String englishContent="";
-		if(gptModelFlag && autoEnglish){//gpt 模型 并且翻译成英文
-			try{
-				List<MessageModel> messagesList=new ArrayList<>();
-				String wechatContent = param.getWechatContent();
-				MessageModel model1=new MessageModel();
-				model1.setRole(MessageModelRoleType.USER);
-				model1.setContent(wechatContent);
-				messagesList.add(model1);
-
-				MessageModel model2=new MessageModel();
-				model2.setRole(MessageModelRoleType.USER);
-				model2.setContent("将上面一句话翻译成英文，并且只返回英文");
-				messagesList.add(model2);
-				englishContent = chatGPTService.sendNowTimeChatGptTurboMessage(messagesList);
-				log.info(wechatContent+"  =====> 翻译成英文=====>"+englishContent);
-			}catch (Exception e){
-				e.printStackTrace();
-			}
-
-		}
-		String wechatId = param.getWechatId();
-		String wechatName = param.getWechatName();
-		//1.判断用户是否存在
-		Map<String, Object> wechatbotUserMap = baseSqlService.getDataOneByField("chat_wechatbot_user", "wechatbot_user_name", wechatName);
-		if(Func.isEmpty(wechatbotUserMap)){//新增用户
-			wechatbotUserMap=new HashMap<>();
-			wechatbotUserMap.put("id", IdWorker.getId());
-			wechatbotUserMap.put("wechatbot_user_id",wechatId);
-			wechatbotUserMap.put("wechatbot_user_name",param.getWechatName());
-			wechatbotUserMap.put("wechatbot_user_type",param.getWechatMessageType());
-			baseSqlService.baseInsertData("chat_wechatbot_user",wechatbotUserMap);
-		}
-		Date now = DateUtil.now();
-		String wechatbotUserId = MjkjUtils.getMap2Str(wechatbotUserMap, "id");
-		//2.存储发送问题
-		String messageId = IdWorker.getIdStr();
-		Map<String,Object> qmessageMap=new HashMap<>();
-		qmessageMap.put("id",messageId);
-		qmessageMap.put("wechatbot_user_name",param.getWechatName());
-		qmessageMap.put("wechatbot_message_id",param.getWechatMessageId());
-		qmessageMap.put("wechatbot_user_id",wechatbotUserId );
-		qmessageMap.put("message_content_q",param.getWechatContent());
-		qmessageMap.put("message_time_q",now);
-		baseSqlService.baseInsertData("chat_wechatbot_message",qmessageMap);
-
-		//3.校验是否有铭感词
-		boolean sensitiveWordFlag = webService.checkSensitiveWord(param.getWechatContent());
-		if(!sensitiveWordFlag){//存在敏感词，直接返回
-			String answerStr = webService.getCsszVal("sensitive_word_msg", "您发送的内容存在敏感词");
-
-			Map<String,Object> updateMap=new HashMap<>();
-			updateMap.put("message_content_a",answerStr);
-			updateMap.put("message_time_a",now);
-			baseSqlService.baseUpdateData("chat_wechatbot_message",updateMap,messageId);
-			return answerStr;
-		}
-		//4,图片没有上下文
-		try{
-			String link ="";
-			if(gptModelFlag){
-				String prompt ="";
-				if(autoEnglish && Func.isNotEmpty(englishContent)){
-					prompt =englishContent;
-				}else{
-					prompt =param.getWechatContent();
-				}
-				if(Func.isEmpty(size)){
-					size = "256x256";
-				}
-				String dalleImageUrl = chatGPTService.getDALLEImages(prompt, size);
-
-				String PNG=".png";
-				long time = System.currentTimeMillis();
-				String qrcodeFileUrl = ChatgptConfig.getUploadUrl();
-
-				String savePath = qrcodeFileUrl+"/dalle_"+time+PNG;
-				// 发送GET请求下载图片
-				byte[] imageBytes = HttpUtil.downloadBytes(dalleImageUrl);
-				// 将字节数组保存为图片文件
-				File myFile = FileUtil.writeBytes(imageBytes, savePath);
-
-
-				InputStream inputStream = new FileInputStream(myFile);
-
-				MinioBladeFile bladeFile = minioUtils.uploadInputStream(time + PNG, inputStream);
-				link = bladeFile.getLink();
-			}else{
-				//国产
-				link = chatGPTService.getFlagstudioImages(param.getWechatContent());
-			}
-			Map<String,Object> updateMap=new HashMap<>();
-			updateMap.put("message_content_a",link);
-			updateMap.put("message_time_a",DateUtil.now());
-			baseSqlService.baseUpdateData("chat_wechatbot_message",updateMap,messageId);
-			return link;
-		}catch (Exception e){
-
-		}
-		return null;
 	}
 
 

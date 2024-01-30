@@ -20,8 +20,6 @@ import org.springblade.core.tool.jackson.JsonUtil;
 import org.springblade.core.tool.utils.AesUtil;
 import org.springblade.core.tool.utils.DateUtil;
 import org.springblade.core.tool.utils.Func;
-import org.springblade.config.util.minio.MinioBladeFile;
-import org.springblade.config.util.minio.MinioUtils;
 import org.springblade.mng.mapper.WebMapper;
 import org.springblade.mng.model.*;
 import org.springblade.mng.param.ChatGptParam;
@@ -72,9 +70,6 @@ public class ChatGPTServiceImpl implements IChatGPTService {
 	@Lazy
 	@Autowired
 	private IChatGPTService chatGPTService;
-
-	@Autowired
-	private MinioUtils minioUtils;
 
 
 	/**
@@ -179,7 +174,7 @@ public class ChatGPTServiceImpl implements IChatGPTService {
 	 * @param wxUserId
 	 * @param q_logMessageId
 	 */
-	@Async("asyncPoolTaskExecutor")
+//	@Async("asyncPoolTaskExecutor")
 	@Override
 	public void sendChatGptTurboMessage(String modelType, String wxUserId, String q_logMessageId, String question, Long startMessageId, Date sendTime) {
 		Map<String, Object> wxUserMap = baseSqlService.getTableById("chat_wxuser", wxUserId);
@@ -280,123 +275,6 @@ public class ChatGPTServiceImpl implements IChatGPTService {
 		messageClient.sendChatGptMsg(questionMsgModel);
 	}
 
-	@Async("asyncPoolTaskExecutor")
-	@Override
-	public void sendImageMessage(String modelType, String wxUserId, String q_logMessageId, String question, Long startMessageId, Date sendTime, String size) {
-		String imageModel = ChatgptConfig.getImageModel();
-		boolean gptModelFlag = true;
-		if (Func.equals(imageModel, "flagstudio")) {
-			gptModelFlag = false;//不是gpt模型
-		}
-
-		String englishContent = "";
-		//翻译成英文
-		try {
-			if (gptModelFlag) {//gpt模型
-				List<MessageModel> messagesList = new ArrayList<>();
-				MessageModel model1 = new MessageModel();
-				model1.setRole(MessageModelRoleType.USER);
-				model1.setContent(question);
-				messagesList.add(model1);
-
-				MessageModel model2 = new MessageModel();
-				model2.setRole(MessageModelRoleType.USER);
-				model2.setContent("将上面一句话翻译成英文，并且只返回英文");
-				messagesList.add(model2);
-				englishContent = chatGPTService.sendNowTimeChatGptTurboMessage(messagesList);
-				log.info(question + "  =====> 翻译成英文=====>" + englishContent);
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			englishContent = question;
-		}
-
-
-		Map<String, Object> wxUserMap = baseSqlService.getTableById("chat_wxuser", wxUserId);
-		Long bladeUserId = MjkjUtils.getMap2Long(wxUserMap, "blade_user_id");
-		String chatCode = MjkjUtils.getMap2Str(wxUserMap, "chat_code");
-
-		String link = "";//保存图片地址
-		String api_account_id="-1";
-		try {
-			if (gptModelFlag) {
-				AccountUseCouModel accountModel = this.getChatGptKey();//获取聊天 gpt 密钥
-				api_account_id=accountModel.getId();
-
-				String dalleImageUrl = chatGPTService.getDALLEImages(englishContent, size);//获取图片
-				String PNG = ".png";
-				long time = System.currentTimeMillis();
-				String qrcodeFileUrl = ChatgptConfig.getUploadUrl();//获取上传网址
-
-				String savePath = qrcodeFileUrl + "/dalle_" + time + PNG;
-				// 发送GET请求下载图片
-				byte[] imageBytes = HttpUtil.downloadBytes(dalleImageUrl);
-				// 将字节数组保存为图片文件
-				File myFile = FileUtil.writeBytes(imageBytes, savePath);
-
-				InputStream inputStream = new FileInputStream(myFile);
-
-				MinioBladeFile minioBladeFile = minioUtils.uploadInputStream(time + PNG, inputStream);
-				if(Func.isNotEmpty(inputStream)){
-					try{
-						inputStream.close();
-					}catch (Exception e){
-
-					}
-				}
-				link = minioBladeFile.getLink();//返回的oss图片路径
-
-			} else {
-				link = this.getFlagstudioImages(question);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		//保存并且推送
-		Date now = DateUtil.now();
-		String id = IdWorker.getIdStr();
-		//保存消息
-		Map<String, Object> insertMap = new HashMap<>();
-		insertMap.put("id", id);
-		insertMap.put("pid", q_logMessageId);
-		insertMap.put("wxuser_id", wxUserId);
-		insertMap.put("message_type", MessageType.A);//q =问题  a=答案
-		insertMap.put("message_time", now);
-		insertMap.put("blade_user_id", bladeUserId);
-		if (Func.isEmpty(link)) {//生成图片失败
-			insertMap.put("message_content", "图片生成失败");//回答内容
-			insertMap.put("view_type", ViewType.TEXT);//类型图片
-		} else {
-			insertMap.put("message_content", link);//回答内容
-			insertMap.put("view_type", ViewType.IMAGE);//类型图片
-		}
-		insertMap.put("context_flag",0);//不支持上下文
-		insertMap.put("model_type", modelType);//分类
-		insertMap.put("api_account_id", api_account_id);//账户id
-		baseSqlService.baseInsertData("chat_log_message", insertMap);
-
-		//发送到前端
-		//算出耗时
-		Long useTimeL = now.getTime() - sendTime.getTime();
-		BigDecimal useTime = BigDecimal.valueOf(useTimeL).divide(BigDecimal.valueOf(1000L));
-
-		ChatGptMsgModel questionMsgModel = new ChatGptMsgModel();
-		questionMsgModel.setId(id);
-		questionMsgModel.setPid(q_logMessageId);
-		questionMsgModel.setChatCode(chatCode);
-		questionMsgModel.setMessage_type(MessageType.A);//q =问题  a=答案
-		if (Func.isEmpty(link)) {//生成图片失败
-			questionMsgModel.setMessage_content("图片生成失败");//图片
-			questionMsgModel.setView_type(ViewType.TEXT);//类型图片
-		} else {
-			questionMsgModel.setMessage_content(link);//图片
-			questionMsgModel.setView_type(ViewType.IMAGE);//类型图片
-		}
-		questionMsgModel.setMessage_time(now);
-		questionMsgModel.setUseTime(useTime.stripTrailingZeros().toPlainString());//耗时
-		messageClient.sendChatGptMsg(questionMsgModel);
-	}
 
 	/**
 	 * 发送实时消息，长连接等着返回
@@ -553,82 +431,6 @@ public class ChatGPTServiceImpl implements IChatGPTService {
 		} catch (Exception e) {
 			throw new ServiceException(e.getMessage());
 		}
-	}
-
-	//flagstudio 生成图片
-	@Override
-	public String getFlagstudioImages(String prompt) {
-
-		String englishContent = "";
-		//翻译成英文
-		try {
-				List<MessageModel> messagesList = new ArrayList<>();
-				MessageModel model1 = new MessageModel();
-				model1.setRole(MessageModelRoleType.USER);
-				model1.setContent(prompt);
-				messagesList.add(model1);
-
-				MessageModel model2 = new MessageModel();
-				model2.setRole(MessageModelRoleType.USER);
-				model2.setContent("将上面一句话翻译成英文，并且只返回英文");
-				messagesList.add(model2);
-				englishContent = chatGPTService.sendNowTimeChatGptTurboMessage(messagesList);
-				log.info(prompt + "  =====> 翻译成英文=====>" + englishContent);
-		} catch (Exception e) {
-			e.printStackTrace();
-			englishContent = prompt;
-		}
-
-		String account = this.getAccount();
-		if (Func.isEmpty(account)) {
-			return null;
-		}
-		String token = this.getFlagstudioToken(account);
-		if (Func.isEmpty(token)) {
-			return null;
-		}
-		ImageSizeModel imageSize = MjkjUtils.getIMageSize(prompt);
-
-
-		Map<String, Object> bodyMap = new HashMap<>();
-		bodyMap.put("prompt", englishContent);
-		bodyMap.put("height", imageSize.getHeight());
-		bodyMap.put("width", imageSize.getWidth());
-		String imageStyle = ChatgptConfig.getImageStyle();
-		if(Func.isNotEmpty(imageStyle)){
-			bodyMap.put("style",imageStyle);
-		}
-		String body = JsonUtil.toJson(bodyMap);
-
-		//参数 http://flagstudio.baai.ac.cn/document#37586eb6befaf0d6ed90255f38dbf5ab
-		String url = "https://flagopen.baai.ac.cn/flagStudio/v1/text2img";
-		String result = HttpRequest.post(url)
-			.header("Content-Type", "application/json")
-			.header("Accept", "application/json")
-			.header("token", token)
-			.body(body)
-			.execute().body();
-		if (Func.isEmpty(result)) {
-			return null;
-		}
-		FlagstudioImageR imageR = JsonUtil.parse(result, FlagstudioImageR.class);
-		Integer code = imageR.getCode();
-		if (Func.isEmpty(code) || code != 200) {
-			return null;
-		}
-		String imageData = imageR.getData();//图片地址
-		InputStream inputStream = MjkjUtils.base2InputStream(imageData);
-		String fileName = IdWorker.getIdStr() + ".png";
-		MinioBladeFile minioBladeFile = minioUtils.uploadInputStream(fileName, inputStream);
-		if(Func.isNotEmpty(inputStream)){
-			try{
-				inputStream.close();
-			}catch (Exception e){
-
-			}
-		}
-		//图片上次到100
-		return minioBladeFile.getLink();
 	}
 
 	//获取账号

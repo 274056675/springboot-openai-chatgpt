@@ -16,6 +16,7 @@ indent_style = tab
 [*.{json,yml}]
 indent_size = 2
 
+
 [*.md]
 insert_final_newline = false
 trim_trailing_whitespace = false

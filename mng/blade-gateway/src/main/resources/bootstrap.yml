@@ -1,6 +1,5 @@
 server:
   port: 9872
-#项目的启动端口号
 
 spring:
   cloud:

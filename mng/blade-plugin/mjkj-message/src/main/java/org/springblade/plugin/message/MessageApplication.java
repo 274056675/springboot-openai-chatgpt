@@ -16,6 +16,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
 public class MessageApplication {
 
 	public static void main(String[] args) {
+
 		BladeApplication.run("open-message", MessageApplication.class, args);
 	}
 

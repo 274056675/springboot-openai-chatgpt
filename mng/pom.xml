@@ -29,6 +29,7 @@
         <docker.plugin.version>1.4.13</docker.plugin.version>
     </properties>
 
+
     <modules>
         <module>blade-auth</module>
         <module>blade-common</module>

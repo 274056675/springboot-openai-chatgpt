@@ -9,10 +9,10 @@ import java.util.Map;
 
 @Slf4j
 public class JsonschemaUtil {
-	
+
 	/**
 	 * 生成JsonSchema
-	 * 
+	 *
 	 * @param descrip
 	 * @param propertyList
 	 * @return
@@ -35,7 +35,7 @@ public class JsonschemaUtil {
 		log.info("---JSONSchema--->"+obj.toJSONString());
 		return obj;
 	}
-	
+
 	/**
 	 * 生成JsonSchema 用于子对象
 	 * @param title 子对象描述

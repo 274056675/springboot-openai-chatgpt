@@ -30,7 +30,7 @@ public class ExportBase {
 
 	/**
 	 * 创建导出实体对象
-	 * 
+	 *
 	 * @param field
 	 * @param targetId
 	 * @param pojoClass
@@ -74,7 +74,7 @@ public class ExportBase {
 
 	/**
 	 * 获取需要导出的全部字段
-	 * 
+	 *
 	 * @param exclusions
 	 * @param targetId
 	 *            目标ID
@@ -120,7 +120,7 @@ public class ExportBase {
 
 	/**
 	 * 获取这个字段的顺序
-	 * 
+	 *
 	 * @param orderNum
 	 * @param targetId
 	 * @return
@@ -142,7 +142,7 @@ public class ExportBase {
 
 	/**
 	 * 获取填如这个cell的值,提供一些附加功能
-	 * 
+	 *
 	 * @param entity
 	 * @param obj
 	 * @return
@@ -195,7 +195,7 @@ public class ExportBase {
 
 	/**
 	 * 获取集合的值
-	 * 
+	 *
 	 * @param entity
 	 * @param obj
 	 * @return
@@ -213,7 +213,7 @@ public class ExportBase {
 
 	/**
 	 * 注解到导出对象的转换
-	 * 
+	 *
 	 * @param targetId
 	 * @param field
 	 * @param excelEntity
@@ -272,7 +272,7 @@ public class ExportBase {
 
 	/**
 	 * 判断在这个单元格显示的名称
-	 * 
+	 *
 	 * @param exportName
 	 * @param targetId
 	 * @return
@@ -292,7 +292,7 @@ public class ExportBase {
 
 	/**
 	 * 多个反射获取值
-	 * 
+	 *
 	 * @param list
 	 * @param t
 	 * @return
@@ -311,7 +311,7 @@ public class ExportBase {
 
 	/**
 	 * 根据注解获取行高
-	 * 
+	 *
 	 * @param excelParams
 	 * @return
 	 */
@@ -351,7 +351,7 @@ public class ExportBase {
 		}
 		return value;
 	}
-	
+
 	//update-begin-author:taoyan date：20180731 for:TASK #3038 【bug】Excel 导出多个值（逗号隔开的情况下，导出字典值是ID值）
 	/**
 	 * 如果需要被替换的值是多选项，则每一项之间有逗号隔开，走以下方法
