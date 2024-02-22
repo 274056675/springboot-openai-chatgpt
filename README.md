@@ -345,7 +345,7 @@ P7分类：场景  风格：赛博朋克   比例：1:1   尺寸：512*512
 </table>
 
 因为本项目依赖BladeX框架而搭建，因此在项目正式运行之前，我们需要再检查一遍本项目的正确maven路径,而后导入bladex-tool(本项目版本为2.9.1)工具包。
-
+依赖导入失败可以通过此链接下载 http://ai.oss.mj.ink/chatgpt/mavenlib/mavenlib.rar 
 之后我们还需要配置nacos文件，**打开nacos,新增chatgpt_open命名空间，空间id为chatgpt_open**,而后分别新增配置blade.yaml、blade-dev.yaml文件。
 
 如图：(在这里关于部分中间件的地址于yaml文件中已有示例，具体还需与个人本地的地址相对应进行配置)
