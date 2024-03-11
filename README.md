@@ -458,7 +458,7 @@ P7分类：场景  风格：赛博朋克   比例：1:1   尺寸：512*512
 </table>
 
 
-## 客服微信与技术讨论群（广告勿扰）：##
+## 客服微信与技术讨论群（广告勿扰）：
 
  <div align=center >
     <td ><img height="250" width="250" src="https://ai.oss.mj.ink/chatgpt/github/wechatgroup.jpg"/></td>
