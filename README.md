@@ -330,7 +330,6 @@ P7分类：场景  风格：赛博朋克   比例：1:1   尺寸：512*512
 
 **默认已启动中间件：**[Nacos2.0.0++](https://nacos.io/)、[Mysql8.0](http://mysql.p2hp.com/)、[Redis](https://redis.io/)、[Minio](http://www.minio.org.cn/)
 
-**配置及获取  flagstudioToken:**  [flagstudio]( http://flagstudio.baai.ac.cn/)
 
 如果觉得以上麻烦，推荐使用phpStudy简化环境配置：[phpstudy](https://www.xp.cn/)
 
