@@ -29,14 +29,6 @@ export const clearNumMinNoPer = (obj) => {
 //inpu框，只能输入数字，【正整数和零】
 export const clearNumIntegar = (obj) => {
   obj.value = obj.value.replace(/\D/g, '');
-  //if (obj.value != undefined) {
-  //    obj.value = obj.value.replace(/\D/g, '');
-  //} else {
-  //    console.log=(obj)=>
-  //    var nowValue = $=(obj)=>.val();
-  //    console.log(nowValue)
-  //    $=(obj)=>.val(nowValue.replace(/\D/g, ''));
-  //}
 }
 
 //inpu框，只能输入数字，【正整数（大于零）】

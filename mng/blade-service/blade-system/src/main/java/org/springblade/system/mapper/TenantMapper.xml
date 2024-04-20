@@ -11,16 +11,10 @@
         <result column="update_time" property="updateTime"/>
         <result column="status" property="status"/>
         <result column="is_deleted" property="isDeleted"/>
-        <result column="tenant_id" property="tenantId"/>
         <result column="tenant_name" property="tenantName"/>
-        <result column="domain_url" property="domainUrl"/>
-        <result column="background_url" property="backgroundUrl"/>
         <result column="linkman" property="linkman"/>
         <result column="contact_number" property="contactNumber"/>
         <result column="address" property="address"/>
-        <result column="account_number" property="accountNumber"/>
-        <result column="expire_time" property="expireTime"/>
-        <result column="license_key" property="licenseKey"/>
     </resultMap>
 
 

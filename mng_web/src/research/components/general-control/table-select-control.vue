@@ -199,11 +199,11 @@ export default {
         console.warn("其他配置格式异常");
       }
       this.allTreeData = await this.getTreeDataFun();
-      console.log("所有树数据", this.allTreeDatareeData);
+      
       if (bool) {
         this.allTableData = await this.getTableDataFun("all");
       }
-      console.log("所有表格数据", this.allTableData);
+      
       this.isTableLoading = false;
       await this.getTableDataFun();
     },
@@ -226,7 +226,7 @@ export default {
           });
         } else if (this.treeDataUrl && this.treeApiMode == "custom") {
           let url = this.treeDataUrl;
-          console.log(url);
+          
           if (url.indexOf("/") == 0) {
             url = url.replace("/api/", this.apiRequestHead + "/");
           } else {
@@ -408,7 +408,7 @@ export default {
     },
     //点击部门树触发
     treeNodeClickFun(data) {
-      console.log(data);
+      
       this.tablePage.currentPage = 1;
       this.tablePage.currentTreeId = data[this.treeProps.value]
         ? data[this.treeProps.value]
@@ -417,7 +417,7 @@ export default {
     },
     //调用父组件设置表单值方法{fieldName:'',value:''}
     setParentFormValFun(obj) {
-      console.log("设置", obj);
+      
       if (obj.value && obj.value instanceof Array) {
         obj.value = obj.value.join(",");
       }

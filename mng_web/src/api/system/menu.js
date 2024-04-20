@@ -11,51 +11,6 @@ export const getList = (current, size, params) => {
     }
   })
 }
-
-export const getLazyList = (parentId, params) => {
-  return request({
-    url: '/api/blade-system/menu/lazy-list',
-    method: 'get',
-    params: {
-      ...params,
-      parentId
-    }
-  })
-}
-
-export const getLazyMenuList = (parentId, params) => {
-  return request({
-    url: '/api/blade-system/menu/lazy-menu-list',
-    method: 'get',
-    params: {
-      ...params,
-      parentId
-    }
-  })
-}
-
-export const getMenuList = (current, size, params) => {
-  return request({
-    url: '/api/blade-system/menu/menu-list',
-    method: 'get',
-    params: {
-      ...params,
-      current,
-      size,
-    }
-  })
-}
-
-export const getMenuTree = (tenantId) => {
-  return request({
-    url: '/api/blade-system/menu/tree',
-    method: 'get',
-    params: {
-      tenantId,
-    }
-  })
-}
-
 export const remove = (ids) => {
   return request({
     url: '/api/blade-system/menu/remove',
@@ -92,15 +47,13 @@ export const getMenu = (id) => {
   })
 }
 
-export const getTopMenu = () => request({
-  url: '/api/blade-system/menu/top-menu',
-  method: 'get'
-});
-
-export const getRoutes = (topMenuId) => request({
-  url: '/api/blade-system/menu/routes',
-  method: 'get',
-  params: {
-    topMenuId,
-  }
-});
+export const getLazyMenuList = (parentId, params) => {
+  return request({
+    url: '/api/blade-system/menu/lazy-menu-list',
+    method: 'get',
+    params: {
+      ...params,
+      parentId
+    }
+  })
+}

@@ -111,14 +111,14 @@ export default {
       //通过接口获取所有树表格数据
       if (this.optionData.apiName == 'getData') {
         getDataApi(tableId, { pageSzie: -521, pageNo: 1 }).then((res) => {
-          console.log('获取表单数据返回', res)
+          
           if (res.data.success) {
             this.treeData = res.data.data.records
           }
         })
       } else if (this.optionData.apiName == 'getTreeData') {
         getAllTreeDataApi(tableId).then((res) => {
-          console.log('获取表单数据返回', res)
+          
           if (res.data.success) {
             this.treeData = res.data.data
           }
@@ -130,7 +130,7 @@ export default {
     //获取当前选择的数据
     async getCurrSelectTreeFun() {
       let checkArr = this.$refs.elTree.getCheckedNodes(true)
-      console.log(checkArr)
+      
       //排除禁用节点
       checkArr = checkArr.filter((item) => {
         if (
@@ -144,7 +144,7 @@ export default {
         this.$message('请勾选需要添加的数据~')
         return false
       }
-      console.log(checkArr)
+      
       let tableArr = []
       checkArr.forEach((item) => {
         let obj = {}

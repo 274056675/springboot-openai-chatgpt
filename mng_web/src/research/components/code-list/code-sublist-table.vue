@@ -487,7 +487,7 @@ export default {
       this.tablePage.total = this.tableAllData.length
 
       this.tablePageFun()
-      console.log('===========>子表数据', this.currDataList)
+      
     }
     if (this.showMenu) {
       this.tableOption.column = this.setTableDataFun(
@@ -509,7 +509,7 @@ export default {
       //处理文件名
       if (fileArr.length > 0) {
         fileArr.forEach((fileItem) => {
-          console.log(item, fileItem)
+          
 
           if (item[fileItem] != '' && item[fileItem] != undefined) {
             this.tableData[index]['$Name' + fileItem] = []
@@ -520,12 +520,12 @@ export default {
               if (fileRes.data.success && fileRes.data.data) {
                 fileName = fileRes.data.data
               }
-              console.log(fileName, index, this.tableData)
+              
               this.tableData[index]['$Name' + fileItem] = [
                 ...this.tableData[index]['$Name' + fileItem],
                 fileName,
               ]
-              console.log(this.tableData)
+              
               this.$refs.crud.columnInit()
             })
           }
@@ -614,7 +614,7 @@ export default {
     //分页逻辑
     tablePageFun() {
       let { pageSize, currentPage } = this.tablePage
-      console.log(this.tablePage.total, pageSize, this.tableIsPage)
+      
       if (!this.tableIsPage || this.tablePage.total <= pageSize) {
         this.tableData = this.tableAllData
 
@@ -625,7 +625,7 @@ export default {
       for (let index = num - (pageSize - 1); index <= num; index++) {
         numArr.push(index)
       }
-      console.log(numArr)
+      
       this.tableData = []
       this.tableAllData.forEach((item, index) => {
         if (numArr.includes(index)) {
@@ -645,7 +645,7 @@ export default {
       this.tablePageFun()
     },
     codeFileControlDelFun(fileName, obj) {
-      console.log(obj, fileName, this.formData)
+      
       let arr = []
       if (this.dialogFormData[fileName] instanceof Array) {
         arr = this.dialogFormData[fileName]
@@ -779,7 +779,7 @@ export default {
     },
     //打开图片或文件  弹窗
     opentDialogUploadeFun(type, item, row) {
-      console.log(type, item, row)
+      
       this.dialogFormOption.column = []
       this.dialogFormData[item.fieldName] = this.deepClone(row[item.fieldName])
       this.dialogFormData['$Name' + item.fieldName] = this.deepClone(
@@ -804,12 +804,12 @@ export default {
     },
     //图片上传成功
     customImgUploadSuccessFun(response, scope, fieldName) {
-      console.log(response, scope)
+      
       this.tableData[scope.row.$index][fieldName] = [response.result.data.lj]
     },
     //图片上传失败
     customImgUploadErrorFun(err, file, fileList) {
-      console.log(err, file, fileList)
+      
     },
     //校验表格数据方法
     verifyFormFun() {
@@ -877,7 +877,7 @@ export default {
         message: `<${column.label}>只允许上传${limit}个文件`,
         type: 'warning',
       })
-      console.log('超过上传长度', limit, files, fileList, column)
+      
     },
     //表格格式数据处理
     setTableDataFun(obj, formSpan, isCell = true) {
@@ -1267,7 +1267,7 @@ export default {
         //处理字典
         tableColumn.push(columnItem)
       })
-      console.log(tableColumn)
+      
       return tableColumn
     },
     //添加数据 新值行
@@ -1324,15 +1324,15 @@ export default {
     },
     //新增数据
     rowSaveFun(row, done) {
-      console.log('code-sublist-table新增数据======>', row)
+      
       // row.id = row.$index
       this.tableData.push(row)
-      console.log(row)
+      
       done()
     },
     //编辑数据
     rowUpdateFun(row, index, done) {
-      console.log('code-sublist-table修改数据======>', row, index)
+      
       this.tableData = this.tableData.map((item, i) => {
         if (i == index) {
           item = row
@@ -1384,7 +1384,7 @@ export default {
           apiData.dataId = row.id
         }
         if (btnType == 'button') {
-          console.log(this.tableSelectId)
+          
           if (this.tableSelectId.length == 1) {
             apiData.dataId = this.tableSelectId[0]
           } else {
@@ -1399,7 +1399,7 @@ export default {
           apiData.uiFormData = row
         }
         //访问接口 接口处理完才执行下面代码
-        console.log('自定义按钮 sql增强 访问接口参数', apiData)
+        
         // await touchSqlEnhanceApi(apiData)
         // if (btnType == 'link' || btnType == 'button') {
         //   this.$refs.codeTestList.selectClear()
@@ -1426,7 +1426,7 @@ export default {
             this.customOnlineEnhanceJsName.list = Object.keys(
               this.customOnlineEnhanceJsList
             )
-            console.log(this.customOnlineEnhanceJsList)
+            
             if (this.customOnlineEnhanceJsList == undefined) {
               this.customOnlineEnhanceJsList = {}
             }

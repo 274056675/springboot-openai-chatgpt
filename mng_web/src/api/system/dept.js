@@ -11,18 +11,6 @@ export const getList = (current, size, params) => {
     }
   })
 }
-
-export const getLazyList = (parentId, params) => {
-  return request({
-    url: '/api/blade-system/dept/lazy-list',
-    method: 'get',
-    params: {
-      ...params,
-      parentId
-    }
-  })
-}
-
 export const remove = (ids) => {
   return request({
     url: '/api/blade-system/dept/remove',
@@ -58,23 +46,12 @@ export const getDept = (id) => {
     }
   })
 }
-
 export const getDeptTree = (tenantId) => {
   return request({
     url: '/api/blade-system/dept/tree',
     method: 'get',
     params: {
       tenantId,
-    }
-  })
-}
-
-export const getDeptLazyTree = (parentId) => {
-  return request({
-    url: '/api/blade-system/dept/lazy-tree',
-    method: 'get',
-    params: {
-      parentId
     }
   })
 }

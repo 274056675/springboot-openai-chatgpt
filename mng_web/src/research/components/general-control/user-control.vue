@@ -218,7 +218,7 @@ export default {
         }
       },
     }
-    console.log('用户控件', this.tableItemScope)
+    
     if (this.disabled) {
       this.userControlTableOption.tip = false
       this.userControlTableOption.selectable = () => {
@@ -365,14 +365,14 @@ export default {
     },
     //用户控件 点击部门树触发
     userControlNodeClickFun(data) {
-      console.log(data)
+      
       this.userControlTablePage.currentPage = 1
       this.userControlTablePage.currentdepartId = data.id
       this.getAllUserInfoFun()
     },
     //调用父组件设置表单值方法{fieldName:'',value:''}
     setParentFormValFun(obj) {
-      console.log('设置', obj)
+      
       if (obj.value && obj.value instanceof Array) {
         obj.value = obj.value.join(',')
       }

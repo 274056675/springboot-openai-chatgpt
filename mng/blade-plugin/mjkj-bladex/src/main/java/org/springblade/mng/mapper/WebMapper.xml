@@ -18,14 +18,31 @@
     </select>
 
     <select id="getMessageCou" resultType="Integer">
-        SELECT
-            count(1) as cou
-        FROM
-            chat_log_message
-            where
-            message_type ='q'
-            and blade_user_id =#{bladeUserId}
+        select
+            sum(cou)
+        from (
+            SELECT
+                count( 1 ) AS cou
+            FROM
+                chat_log_message
+            WHERE
+                message_type = 'q'
+                and wxuser_id=#{wxuserId}
+            UNION
+            SELECT
+                count( 1 ) AS cou
+            FROM
+                chat_log_message_fun
+                where wxuser_id=#{wxuserId}
+            UNION
+            select
+                sum(use_point) as cou
+            from
+            chat_image_info
+            where wxuser_id=#{wxuserId}
+        ) t
     </select>
+
 
     <select id="getMessageHotList" resultType="map">
         SELECT
@@ -35,7 +52,7 @@
             lm_q.message_content message_q,
             lm_a.message_content message_a,
             ifnull(lm_q.hot_time,lm_a.hot_time) hot_time,
-            0 as star_num
+            (select ifnull(count(id),0) from chat_hot_message_star ms where ms.is_deleted=0 and ms.log_message_id=lm_q.id) as star_num
         FROM
             chat_log_message lm_q
             INNER JOIN chat_log_message lm_a on lm_q.id =lm_a.pid

@@ -1,37 +1,43 @@
 package org.springblade.mng.service.impl;
 
-
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.http.HttpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.freewayso.image.combiner.ImageCombiner;
+import com.freewayso.image.combiner.enums.OutputFormat;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.map.HashedMap;
-import org.springblade.cgform.service.IMjkjBaseSqlService;
-import org.springblade.common.utils.MjkjUtils;
-import org.springblade.config.constant.ChatgptConfig;
+import org.springblade.mng.cgform.service.IMjkjBaseSqlService;
+import org.springblade.mng.common.utils.MjkjUtils;
+import org.springblade.mng.config.constant.ChatgptConfig;
 import org.springblade.core.log.exception.ServiceException;
-import org.springblade.core.redis.cache.BladeRedis;
 import org.springblade.core.secure.utils.AuthUtil;
+import org.springblade.core.tool.jackson.JsonUtil;
 import org.springblade.core.tool.utils.DateUtil;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.RandomType;
+import org.springblade.core.tool.utils.RedisUtil;
+import org.springblade.mng.config.LocalCache;
 import org.springblade.mng.mapper.WebMapper;
 import org.springblade.mng.model.*;
 import org.springblade.mng.param.ChatLogShareMessageParam;
 import org.springblade.mng.param.MoreFunParam;
+import org.springblade.mng.param.QuestionParam;
 import org.springblade.mng.service.*;
-import org.springblade.plugin.message.feign.IMessageClient;
-import org.springblade.plugin.message.model.ChatGptMoreFunModel;
-import org.springblade.plugin.message.model.ChatGptMsgModel;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.List;
@@ -44,49 +50,58 @@ import java.util.*;
 @Service
 public class WebServiceImpl implements IWebService {
 
-	@Autowired
+	@Resource
 	private IMjkjBaseSqlService baseSqlService;
 
 	@Autowired
 	private IChatGPTService chatGPTService;
 
+
+
+	@Autowired
+	private RedisUtil redisUtil;
+
 	@Autowired
 	private WebMapper webMapper;
 
-	@Autowired
-	private BladeRedis bladeRedis;
 
-	@Autowired
-	private ICommissionService commissionService;
 
-	@Autowired
-	private IMessageClient messageClient;
-
-	@Autowired
-	private IWalletService walletService;
-
-	@Autowired
-	private IErnieBotService ernieBotService;
+	//删除用户
+	@Override
+	public void delWuserInfo(String wxuserId) {
+		Map<String, Object> wxuserMap = baseSqlService.getTableById("chat_wxuser", wxuserId);
+		if (Func.isEmpty(wxuserMap)) {
+			throw new ServiceException("用户不存在");
+		}
+		baseSqlService.baseDeleteSqlStr("chat_wxuser", wxuserId);
+	}
 
 	//获取用户详情
 	@Override
 	public WxUserInfoModel getWxUsrInfo() {
+		return this.getWxUsrInfo(null);
+	}
+
+	//获取用户详情
+	@Override
+	public WxUserInfoModel getWxUsrInfo(String type) {
+
 		Long userId = AuthUtil.getUserId();
 		QueryWrapper<Object> wrapper = new QueryWrapper<>();
 		wrapper.eq("is_deleted", 0);
 		wrapper.eq("blade_user_id", userId);
 		Map<String, Object> dataMap = baseSqlService.getDataOneByFieldParams("chat_wxuser", wrapper);
 		if (Func.isEmpty(dataMap)) {
-			throw new ServiceException("数据不存在");
+			throw new RuntimeException("数据不存在");
 		}
 		String wxuserId = MjkjUtils.getMap2Str(dataMap, "id");
 		//获取次数
-		Integer messageCou = this.getMessageCou(userId);
+		Integer messageCou = 0;
+		messageCou = this.getMessageCou(wxuserId);
+
+
 		//获取等级
 		String levelTitle = this.getLevelTitle(messageCou);
-
-		//获取消息显示默认
-		String viewModel = this.getCsszVal("view_model", "0");
 
 		//代理商
 		String isAgent = MjkjUtils.getMap2Str(dataMap, "is_agent");
@@ -124,10 +139,10 @@ public class WebServiceImpl implements IWebService {
 		//获取当前的数量
 		Integer viewRewardAdvertCou = 0;
 		String rewardAdvertRedisKey = MjkjUtils.getRewardAdvertRedisKey(userId, true);
-		Set<String> keys = bladeRedis.keys(rewardAdvertRedisKey);
-		if (Func.isNotEmpty(keys)) {
-			viewRewardAdvertCou = keys.size();
-		}
+//		Set<String> keys = redisUtil.sGet(rewardAdvertRedisKey);
+//		if (Func.isNotEmpty(keys)) {
+//			viewRewardAdvertCou = keys.size();
+//		}
 		boolean buyFlag = true;
 		if (Func.isNotEmpty(expireTime)) {
 			String expireYYYY = DateUtil.format(expireTime, "yyyy");
@@ -144,31 +159,34 @@ public class WebServiceImpl implements IWebService {
 		//微信专属连接
 		String wxShareUrl = MjkjUtils.getMap2Str(dataMap, "wx_share_url");
 		String inviteCode = MjkjUtils.getMap2Str(dataMap, "invite_code");
-//
-//		if(Func.isEmpty(wxShareUrl)){//需要生成专属连接
-//			try{
-//				String path = "/pages/index/index";
-//				//获取微信那边二维码
-//				final WxMaService wxService = WxMaConfiguration.getMaService(wxMaProperties.getConfigs().get(0).getAppid());
-//				GenerateUrlLinkRequest request=new GenerateUrlLinkRequest();
-//				request.setPath(path);
-//				request.setQuery("inviteCode=" + inviteCode);
-//				wxShareUrl= wxService.getLinkService().generateUrlLink(request);
-//				if(Func.isNotEmpty(wxShareUrl)){
-//					Map<String,Object> updateMap=new HashMap<>();
-//					updateMap.put("wx_share_url",wxShareUrl);
-//					baseSqlService.baseUpdateData("chat_wxuser",updateMap,wxuserId);
-//				}
-//			}catch (Exception e){
-//				//e.printStackTrace();
-//			}
-//		}
+		//用户信息里的邀请码为空，生成新的邀请码
+		if (Func.isEmpty(inviteCode)){
+			inviteCode = this.getNewInviteCode();
+			Map<String,Object> updateMap = new HashMap<>();
+			updateMap.put("invite_code",inviteCode);
+			baseSqlService.baseUpdateData("chat_wxuser",updateMap,wxuserId);
+		}
+
 
 		String phone = MjkjUtils.getMap2Str(dataMap, "phone");
-		if(Func.isEmpty(wxName)){
-			wxName="匿名用户";
-		}else if(Func.isNotEmpty(phone) && Func.equals(phone,wxName)){//如果手机号码和名称一样，则强制改为匿名用户
-			wxName="匿名用户";
+		if (Func.isEmpty(wxName)) {
+			wxName = "匿名用户";
+		} else if (Func.isNotEmpty(phone) && Func.equals(phone, wxName)) {//如果手机号码和名称一样，则强制改为匿名用户
+			wxName = "匿名用户";
+		}
+		String userCode = MjkjUtils.getMap2Str(dataMap, "user_code");
+		if (Func.isEmpty(userCode)) {//重新生成 用户号
+			while (true) {
+				userCode = Func.random(10, RandomType.INT);
+				Map<String, Object> userCodeMap = baseSqlService.getDataOneByField("chat_wxuser", "user_code", userCode);
+				if (Func.isEmpty(userCodeMap)) {
+					String id = MjkjUtils.getMap2Str(dataMap, "id");
+					Map<String,Object> updateMap=new HashMap<>();
+					updateMap.put("user_code",userCode);
+					baseSqlService.baseUpdateData("chat_wxuser",updateMap,id);
+					break;
+				}
+			}
 		}
 
 
@@ -176,13 +194,13 @@ public class WebServiceImpl implements IWebService {
 		model.setId(MjkjUtils.getMap2Str(dataMap, "id"));
 		model.setBladeUserId(userId);
 		model.setWxName(wxName);
-		model.setWxName_Dim(MjkjUtils.desensitizeStr(wxName,"匿名用户"));
+		model.setWxName_Dim(MjkjUtils.desensitizeStr(wxName, "匿名用户"));
 		model.setWxAvatar(MjkjUtils.getMap2Str(dataMap, "wx_avatar"));
 		model.setChatCode(MjkjUtils.getMap2Str(dataMap, "chat_code"));
 		model.setOpenId(MjkjUtils.getMap2Str(dataMap, "open_id"));
 		model.setMessageCou(messageCou);
 		model.setLeveTitler(levelTitle);
-		model.setViewModel(viewModel);
+		model.setViewModel("1");//动态模式
 		model.setExpireTime(expireTime);//到期时间
 		model.setBuyFlag(buyFlag);
 		model.setMemberFlag(memberFlag);
@@ -193,13 +211,17 @@ public class WebServiceImpl implements IWebService {
 		if (memberFlag) {//会员无限制
 			model.setQuestionCouStr("无限次");
 		}
-		model.setInviteCode(MjkjUtils.getMap2Str(dataMap, "invite_code"));
+		model.setInviteCode(inviteCode);
 		model.setPosterUrl(MjkjUtils.getMap2Str(dataMap, "poster_url"));//海报地址
-		model.setPosterWxUrl(MjkjUtils.getMap2Str(dataMap,"poster_wx_url"));//微信端海报地址
+		model.setPosterWxUrl(MjkjUtils.getMap2Str(dataMap, "poster_wx_url"));//微信端海报地址
 		model.setStopSendTime(stopSendTime);//禁言截至时间
-		model.setViewRewardAdvertCou(viewRewardAdvertCou);//观看视频次数
+//		model.setViewRewardAdvertCou(viewRewardAdvertCou);//观看视频次数
 		model.setWxShareUrl(wxShareUrl);
+		model.setUserCode(userCode);//用户号
 		model.setIsAgent(isAgent);//是否代理商
+		model.setRl_cou(MjkjUtils.getMap2Integer(dataMap,"rl_cou"));
+		model.setRl_used_cou(MjkjUtils.getMap2Integer(dataMap,"rl_used_cou"));
+		model.setSign(Func.isNotEmpty(dataMap.get("sign"))?MjkjUtils.getMap2Str(dataMap,"sign"):null);
 		return model;
 	}
 
@@ -224,8 +246,8 @@ public class WebServiceImpl implements IWebService {
 		//走缓存
 		Long userId = AuthUtil.getUserId();
 		String redisKey = MjkjUtils.getRedisKeyWuserId(userId);
-		if (bladeRedis.exists(redisKey)) {
-			return bladeRedis.get(redisKey);
+		if (redisUtil.hasKey(redisKey)) {
+			return (String) redisUtil.get(redisKey);
 		}
 
 
@@ -238,7 +260,7 @@ public class WebServiceImpl implements IWebService {
 			throw new ServiceException("数据不存在");
 		}
 		String chatCode = MjkjUtils.getMap2Str(dataMap, "chat_code");
-		bladeRedis.set(redisKey, chatCode);
+		redisUtil.set(redisKey, chatCode);
 
 		return chatCode;
 	}
@@ -249,9 +271,9 @@ public class WebServiceImpl implements IWebService {
 		//走缓存
 		Long userId = AuthUtil.getUserId();
 		String redisKey = MjkjUtils.getRedisKeyWuserId(userId);
-		if (bladeRedis.exists(redisKey)) {
-			return bladeRedis.get(redisKey);
-		}
+//		if (redisUtil.hasKey(redisKey)) {
+//			return (String) redisUtil.get(redisKey);
+//		}
 
 
 		QueryWrapper<Object> wrapper = new QueryWrapper<>();
@@ -263,13 +285,13 @@ public class WebServiceImpl implements IWebService {
 			throw new ServiceException("数据不存在");
 		}
 		String wuserId = MjkjUtils.getMap2Str(dataMap, "id");
-		bladeRedis.set(redisKey, wuserId);
+		redisUtil.set(redisKey, wuserId);
 		return wuserId;
 	}
 
 	//获取问题可提问次数
 	@Override
-	public Integer getWuserQuestionCou(Long bladeUserId) {
+	public Integer getWuserQuestionCou(Long bladeUserId , String numType) {
 		if (Func.isEmpty(bladeUserId)) {
 			bladeUserId = AuthUtil.getUserId();
 		}
@@ -277,49 +299,33 @@ public class WebServiceImpl implements IWebService {
 		QueryWrapper<Object> wrapper = new QueryWrapper<>();
 		wrapper.eq("is_deleted", 0);
 		wrapper.eq("blade_user_id", bladeUserId);
-		wrapper.select("question_cou");//问题次数
+		switch (numType){
+			case "question" :
+				wrapper.select("question_cou");//问题次数
+				break;
+			case  "rl" :
+				wrapper.select("rl_cou");
+				break;
+		}
 		Map<String, Object> dataMap = baseSqlService.getDataOneByFieldParams("chat_wxuser", wrapper);
 		if (Func.isEmpty(dataMap)) {
 			return 0;
 		}
+		switch (numType) {
+			case "question" :
+				return MjkjUtils.getMap2Integer(dataMap, "question_cou");
+			case "rl" :
+				return MjkjUtils.getMap2Integer(dataMap, "rl_cou");
+		}
 		return MjkjUtils.getMap2Integer(dataMap, "question_cou");
 	}
 
-	//获取是否开启 提问消耗次数
-	@Override
-	public boolean getQuestionNumFlag() {
-		try {
-			String val = this.getCsszVal("question_num_flag", "false");
-			if (Func.isEmpty(val)) {
-				return false;
-			}
-			return Func.equals(val, "true");
-		} catch (Exception e) {
-
-		}
-		return false;
-	}
-
-	//更多好玩 提问消耗次数
-	@Override
-	public boolean getMoreFunQuestionNumFlag() {
-		try {
-			String val = this.getCsszVal("more_fun_question_num_flag", "false");
-			if (Func.isEmpty(val)) {
-				return false;
-			}
-			return Func.equals(val, "true");
-		} catch (Exception e) {
-
-		}
-		return false;
-	}
 
 	//获取提问一次消耗多少次
 	@Override
 	public Integer getOneQuestionUseNum() {
 		try {
-			String val = this.getCsszVal("question_use_num", "1");
+			String val = this.getCsszVal("question_use_num", "1");//1
 			if (Func.isEmpty(val)) {
 				return 1;
 			}
@@ -330,43 +336,43 @@ public class WebServiceImpl implements IWebService {
 		return 1;
 	}
 
+
 	//发送问题
 	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public List<ChatGptMsgModel> sendQuestion(String question, Long startMessageId, String modelType, boolean memberFlag) {
+	public List<ChatGptMsgModel> sendQuestion(String question, Long startMessageId, Integer useNum, String textType, Long chatListIdL) {
 		Long bladeUserId = AuthUtil.getUserId();
 		String wxuserId = this.getWxuserId();
 		String chatCode = this.getChatCode();
 
+
 		Date now = DateUtil.now();
 		String id = IdWorker.getIdStr();
+		WxUserInfoModel wxUserInfoModel = this.getWxUsrInfo();
+
+		//查询用户有没有设置模型
+		Map<String, Object> settingMap = baseSqlService.getDataOneByField("chat_wxuser_setting", "wxuser_id", wxuserId);
+		String defaultmodel = ChatgptConfig.getChatgptModel();
+		if (Func.isEmpty(settingMap)) { //用户没有设置模型，给他默认设置
+			settingMap = new HashMap<>();
+			settingMap.put("id", IdWorker.getIdStr());
+			settingMap.put("wxuser_id", wxuserId);
+			settingMap.put("blade_user_id", bladeUserId);
+			settingMap.put("translate_lang", "中文");
+			settingMap.put("ai_model", defaultmodel);
+			settingMap.put("image_model", ChatgptConfig.getImageModel());
+			baseSqlService.baseInsertData("chat_wxuser_setting", settingMap);
+		}
+
+		String aiModel = MjkjUtils.getMap2Str(settingMap, "ai_model");
+		String imageModel = MjkjUtils.getMap2Str(settingMap, "image_model");
+		String chatgptModel = aiModel;
+
 
 		List<Map<String, Object>> accountMapList = baseSqlService.getDataListByField("chat_api_account", "gpt_state", 0);//1
 
 		if (Func.isEmpty(accountMapList)) {
 			throw new ServiceException("账户配置有误，请联系客服处理");
-		}
-
-
-		//返回结果，如果有敏感字的话，直接返回
-		Map<String, Object> insertMap = new HashMap<>();
-		insertMap.put("id", id);
-		insertMap.put("wxuser_id", wxuserId);
-		insertMap.put("message_type", MessageType.Q);//q =问题  a=答案
-		insertMap.put("message_content", question);
-		insertMap.put("message_time", now);
-		insertMap.put("blade_user_id", bladeUserId);
-		insertMap.put("view_type", ViewType.TEXT);
-		insertMap.put("model_type", modelType);
-		insertMap.put("context_flag",1);//支持上下文
-
-
-		baseSqlService.baseInsertData("chat_log_message", insertMap);
-
-		boolean questionNumFlag = this.getQuestionNumFlag();
-		if (!memberFlag && questionNumFlag) {//非会员，有开启消耗次数，则需要消耗次数
-			Integer oneUseNum = this.getOneQuestionUseNum();//一次消耗多少次
-			this.subWxuserQuestionNum(bladeUserId, wxuserId, 4, oneUseNum, id, null);//扣除次数
 		}
 
 		ChatGptMsgModel questionMsgModel = new ChatGptMsgModel();
@@ -377,197 +383,72 @@ public class WebServiceImpl implements IWebService {
 		questionMsgModel.setMessage_content(question);
 		questionMsgModel.setMessage_time(now);
 		questionMsgModel.setView_type(ViewType.TEXT);
+		questionMsgModel.setChat_list_id(String.valueOf(chatListIdL));
 
+		//返回结果，如果有敏感字的话，直接返回
+		Map<String, Object> insertMap = new HashMap<>();
+		insertMap.put("id", id);
+		insertMap.put("wxuser_id", wxuserId);
+		insertMap.put("message_type", MessageType.Q);//q =问题  a=答案
+		insertMap.put("message_content", question);
+		insertMap.put("message_time", now);
+		insertMap.put("blade_user_id", bladeUserId);
+		insertMap.put("view_type", ViewType.TEXT);
+		insertMap.put("model_type", 0);
+		insertMap.put("context_flag", 1);//支持上下文
+		if (chatListIdL != 0L) {
+			insertMap.put("chat_list_id", String.valueOf(chatListIdL));
+
+		}
 		//校验是否有敏感词
-		List<ChatGptMsgModel> resultModelList = this.checkSensitiveWord(questionMsgModel, insertMap, chatCode);
-		if (Func.isNotEmpty(resultModelList)) {
-			return resultModelList;
-		}
-		//校验是否是口令福利
-		resultModelList = this.checkPasswordBenefits(questionMsgModel, insertMap, chatCode);
-		if (Func.isNotEmpty(resultModelList)) {
-			return resultModelList;
-		}
-
-		resultModelList=new ArrayList<>();
+		List<ChatGptMsgModel> resultModelList = new ArrayList<>();
 		resultModelList.add(questionMsgModel);
-		String chatgptModel = ChatgptConfig.getChatgptModel();
+		//判断模型需要消耗的燃料，如果剩余燃料数不够用，就切换为默认的模型
+		Integer rl = 0;
+		Integer nowRl = wxUserInfoModel.getRl_cou();
+		if (rl > 0 && nowRl < rl) {
+			chatgptModel = ChatgptConfig.getChatgptModel();
+			Map<String, Object> updateMap = new HashedMap();
+			updateMap.put("ai_model", chatgptModel);
+			baseSqlService.baseUpdateDataWhere("chat_wxuser_setting", updateMap, "wxuser_id", wxuserId);
+			rl = 0;
+		}
+		if (rl != 0) {
+			Map<String, Object> updateMap = new HashMap<>();
+			updateMap.put("rl_used_cou", wxUserInfoModel.getRl_used_cou() + rl);
+			baseSqlService.baseUpdateData("chat_wxuser", updateMap, wxuserId);
+			this.subWxuserQuestionNum(bladeUserId, wxuserId, 4, rl, id, "AI问答->消耗燃料", "rl");
+		} else {
+			this.subWxuserQuestionNum(bladeUserId, wxuserId, 4, useNum, id, "AI问答->消耗积分", "question");
+		}
 
-		//生成图片
-			if (Func.equals(chatgptModel, "text-davinci-003")) {
-				chatGPTService.sendChatGptMessage(modelType, wxuserId, id, question, startMessageId);
-			} else if (Func.equals(chatgptModel,"gpt-3.5-turbo")){
-				chatGPTService.sendChatGptTurboMessage(modelType, wxuserId, id, question, startMessageId, now);
-			}  else if(Func.equals(chatgptModel,"ernie-bot-turbo"))  {
-				ernieBotService.sendErnieBotTurboMessage( wxuserId, id, question, startMessageId, now);
-			}
 
 
+		baseSqlService.baseInsertData("chat_log_message", insertMap);
 
+		if (Func.equals(chatgptModel, "text-davinci-003")) {
+			chatGPTService.sendChatGptMessage(wxuserId, id, question, startMessageId, chatListIdL);
+		} else if (Func.equals(chatgptModel, "gpt-3.5-turbo-16k")) {
+			chatGPTService.sendChatGptTurboMessage(wxuserId, id, question, startMessageId, now, chatListIdL);
+		}
 		return resultModelList;
+
 	}
 
-	/**
-	 * 校验是否有敏感词
-	 *
-	 * @param questionMsgModel
-	 * @param questionMap
-	 * @param chatCode
-	 * @return
-	 */
-	private List<ChatGptMsgModel> checkSensitiveWord(ChatGptMsgModel questionMsgModel, Map<String, Object> questionMap, String chatCode) {
-		try{
-			String wxuserId = MjkjUtils.getMap2Str(questionMap, "wxuser_id");
-			String pid = MjkjUtils.getMap2Str(questionMap, "id");
-			String question = MjkjUtils.getMap2Str(questionMap, "message_content");
-			String modelType = MjkjUtils.getMap2Str(questionMap, "model_type");
-			String bladeUserId = MjkjUtils.getMap2Str(questionMap, "blade_user_id");
-
-
-			//校验是否有敏感字
-			boolean wordFlag = this.checkSensitiveWord(question);
-			if (wordFlag) {//不存在敏感词
-				return null;
-			}
-			Date now = DateUtil.now();
-			List<ChatGptMsgModel> resultModelList = new ArrayList<>();
-			resultModelList.add(questionMsgModel);
-
-			String answerStr = this.getCsszVal("sensitive_word_msg", "您发送的内容存在敏感词");
-			//保存消息
-			String answerId = IdWorker.getIdStr();
-			Map<String, Object> insertAnswerMap = new HashMap<>();
-			insertAnswerMap.put("id", answerId);
-			insertAnswerMap.put("pid", pid);
-			insertAnswerMap.put("wxuser_id", wxuserId);
-			insertAnswerMap.put("message_type", MessageType.A);//q =问题  a=答案
-			insertAnswerMap.put("message_content", answerStr);//回答内容
-			insertAnswerMap.put("message_time", now);
-			insertAnswerMap.put("blade_user_id", bladeUserId);
-			insertAnswerMap.put("view_type", ViewType.ERROR);
-			insertAnswerMap.put("model_type", modelType);//分类
-			baseSqlService.baseInsertData("chat_log_message", insertAnswerMap);
-
-			//将父级别改为铭感词
-			Map<String, Object> updatePMap = new HashedMap();
-			updatePMap.put("view_type", ViewType.ERROR);
-			baseSqlService.baseUpdateData("chat_log_message", updatePMap, pid);
-
-			//发送到前端
-			ChatGptMsgModel answerMsgModel = new ChatGptMsgModel();
-			answerMsgModel.setId(answerId);
-			answerMsgModel.setPid(pid);
-			answerMsgModel.setChatCode(chatCode);
-			answerMsgModel.setMessage_type(MessageType.A);//q =问题  a=答案
-			answerMsgModel.setMessage_content(answerStr);
-			answerMsgModel.setMessage_time(now);
-			answerMsgModel.setView_type(ViewType.ERROR);
-			resultModelList.add(answerMsgModel);
-			return resultModelList;
-		}catch (Exception e){
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	/**
-	 * 校验是否口令福利
-	 *
-	 * @param questionMsgModel
-	 * @param questionMap
-	 * @param chatCode
-	 * @return
-	 */
-	private List<ChatGptMsgModel> checkPasswordBenefits(ChatGptMsgModel questionMsgModel, Map<String, Object> questionMap, String chatCode) {
-		try{
-			String passwordTextListStr = this.getCsszVal("password_text", "");
-			if (Func.isEmpty(passwordTextListStr)) {//没有开启口令福利
-				return null;
-			}
-			String wxuserId = MjkjUtils.getMap2Str(questionMap, "wxuser_id");
-			String pid = MjkjUtils.getMap2Str(questionMap, "id");
-			String question = MjkjUtils.getMap2Str(questionMap, "message_content");
-			String modelType = MjkjUtils.getMap2Str(questionMap, "model_type");
-			String bladeUserId = MjkjUtils.getMap2Str(questionMap, "blade_user_id");
-
-			List<String> passwordTextList = Func.toStrList(passwordTextListStr);
-			if (!passwordTextList.contains(question)) {//没有开启口令福利
-				return null;
-			}
-
-			//校验该指令是否领取过
-			QueryWrapper<Object> wrapper = new QueryWrapper<>();
-			wrapper.eq("wxuser_id", wxuserId);
-			wrapper.eq("is_deleted", 0);
-			wrapper.eq("password_text", question);
-			Map<String, Object> chatLogCommandMap = baseSqlService.getDataOneByFieldParams("chat_log_command", wrapper);
-
-			Date now = DateUtil.now();
-			String answerStr = "领取成功";
-			String view_type=ViewType.TEXT;
-			if (Func.isNotEmpty(chatLogCommandMap)) {//已经领取过了
-				answerStr = "您已经领取过福利了！";
-				view_type=ViewType.ERROR;
-			} else {
-				String passwordCou = this.getCsszVal("password_cou", "0");
-				this.addWxuserQuestionNum(Func.toLong(bladeUserId), wxuserId, 10, Func.toInt(passwordCou), null, question);
-				Map<String, Object> wxuserMap = baseSqlService.getTableById("chat_wxuser", wxuserId);
-				//保存记录
-				Map<String,Object> commandMap=new HashMap<>();
-				commandMap.put("wxuser_id",wxuserId);
-				commandMap.put("wxuser_name",MjkjUtils.getMap2Str(wxuserMap,"wx_name"));
-				commandMap.put("password_text",question);
-				commandMap.put("password_cou",passwordCou);
-				commandMap.put("password_time",now);
-				baseSqlService.baseInsertData("chat_log_command",commandMap);
-			}
-
-
-			List<ChatGptMsgModel> resultModelList = new ArrayList<>();
-			resultModelList.add(questionMsgModel);//问题
-
-			//保存消息
-			String answerId = IdWorker.getIdStr();
-			Map<String, Object> insertAnswerMap = new HashMap<>();
-			insertAnswerMap.put("id", answerId);
-			insertAnswerMap.put("pid", pid);
-			insertAnswerMap.put("wxuser_id", wxuserId);
-			insertAnswerMap.put("message_type", MessageType.A);//q =问题  a=答案
-			insertAnswerMap.put("message_content", answerStr);//回答内容
-			insertAnswerMap.put("message_time", now);
-			insertAnswerMap.put("blade_user_id", bladeUserId);
-			insertAnswerMap.put("view_type", view_type);
-			insertAnswerMap.put("model_type", modelType);//分类
-			baseSqlService.baseInsertData("chat_log_message", insertAnswerMap);
-
-
-			//发送到前端
-			ChatGptMsgModel answerMsgModel = new ChatGptMsgModel();
-			answerMsgModel.setId(answerId);
-			answerMsgModel.setPid(pid);
-			answerMsgModel.setChatCode(chatCode);
-			answerMsgModel.setMessage_type(MessageType.A);//q =问题  a=答案
-			answerMsgModel.setMessage_content(answerStr);
-			answerMsgModel.setMessage_time(now);
-			answerMsgModel.setView_type(view_type);
-			resultModelList.add(answerMsgModel);
-
-			return resultModelList;
-		}catch (Exception e){
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 	//获取历史聊天记录
 	@Override
-	public IPage<Map<String, Object>> getMessageHistoryList(Long startNum, String modelType, IPage<Object> page) {
+	public IPage<Map<String, Object>> getMessageHistoryList(Long startNum, String modelType, IPage<Object> page, String chatListId,String type) {
 		Long userId = AuthUtil.getUserId();
+
 		//获取总数
 		QueryWrapper<Object> totalWrapper = new QueryWrapper<Object>();
 		totalWrapper.eq("blade_user_id", userId);
 		totalWrapper.eq("model_type", modelType);
 		totalWrapper.eq("is_deleted", 0);
+		if ( Func.isNotEmpty(chatListId) && Func.equals(type,"pc") ) {
+			totalWrapper.eq("chat_list_id",chatListId);
+		}
 		totalWrapper.select("count(1) as cou");
 		Map<String, Object> totalMap = baseSqlService.getDataOneByFieldParams("chat_log_message", totalWrapper);
 		Long totalCou = MjkjUtils.getMap2Long(totalMap, "cou");
@@ -577,6 +458,9 @@ public class WebServiceImpl implements IWebService {
 		wrapper.eq("blade_user_id", userId);
 		wrapper.eq("model_type", modelType);
 		wrapper.eq("is_deleted", 0);
+		if ( Func.isNotEmpty(chatListId) && Func.equals(type,"pc") ) {
+			wrapper.eq("chat_list_id",chatListId);
+		}
 		if (Func.isNotEmpty(startNum)) {
 			wrapper.le("id+0", startNum);// <=
 		}
@@ -593,16 +477,20 @@ public class WebServiceImpl implements IWebService {
 
 	//获取历史聊天记录
 	@Override
-	public List<Map<String, Object>> getMessageLastList(Long startNum, String modelType) {
+	public List<Map<String, Object>> getMessageLastList(Long startNum, String modelType,String type,String chatListId) {
 		Long userId = AuthUtil.getUserId();
 		QueryWrapper<Object> wrapper = new QueryWrapper<Object>();
 		wrapper.eq("blade_user_id", userId);
 		wrapper.eq("model_type", modelType);
 		wrapper.eq("is_deleted", 0);
 		wrapper.eq("message_type", "a");//回答
+		if (Func.equals(type,"pc")){
+			wrapper.eq("chat_list_id",chatListId);
+		}
 		if (Func.isNotEmpty(startNum)) {
 			wrapper.gt("id+0", startNum);// >
 		}
+
 		wrapper.orderByDesc("id+0");
 		List<Map<String, Object>> resultList = baseSqlService.getDataListByFieldParams("chat_log_message", wrapper);
 		Collections.reverse(resultList);
@@ -611,8 +499,8 @@ public class WebServiceImpl implements IWebService {
 
 	//获取消息次数
 	@Override
-	public Integer getMessageCou(Long bladeUserId) {
-		Integer cou = webMapper.getMessageCou(bladeUserId);
+	public Integer getMessageCou(String wxuserId) {
+		Integer cou = webMapper.getMessageCou(wxuserId);
 		if (Func.isEmpty(cou)) {
 			cou = 0;
 		}
@@ -651,7 +539,7 @@ public class WebServiceImpl implements IWebService {
 	//获取参数设置
 	@Override
 	public String getCsszVal(String code, String defaultVal) {
-		Map<String, Object> dataMap = baseSqlService.getDataOneByField("chat_cssz", "code", code);
+		Map<String, Object> dataMap = baseSqlService.getDataOneByField("chat_system_cssz", "code", code);
 		if (Func.isEmpty(dataMap)) {
 			return defaultVal;
 		}
@@ -662,41 +550,34 @@ public class WebServiceImpl implements IWebService {
 		return val;
 	}
 
-	//校验敏感词
-	@Override
-	public boolean checkSensitiveWord(String str) {
-//		try {
-//			if (Func.isEmpty(str)) {
-//				return false;
-//			}
-//			String appId = wxMaProperties.getConfigs().get(0).getAppid();
-//			final WxMaService wxService = WxMaConfiguration.getMaService(appId);
-//			WxMaSecCheckService secCheckService = wxService.getSecCheckService();
-//			boolean b = secCheckService.checkMessage(str);
-//			return b;
-//		} catch (Exception e) {
-//			//e.printStackTrace();
-//		}
-		return true;
-	}
+	//获取参数设置
+
+
 
 	//增加用户次数
 	@Transactional
 	@Override
-	public void addWxuserQuestionNum(Long bladeUserId, String wxuserId, Integer serviceType, Integer num, String questionId, String remark) {
-		this.wxuserQuestionNum(bladeUserId, "ADD", serviceType, wxuserId, num, questionId, remark);
+	public void addWxuserQuestionNum(Long bladeUserId, String wxuserId, Integer serviceType, Integer num, String questionId, String remark ,String numType) {
+		if(num<=0){
+			return;
+		}
+		this.wxuserQuestionNum(bladeUserId, "ADD", serviceType, wxuserId, num, questionId, remark, numType);
 	}
 
 	//减用户次数
 	@Transactional
 	@Override
-	public void subWxuserQuestionNum(Long bladeUserId, String wxuserId, Integer serviceType, Integer num, String questionId, String remark) {
-		this.wxuserQuestionNum(bladeUserId, "SUB", serviceType, wxuserId, num, questionId, remark);
+	public void subWxuserQuestionNum(Long bladeUserId, String wxuserId, Integer serviceType, Integer num, String questionId, String remark,String numType) {
+		if(num<=0){
+			return;
+		}
+		this.wxuserQuestionNum(bladeUserId, "SUB", serviceType, wxuserId, num, questionId, remark,numType);
 	}
 
 	//加锁
-	private synchronized void wxuserQuestionNum(Long bladeUserId, String type, Integer serviceType, String wxuserId, Integer num, String questionId, String remark) {
-		Integer before_num = this.getWuserQuestionCou(bladeUserId);//用户可用次数
+	private synchronized void wxuserQuestionNum(Long bladeUserId, String type, Integer serviceType, String wxuserId, Integer num, String questionId, String remark ,String numType) {
+
+		Integer before_num = this.getWuserQuestionCou(bladeUserId,numType);//用户各类可用次数
 		Integer after_num = 0;
 
 		if (Func.equals(type, "ADD")) {//增加
@@ -706,7 +587,15 @@ public class WebServiceImpl implements IWebService {
 		}
 		//更新用户使用后的次数
 		Map<String, Object> wuserUpdateMap = new HashedMap();
-		wuserUpdateMap.put("question_cou", after_num);
+		switch (numType) {
+			case "question":
+				wuserUpdateMap.put("question_cou" , after_num);
+				break;
+			case "rl":
+				wuserUpdateMap.put("rl_cou" , after_num);
+				break;
+		}
+
 		baseSqlService.baseUpdateData("chat_wxuser", wuserUpdateMap, wxuserId);
 
 		Date now = DateUtil.now();
@@ -766,7 +655,65 @@ public class WebServiceImpl implements IWebService {
 		return dataMap;
 	}
 
+	//根据邀请码获取用户id
+	@Override
+	public Map<String, Object> getWxuseridByUUID(String uuid) {
+		QueryWrapper<Object> wrapper = new QueryWrapper<>();
+		wrapper.eq("is_deleted", 0);
+		wrapper.eq("uuid", uuid);
+		Map<String, Object> dataMap = baseSqlService.getDataOneByFieldParams("chat_wxuser", wrapper);
+		return dataMap;
+	}
 
+	/**
+	 * 生成邀请码
+	 *
+	 * @return
+	 */
+	@Override
+	public String generateQrcode() {
+		try {
+			WxUserInfoModel wxUsrInfo = this.getWxUsrInfo();
+			if (Func.isEmpty(wxUsrInfo)) {
+				return null;
+			}
+			//海报地址
+			String posterWxUrl = wxUsrInfo.getPosterWxUrl();
+			if (Func.isNotEmpty(posterWxUrl)) {
+				return posterWxUrl;//已经生成过，则直接返回
+			}
+			String wxName = wxUsrInfo.getWxName();
+
+			String inviteCode = wxUsrInfo.getInviteCode();
+			String path = "/pages/index/index?inviteCode=" + inviteCode;
+			Integer width = 50;
+			//获取微信那边二维码
+			String qrcodeFileUrl = ChatgptConfig.getUploadUrl();
+			String posterBgUrl = ChatgptConfig.getPosterBgUrl();
+
+			//背景
+			ImageCombiner combiner = new ImageCombiner(posterBgUrl, OutputFormat.PNG);
+
+			int length = wxName.length();
+			int x = 230 - (length * 10);
+			//处理头像
+			combiner.addTextElement(wxName, 24, x, 630).setColor(Color.BLACK);
+			//进行合成
+			combiner.combine();
+			combiner.getCombinedImageStream();
+			String fileName = IdWorker.getIdStr() + ".png";
+			return fileName;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * 生成文件下载码
+	 *
+	 * @return
+	 */
 
 	//获取用户自定义设置
 	@Override
@@ -777,37 +724,56 @@ public class WebServiceImpl implements IWebService {
 			settingMap.put("translate_lang", "中文");
 			settingMap.put("wxuser_id", wxUserId);
 			settingMap.put("blade_user_id", AuthUtil.getUserId());
+			settingMap.put("ai_model",ChatgptConfig.getChatgptModel());
+			settingMap.put("image_model",ChatgptConfig.getImageModel());
 			baseSqlService.baseInsertData("chat_wxuser_setting", settingMap);
 		}
 		return settingMap;
 	}
 
 
+	//获取热门消息
+	@Override
+	public IPage<Map<String, Object>> getMessageHotList(IPage<Object> page) {
+		return webMapper.getMessageHotList(page);
+	}
 
 	//发送更多好玩
 	@Async("asyncPoolTaskExecutor")
 	@Override
-	public void sendMoreFun(String wxuserId, Long bladeUserId, boolean memberFlag, MoreFunParam param) {
+	public void sendMoreFun(String wxuserId, Long bladeUserId, Integer useNum, MoreFunParam param) {
 		String systemTitle = param.getSystemTitle();
 		String content = param.getContent();
+		String textType = param.getText_type();
+
+		content = content + " 请以MarkDown格式回复";
+
 		String funFataId = param.getFunFataId();
 		Map<String, Object> funDataMap = baseSqlService.getTableById("chat_fun_data", funFataId);
 		String funName = MjkjUtils.getMap2Str(funDataMap, "fun_name");//更多好玩名称
-
-		//需要减掉次数
-		boolean moreQuestionNumFlag = this.getMoreFunQuestionNumFlag();
-		if (!memberFlag && moreQuestionNumFlag) {//非会员，有开启消耗次数，则需要消耗次数
-			Integer oneUseNum = this.getOneQuestionUseNum();//一次消耗多少次
-			this.subWxuserQuestionNum(bladeUserId, wxuserId, 9, oneUseNum, null, "更多好玩->" + funName);//扣除次数
+		Map<String, Object> wxUserSetting = this.getWxUserSetting(wxuserId);
+		String aiModel = MjkjUtils.getMap2Str(wxUserSetting,"ai_model");
+		Map<String, Object> wxuserMap = baseSqlService.getTableById("chat_wxuser", wxuserId);
+		Integer rl = MjkjUtils.getMap2Integer(wxuserMap,"rl_cou");
+		Integer useRl = this.judgeModel(aiModel);
+		if( rl < useRl ){
+			aiModel = ChatgptConfig.getChatgptModel();
+			Map<String,Object> updateMap = new HashMap<>();
+			updateMap.put("ai_model",aiModel);
+			baseSqlService.baseUpdateDataWhere("chat_wxuser_setting",updateMap,"wxuser_id",wxuserId);
+			useRl = 0;
 		}
-
+		//需要减掉次数
+		if( ( useRl>0 ) && ( (rl> useRl)|| (rl == useRl) )) {
+			this.subWxuserQuestionNum(bladeUserId,wxuserId,9,useRl,null,"指令库->消耗燃料"+ funName,"rl");
+			}//扣除燃料次数
+		else {
+			this.subWxuserQuestionNum(bladeUserId, wxuserId, 9, useNum, null, "指令库->消耗积分" + funName,"question");
+			}//扣除次数
 		Date requestTime = DateUtil.now();//请求时间
 		//敏感词
-		boolean wordFlag = this.checkSensitiveWord(content);
 		String result = "";
-		if (!wordFlag) {//存在敏感字，直接把消息体也返回返回
-			result = this.getCsszVal("sensitive_word_msg", "您发送的内容存在敏感词");
-		} else {//不存在敏感词
+		String id = IdWorker.getIdStr();
 			List<MessageModel> messagesList = new ArrayList<>();
 			MessageModel sysModel = new MessageModel();
 			sysModel.setRole(MessageModelRoleType.SYSTEM);
@@ -819,13 +785,18 @@ public class WebServiceImpl implements IWebService {
 			userModel.setContent(content);
 			messagesList.add(userModel);//封装参数
 
-			result = chatGPTService.sendNowTimeChatGptTurboMessage(messagesList);
-		}
+			if ( Func.isEmpty( aiModel)){
+				aiModel  = "ernie-bot-turbo";
+			}
+
+			result = chatGPTService.sendNowTimeChatGptTurboMessage(messagesList , aiModel);
+
+
 
 
 		Date responseTime = DateUtil.now();//响应时间
 
-		String id = IdWorker.getIdStr();
+//		String id = IdWorker.getIdStr();
 		Map<String, Object> addLogMap = new HashMap<>();
 		addLogMap.put("id", id);
 		addLogMap.put("wxuser_id", wxuserId);
@@ -837,23 +808,18 @@ public class WebServiceImpl implements IWebService {
 		addLogMap.put("message_q_time", requestTime);
 		addLogMap.put("message_a_time", responseTime);
 		addLogMap.put("param_json", param.getParamJson());
+		addLogMap.put("store_status",1);
+		if (Func.isNotEmpty(param.getChat_list_id())){
+			addLogMap.put("chat_list_id",param.getChat_list_id());
+		}
 		baseSqlService.baseInsertData("chat_log_message_fun", addLogMap);
-
 		//存储到redis
 		String redisKey = MjkjUtils.getRedisKeyMoreFun(wxuserId, param.getFunFataId());
-		bladeRedis.set(redisKey, addLogMap);
+		redisUtil.set(redisKey, addLogMap);
 
-		Map<String, Object> wxuserMap = baseSqlService.getTableById("chat_wxuser", wxuserId);
+
 		String chatCode = MjkjUtils.getMap2Str(wxuserMap, "chat_code");
 
-		//发送
-		ChatGptMoreFunModel msgModel = new ChatGptMoreFunModel();
-		msgModel.setId(id);
-		msgModel.setChatCode(chatCode);
-		msgModel.setFun_data_id(funFataId);
-		msgModel.setMessage_a(result);
-		msgModel.setMessage_q_time(requestTime);
-		messageClient.sendChatMoreFunMsg(msgModel);
 	}
 
 	//签到
@@ -872,20 +838,20 @@ public class WebServiceImpl implements IWebService {
 			for (int i = 1; i < 7; i++) {
 				Date date1 = DateUtil.plusDays(date, -i);
 				String redisKeySign = MjkjUtils.getRedisKeySign(bladeUserId, date1);
-				if (!bladeRedis.exists(redisKeySign)) {
+				if (!redisUtil.hasKey(redisKeySign)) {
 					lxFlag = false;
 					break;
 				}
 			}
 			if (lxFlag) {//连续
-				String val = this.getCsszVal("sign_week_cou", "0");
+				String val = this.getCsszVal("sign_week_cou", "0");//1
 				awardCou = Func.toInt(val);//每天奖励次数
 			} else {
-				String val = this.getCsszVal("sign_day_cou", "0");
+				String val = this.getCsszVal("sign_day_cou", "0");//1
 				awardCou = Func.toInt(val);//每天奖励次数
 			}
 		} else {
-			String val = this.getCsszVal("sign_day_cou", "0");
+			String val = this.getCsszVal("sign_day_cou", "0");//1
 			awardCou = Func.toInt(val);//每天奖励次数
 		}
 
@@ -897,82 +863,309 @@ public class WebServiceImpl implements IWebService {
 		addMap.put("sign_time", date);
 		baseSqlService.baseInsertData("chat_log_sign", addMap);
 
-		this.addWxuserQuestionNum(bladeUserId, wxuserId, 7, awardCou, null, "签到奖励");
+		this.addWxuserQuestionNum(bladeUserId, wxuserId, 7, awardCou, null, "签到奖励积分","question");
 
 		//写入到缓存
 		String redisKey = MjkjUtils.getRedisKeySign(bladeUserId, date);
-		bladeRedis.set(redisKey, awardCou);
+		redisUtil.set(redisKey, awardCou);
 	}
 
-	/**
-	 * 添加用户分享的消息
-	 * @param param
-	 */
-	@Override
-	public void addShareLog(String wxuserId,ChatLogShareMessageParam param) {
-		HashMap<String, Object> insertMap = new HashMap<>();
-		String[] messageIds = param.getMessageIds();
-		String message = "";
-		for (int i = 0; i < messageIds.length; i++) {
-			if (i==messageIds.length-1){
-				message+=messageIds[i];
-				break;
-			}
-			message+=messageIds[i]+",";
-		}
 
-		insertMap.put("wxuser_id",wxuserId);
-		insertMap.put("message_ids",message);
-		insertMap.put("only_id",param.getOnlyId());
-		baseSqlService.baseInsertData("chat_log_share_message",insertMap);
-	}
-
-	/**
-	 * 用户获取被分享的消息
-	 * @param onlyId
-	 * @return
-	 */
-	@Override
-	public List<Map<String, Object>> getShareLog(String onlyId) {
-		//
-		QueryWrapper<Object> wrapper = new QueryWrapper<>();
-		wrapper.eq("is_deleted", 0);
-		//根据唯一标识符找到对应的message
-		wrapper.eq("only_id", onlyId);
-		wrapper.select("message_ids");
-		Map<String, Object> dataMap = baseSqlService.getDataOneByFieldParams("chat_log_share_message", wrapper);
-		String messageIds = MjkjUtils.getMap2Str(dataMap, "message_ids");
-
-		//将messageIds分割开来
-		List<String> messageList = Func.toStrList(messageIds);
-		//
-		QueryWrapper<Object> wrapper2 = new QueryWrapper<>();
-		wrapper2.eq("is_deleted", 0);
-		wrapper2.in("id", messageList);
-		List<Map<String, Object>> result = baseSqlService.getDataListByFieldParams("chat_log_message", wrapper2);
-
-		//使用唯一标识符找到
-		return result;
-	}
-
-	/**
-	 * 获取本微信用户id下所有的子用户(推广)
-	 * @param wxuserId
-	 * @return
-	 */
-	@Override
-	public List<Map<String, Object>> getChildUsers(String wxuserId) {
-		QueryWrapper<Object> qw = new QueryWrapper<>();
-		qw.eq("is_deleted",0);
-		qw.eq("pid",wxuserId);
-		List<Map<String, Object>> dataMapper = baseSqlService.getDataListByFieldParams("chat_wxuser", qw);
-		return dataMapper;
-	}
 
 	//获取下级要求数量
-	public IPage<Map<String, Object>>  getSubCouList(String wxuserId,IPage<Object> page){
-		return webMapper.getSubCouList(wxuserId,page);
+	public IPage<Map<String, Object>> getSubCouList(String wxuserId, IPage<Object> page) {
+		return webMapper.getSubCouList(wxuserId, page);
 	}
+
+
+	//判断模型是否需要燃料
+	@Override
+	public Integer judgeModel(String modelName) {
+		Map<String,Object> modelMap = baseSqlService.getDataOneByField("chat_model","mx_lx",modelName);
+		if (Func.isNotEmpty(modelMap)) {
+			Integer isUseRl = MjkjUtils.getMap2Integer(modelMap,"is_use_rl");
+			if (isUseRl == 0){
+				return 0;
+			}
+			else {
+				return MjkjUtils.getMap2Integer(modelMap,"use_num");
+			}
+		}
+		return 0;
+	}
+
+	//获取收藏的消息
+	@Override
+	public  IPage<Map<String, Object>>  getStoreMessage(IPage<Object> page){
+		String wxuserId = this.getWxuserId();
+		//获取总数
+		QueryWrapper<Object> totalWrapper = new QueryWrapper<Object>();
+		totalWrapper.eq("wxuser_id", wxuserId);
+		totalWrapper.eq("store_status",0);
+		totalWrapper.eq("is_deleted", 0);
+		totalWrapper.select("count(1) as cou");
+		Map<String, Object> totalMap = baseSqlService.getDataOneByFieldParams("chat_store", totalWrapper);
+		Long totalCou = MjkjUtils.getMap2Long(totalMap, "cou");
+
+		QueryWrapper<Object> wrapper = new QueryWrapper<Object>();
+		wrapper.eq("wxuser_id", wxuserId);
+		wrapper.eq("is_deleted", 0);
+		wrapper.eq("store_status",0);
+		wrapper.orderByDesc("id+0");
+		IPage<Map<String, Object>> pages = baseSqlService.getDataIPageByFieldParams("chat_store", page, wrapper);
+//		List<Map<String, Object>> records = pages.getRecords();
+
+		pages.setTotal(totalCou);//重置总数
+		return pages;
+	}
+
+	//获取聊天列表
+	@Override
+	public  IPage<Map<String, Object>>  getChatList(IPage<Object> page){
+		String userId = this.getWxuserId();
+		//获取总数
+		QueryWrapper<Object> totalWrapper = new QueryWrapper<Object>();
+		totalWrapper.eq("wxuser_id", userId);
+		totalWrapper.eq("is_deleted", 0);
+		totalWrapper.orderByDesc("id");
+		totalWrapper.select("count(*) as cou");
+
+		Map<String,Object> totalMap =  baseSqlService.getDataOneByFieldParams("chat_list", totalWrapper);
+		Integer totalCou = MjkjUtils.getMap2Integer(totalMap,"cou");
+
+
+		QueryWrapper<Object> wrapper = new QueryWrapper<Object>();
+		wrapper.eq("wxuser_id", userId);
+		wrapper.eq("is_deleted",0);
+		wrapper.orderByDesc("id");
+		IPage<Map<String, Object>> pages = baseSqlService.getDataIPageByFieldParams("chat_list", page, wrapper);
+
+		pages.setTotal(totalCou);//重置总数
+		return pages;
+	}
+
+	//新建聊天列表
+	@Override
+	public void createNewChatList(Long id,String type,String name,String content,String fundataId,String funJson){
+		if (id==0L){
+			return;
+		}
+		Map<String, Object> chatList = baseSqlService.getTableById("chat_list", String.valueOf(id));
+		if(Func.isNotEmpty(chatList)){
+			return;
+		}
+		Map<String,Object> insertMap = new HashMap<>();
+		insertMap.put("id",id);
+		insertMap.put("chat_type",type);
+		insertMap.put("chat_name",name);
+		insertMap.put("chat_content",content);
+		String wxuserId = this.getWxuserId();
+		insertMap.put("wxuser_id",wxuserId);
+		insertMap.put("fundata_id",fundataId);
+		insertMap.put("fun_json",funJson);
+		baseSqlService.baseInsertData("chat_list", insertMap);
+
+	}
+
+	@Override
+	public IPage<Map<String,Object>> getCreditList(IPage<Object> page){
+		String wxuserId = this.getWxuserId();
+		QueryWrapper<Object> totalWrapper = new QueryWrapper<Object>();
+		totalWrapper.eq("wxuser_id", wxuserId);
+		totalWrapper.eq("is_deleted", 0);
+		totalWrapper.select("count(*) as cou");
+
+		Map<String,Object> totalMap =  baseSqlService.getDataOneByFieldParams("chat_log_num", totalWrapper);
+		Integer totalCou = MjkjUtils.getMap2Integer(totalMap,"cou");
+
+		QueryWrapper<Object> wrapper = new QueryWrapper<Object>();
+		wrapper.eq("wxuser_id", wxuserId);
+		wrapper.eq("is_deleted",0);
+		wrapper.orderByDesc("id");
+		IPage<Map<String, Object>> pages = baseSqlService.getDataIPageByFieldParams("chat_log_num", page, wrapper);
+		pages.setTotal(totalCou);//重置总数
+		return pages;
+
+	}
+
+	@Override
+	public IPage<Map<String,Object>> getAddCreditList(IPage<Object> page){
+		String wxuserId = this.getWxuserId();
+		QueryWrapper<Object> totalWrapper = new QueryWrapper<Object>();
+		totalWrapper.eq("wxuser_id", wxuserId);
+		totalWrapper.eq("is_deleted", 0);
+		totalWrapper.eq("type","ADD");
+		totalWrapper.select("count(*) as cou");
+
+		Map<String,Object> totalMap =  baseSqlService.getDataOneByFieldParams("chat_log_num", totalWrapper);
+		Integer totalCou = MjkjUtils.getMap2Integer(totalMap,"cou");
+
+		QueryWrapper<Object> wrapper = new QueryWrapper<Object>();
+		wrapper.eq("wxuser_id", wxuserId);
+		wrapper.eq("is_deleted",0);
+		wrapper.eq("type","ADD");
+		wrapper.orderByDesc("id");
+		IPage<Map<String, Object>> pages = baseSqlService.getDataIPageByFieldParams("chat_log_num", page, wrapper);
+		pages.setTotal(totalCou);//重置总数
+		return pages;
+
+	}
+
+	@Override
+	public IPage<Map<String,Object>> getSubCreditList(IPage<Object> page){
+		String wxuserId = this.getWxuserId();
+//		String wxuserId = "1692058205276446721";
+		QueryWrapper<Object> totalWrapper = new QueryWrapper<Object>();
+		totalWrapper.eq("wxuser_id", wxuserId);
+		totalWrapper.eq("is_deleted", 0);
+		totalWrapper.eq("type","SUB");
+		totalWrapper.select("count(*) as cou");
+
+		Map<String,Object> totalMap =  baseSqlService.getDataOneByFieldParams("chat_log_num", totalWrapper);
+		Integer totalCou = MjkjUtils.getMap2Integer(totalMap,"cou");
+
+		QueryWrapper<Object> wrapper = new QueryWrapper<Object>();
+		wrapper.eq("wxuser_id", wxuserId);
+		wrapper.eq("is_deleted",0);
+		wrapper.eq("type","SUB");
+		wrapper.orderByDesc("id");
+		IPage<Map<String, Object>> pages = baseSqlService.getDataIPageByFieldParams("chat_log_num", page, wrapper);
+		pages.setTotal(totalCou);//重置总数
+		return pages;
+
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class )
+	public String chatStore(String messageId,String type){
+		String wxuserId  = this.getWxuserId();
+		if( Func.equals(type,"chat")){
+			Map<String, Object> chatLogMessage = baseSqlService.getTableById("chat_log_message", messageId);
+			String chatSotreId = MjkjUtils.getMap2Str(chatLogMessage,"chat_store_id");
+			if ((!Func.equals(chatSotreId,"0"))&&(Func.isNotEmpty(chatSotreId))){
+				Map<String, Object> chatStore = baseSqlService.getTableById("chat_store", chatSotreId);
+				Integer storeStatus = MjkjUtils.getMap2Integer(chatStore,"store_status");
+				storeStatus = storeStatus==0?1:0;
+				Map<String,Object> updateMap = new HashMap<>();
+				updateMap.put("store_status",storeStatus);
+				Map<String,Object> logMessagedateMap = new HashMap<>();
+				logMessagedateMap.put("store_status",storeStatus);
+				baseSqlService.baseUpdateData("chat_store",updateMap,chatSotreId);
+				baseSqlService.baseUpdateData("chat_log_message",logMessagedateMap,messageId);
+				return storeStatus.toString();
+			}else {
+				//插入收藏记录表
+				chatSotreId = IdWorker.getIdStr();
+				String chatType = "chat";
+				Integer storeStatus = 0;
+				String storeContent = MjkjUtils.getMap2Str(chatLogMessage,"message_content");
+				Map<String,Object> insertMap = new HashMap<>();
+				insertMap.put("chat_type",chatType);
+				insertMap.put("chat_content",storeContent);
+				insertMap.put("store_status",storeStatus);
+				insertMap.put("wxuser_id",wxuserId);
+				insertMap.put("id",chatSotreId);
+				insertMap.put("message_id",messageId);
+				insertMap.put("message_type","chat");
+				baseSqlService.baseInsertData("chat_store",insertMap);
+				//更新聊天记录表
+				Map<String,Object> updateMap  = new HashMap<>();
+				updateMap.put("chat_store_id",chatSotreId);
+				updateMap.put("store_status",storeStatus);
+				baseSqlService.baseUpdateData("chat_log_message",updateMap,messageId);
+				return  storeStatus.toString();
+			}
+		}else {
+			Map<String, Object> chatLogMessageFun = baseSqlService.getTableById("chat_log_message_fun", messageId);
+			String chatSotreId = MjkjUtils.getMap2Str(chatLogMessageFun,"chat_store_id");
+			if ((!Func.equals("0",chatSotreId)) && (Func.isNotEmpty(chatSotreId))){
+				Map<String, Object> chatStore = baseSqlService.getTableById("chat_store", chatSotreId);
+				Integer storeStatus = MjkjUtils.getMap2Integer(chatStore,"store_status");
+				storeStatus = storeStatus==0?1:0;
+				Map<String,Object> updateMap = new HashMap<>();
+				updateMap.put("store_status",storeStatus);
+				Map<String,Object> logMessagedateMap = new HashMap<>();
+				logMessagedateMap.put("store_status",storeStatus);
+				baseSqlService.baseUpdateData("chat_store",updateMap,chatSotreId);
+				baseSqlService.baseUpdateData("chat_log_message",logMessagedateMap,messageId);
+				return storeStatus.toString();
+			}
+			else {
+				//插入收藏记录表
+				chatSotreId = IdWorker.getIdStr();
+				String chatType = "tools";
+				Integer storeStatus = 0;
+				String storeContent = MjkjUtils.getMap2Str(chatLogMessageFun,"message_a");
+				Map<String,Object> insertMap = new HashMap<>();
+				insertMap.put("chat_type",chatType);
+				insertMap.put("chat_content",storeContent);
+				insertMap.put("store_status",storeStatus);
+				insertMap.put("wxuser_id",wxuserId);
+				insertMap.put("id",chatSotreId);
+				insertMap.put("message_id",messageId);
+				insertMap.put("message_type","tools");
+				baseSqlService.baseInsertData("chat_store",insertMap);
+				//更新聊天记录表
+				Map<String,Object> updateMap  = new HashMap<>();
+				updateMap.put("chat_store_id",chatSotreId);
+				updateMap.put("store_status",storeStatus);
+
+				baseSqlService.baseUpdateData("chat_log_message_fun",updateMap,messageId);
+
+				return  storeStatus.toString();
+			}
+		}
+
+
+	}
+
+	@Override
+	public IPage<Map<String,Object>> getInvitedUsers(IPage<Object> page){
+		String wxuserId = this.getWxuserId();
+//		String wxuserId = "1628312273179992066";
+		QueryWrapper<Object> totalWrapper = new QueryWrapper<Object>();
+		totalWrapper.eq("pid", wxuserId);
+		totalWrapper.eq("is_deleted", 0);
+		totalWrapper.select("count(*) as cou");
+
+		Map<String,Object> totalMap =  baseSqlService.getDataOneByFieldParams("chat_wxuser", totalWrapper);
+		Integer totalCou = MjkjUtils.getMap2Integer(totalMap,"cou");
+
+		QueryWrapper<Object> wrapper = new QueryWrapper<Object>();
+		wrapper.eq("pid", wxuserId);
+		wrapper.eq("is_deleted",0);
+		IPage<Map<String, Object>> pages = baseSqlService.getDataIPageByFieldParams("chat_wxuser", page, wrapper);
+		List<Map<String, Object>> records = pages.getRecords();
+		if (Func.isNotEmpty(records)) {
+			Collections.reverse(records);
+			pages.setRecords(records);
+		}
+		pages.setTotal(totalCou);//重置总数
+		return pages;
+	}
+
+	@Override
+	public IPage<Map<String,Object>> getFunHistory(IPage<Object> page,String funDataId){
+		String wxuserId = this.getWxuserId();
+//		String wxuserId = "1628312273179992066";
+		QueryWrapper<Object> totalWrapper = new QueryWrapper<Object>();
+		totalWrapper.eq("wxuser_id", wxuserId);
+		totalWrapper.eq("is_deleted", 0);
+		totalWrapper.eq("fun_data_id",funDataId);
+		totalWrapper.select("count(*) as cou");
+
+		Map<String,Object> totalMap =  baseSqlService.getDataOneByFieldParams("chat_log_message_fun", totalWrapper);
+		Integer totalCou = MjkjUtils.getMap2Integer(totalMap,"cou");
+
+		QueryWrapper<Object> wrapper = new QueryWrapper<Object>();
+		wrapper.eq("wxuser_id", wxuserId);
+		wrapper.eq("is_deleted",0);
+		wrapper.eq("fun_data_id",funDataId);
+		IPage<Map<String, Object>> pages = baseSqlService.getDataIPageByFieldParams("chat_log_message_fun", page, wrapper);
+		pages.setTotal(totalCou);//重置总数
+		return pages;
+	}
+
 
 
 

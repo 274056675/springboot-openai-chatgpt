@@ -1,71 +1,53 @@
-
+/**
+ * Copyright (c) 2018-2028, Chill Zhuang 庄骞 (smallchill@163.com).
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.springblade.system.user.service;
 
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springblade.core.mp.base.BaseService;
-import org.springblade.core.mp.support.Query;
 import org.springblade.system.user.entity.User;
 import org.springblade.system.user.entity.UserInfo;
 import org.springblade.system.user.entity.UserOauth;
-import org.springblade.system.user.enums.UserEnum;
 import org.springblade.system.user.excel.UserExcel;
-import org.springblade.system.user.vo.UserVO;
 
 import java.util.List;
 
 /**
  * 服务类
  *
- *
+ * @author Chill
  */
 public interface IUserService extends BaseService<User> {
 
 	/**
-	 * 新增用户
-	 *
+	 * 新增或修改用户
 	 * @param user
 	 * @return
 	 */
 	boolean submit(User user);
 
 	/**
-	 * 修改用户
-	 *
-	 * @param user
-	 * @return
-	 */
-	boolean updateUser(User user);
-
-	/**
-	 * 修改用户基本信息
-	 *
-	 * @param user
-	 * @return
-	 */
-	boolean updateUserInfo(User user);
-
-	/**
 	 * 自定义分页
 	 *
 	 * @param page
 	 * @param user
-	 * @param deptId
-	 * @param tenantId
 	 * @return
 	 */
-	IPage<User> selectUserPage(IPage<User> page, User user, Long deptId, String tenantId);
-
-	/**
-	 * 自定义分页
-	 *
-	 * @param user
-	 * @param query
-	 * @return
-	 */
-	IPage<UserVO> selectUserSearch(UserVO user, Query query);
-
+	IPage<User> selectUserPage(IPage<User> page, User user);
 
 	/**
 	 * 用户信息
@@ -80,19 +62,10 @@ public interface IUserService extends BaseService<User> {
 	 *
 	 * @param tenantId
 	 * @param account
+	 * @param password
 	 * @return
 	 */
-	UserInfo userInfo(String tenantId, String account);
-
-	/**
-	 * 用户信息
-	 *
-	 * @param tenantId
-	 * @param account
-	 * @param userEnum
-	 * @return
-	 */
-	UserInfo userInfo(String tenantId, String account, UserEnum userEnum);
+	UserInfo userInfo(String tenantId, String account, String password);
 
 	/**
 	 * 用户信息
@@ -101,15 +74,6 @@ public interface IUserService extends BaseService<User> {
 	 * @return
 	 */
 	UserInfo userInfo(UserOauth userOauth);
-
-	/**
-	 * 根据账号获取用户
-	 *
-	 * @param tenantId
-	 * @param account
-	 * @return
-	 */
-	User userByAccount(String tenantId, String account);
 
 	/**
 	 * 给用户设置角色
@@ -139,27 +103,32 @@ public interface IUserService extends BaseService<User> {
 	 */
 	boolean updatePassword(Long userId, String oldPassword, String newPassword, String newPassword1);
 
-
 	/**
-	 * 删除用户
+	 * 获取角色名
 	 *
-	 * @param userIds
+	 * @param roleIds
 	 * @return
 	 */
-	boolean removeUser(String userIds);
+	List<String> getRoleName(String roleIds);
 
+	/**
+	 * 获取部门名
+	 *
+	 * @param deptIds
+	 * @return
+	 */
+	List<String> getDeptName(String deptIds);
 
 	/**
 	 * 导入用户数据
 	 *
 	 * @param data
-	 * @param isCovered
 	 * @return
 	 */
-	void importUser(List<UserExcel> data, Boolean isCovered);
+	void importUser(List<UserExcel> data);
 
 	/**
-	 * 导出用户数据
+	 * 获取导出用户数据
 	 *
 	 * @param queryWrapper
 	 * @return
@@ -174,28 +143,4 @@ public interface IUserService extends BaseService<User> {
 	 * @return
 	 */
 	boolean registerGuest(User user, Long oauthId);
-
-	/**
-	 * 配置用户平台
-	 *
-	 * @param userId
-	 * @param userType
-	 * @param userExt
-	 * @return
-	 */
-	boolean updatePlatform(Long userId, Integer userType, String userExt);
-
-	/**
-	 * 用户详细信息
-	 *
-	 * @param user
-	 * @return
-	 */
-	UserVO platformDetail(User user);
-
-	//魔晶定制
-	UserInfo userInfoDel(Long userId);
-
-	//获取所以后台用户 魔晶定制
-	List<User> getAllHtyh();
 }

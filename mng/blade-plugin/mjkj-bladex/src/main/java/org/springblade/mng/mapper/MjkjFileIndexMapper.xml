@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.springblade.mng.mapper.MjkjFileIndexMapper">
+
+
+    <select id="getTjZyzlCouByTime" resultType="long">
+        select IFNULL(COUNT(id),0) from mjkj_file_list where is_deleted =0 and file_suffix !='.folder'
+        <if test="time!=null and time!=''">
+            and DATE_FORMAT(create_time,'%Y-%m-%d') = #{time}
+        </if>
+    </select>
+
+    <select id="getTjZyzlCouByMonth" resultType="long">
+        select IFNULL(COUNT(id),0) from mjkj_file_list where is_deleted =0 and file_suffix !='.folder'
+         and DATE_FORMAT(create_time,'%Y-%m') = #{time}
+    </select>
+
+
+    <select id="getTjWdCouByTime" resultType="long">
+        select IFNULL(COUNT(id),0) from mjkj_file_list
+         where is_deleted =0
+         and file_suffix in('.xls','.xslx','.ppt','.pptx','.doc','.docx','.pdf')
+        <if test="time!=null and time!=''">
+            and DATE_FORMAT(create_time,'%Y-%m-%d') = #{time}
+        </if>
+    </select>
+
+
+    <select id="getTjSpCouByTime" resultType="long">
+        select IFNULL(COUNT(id),0) from mjkj_file_list
+         where is_deleted =0
+         and file_suffix in('.mpg','.mp4','.avi','.mkv','.ogv')
+        <if test="time!=null and time!=''">
+            and DATE_FORMAT(create_time,'%Y-%m-%d') = #{time}
+        </if>
+    </select>
+
+    <select id="getTjCouByMonth" resultType="long">
+        select IFNULL(COUNT(id),0) from mjkj_file_log
+         where is_deleted =0 and type =#{type}
+         and DATE_FORMAT(create_time,'%Y-%m') = #{time}
+    </select>
+
+    <select id="getTjCouByDay" resultType="long">
+        select IFNULL(COUNT(id),0) from mjkj_file_log
+         where is_deleted =0 and type =#{type}
+         and DATE_FORMAT(create_time,'%Y-%m-%d') = #{time}
+    </select>
+
+    <select id="uploadList" resultType="map">
+        SELECT
+        fl.title,
+        t.cou
+        FROM
+        ( SELECT
+        file_id, count( 1 ) cou
+        FROM mjkj_file_log
+        WHERE type = '上传载' and is_deleted =0
+        <if test="paramStartTime!=null and paramStartTime !=''">
+            <![CDATA[  and DATE_FORMAT(create_time,'%Y-%m-%d') >=DATE_FORMAT(#{paramStartTime},'%Y-%m-%d') ]]>
+        </if>
+        <if test="paramEndTime!=null and paramEndTime !=''">
+            <![CDATA[  and DATE_FORMAT(create_time,'%Y-%m-%d') <=DATE_FORMAT(#{paramEndTime},'%Y-%m-%d') ]]>
+        </if>
+        GROUP BY file_id ORDER BY cou DESC LIMIT 10 ) t
+        INNER JOIN mjkj_file_list fl ON t.file_id = fl.id
+        where fl.is_deleted =0
+    </select>
+
+    <select id="downloadList" resultType="map">
+        SELECT
+            fl.title,
+            t.cou
+        FROM
+            ( SELECT
+                file_id, count( 1 ) cou
+                FROM mjkj_file_log
+                 WHERE type = '下载' and is_deleted =0
+                 <if test="paramStartTime!=null and paramStartTime !=''">
+                     <![CDATA[  and DATE_FORMAT(create_time,'%Y-%m-%d') >=DATE_FORMAT(#{paramStartTime},'%Y-%m-%d') ]]>
+                 </if>
+                <if test="paramEndTime!=null and paramEndTime !=''">
+                    <![CDATA[  and DATE_FORMAT(create_time,'%Y-%m-%d') <=DATE_FORMAT(#{paramEndTime},'%Y-%m-%d') ]]>
+                </if>
+                 GROUP BY file_id ORDER BY cou DESC LIMIT 10 ) t
+            INNER JOIN mjkj_file_list fl ON t.file_id = fl.id
+            where fl.is_deleted =0
+    </select>
+
+    <select id="getYlUserDay" resultType="long">
+       SELECT
+            IFNULL( count( DISTINCT create_user ), 0 )
+        FROM
+            mjkj_file_log
+        WHERE
+            is_deleted =0
+            and type = '预览'
+        <if test="time!=null and time !=''">
+            and DATE_FORMAT(create_time,'%Y-%m-%d') = #{time}
+        </if>
+    </select>
+
+    <select id="getYlCouDay" resultType="long">
+        SELECT
+        IFNULL( count(1), 0 )
+        FROM
+        mjkj_file_log
+        WHERE
+        is_deleted =0
+        and type = '预览'
+        <if test="time!=null and time !=''">
+            and DATE_FORMAT(create_time,'%Y-%m-%d') = #{time}
+        </if>
+    </select>
+
+    <select id="getTjUserCouByTime" resultType="long">
+        select IFNULL(COUNT(id),0) from blade_user where is_deleted =0
+        <if test="time!=null and time!=''">
+            and DATE_FORMAT(create_time,'%Y-%m-%d') = #{time}
+        </if>
+    </select>
+
+</mapper>

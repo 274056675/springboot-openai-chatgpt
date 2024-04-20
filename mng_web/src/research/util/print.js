@@ -89,7 +89,6 @@ Print.prototype = {
       outerHTML = outerHTML.replace('</div></div></div></div></body></html>', '')
       outerHTML = outerHTML.split('class="avue-form-form-style">')[1]
     }
-    // console.log(outerHTML)
     return outerHTML;
   },
   // 向父级元素循环，包裹当前需要打印的元素
@@ -148,7 +147,7 @@ Print.prototype = {
         frameWindow.close();
       }, 10);
     } catch (err) {
-      console.log('err', err);
+      
     }
   },
   // 检查一个元素是否是 body 元素的后代元素且非 body 元素本身

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.springblade.mng.cgform.mapper.DesformHeadMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="desformHeadResultMap" type="org.springblade.mng.cgform.entity.DesformHead">
+        <result column="id" property="id"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_dept" property="createDept"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="status" property="status"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="cgform_head_id" property="cgformHeadId"/>
+        <result column="form_name" property="formName"/>
+        <result column="form_code" property="formCode"/>
+        <result column="form_icon" property="formIcon"/>
+        <result column="form_design_json" property="formDesignJson"/>
+        <result column="form_type" property="formType"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="parent_code" property="parentCode"/>
+        <result column="mobile_view" property="mobileView"/>
+    </resultMap>
+
+    <select id="openList" resultMap="desformHeadResultMap">
+        select * from design_desform_head  where is_deleted = 0 and tenant_id ='000000' order by id desc
+    </select>
+
+</mapper>

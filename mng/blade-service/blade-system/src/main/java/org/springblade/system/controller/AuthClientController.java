@@ -1,4 +1,18 @@
-
+/**
+ * Copyright (c) 2018-2028, Chill Zhuang 庄骞 (smallchill@163.com).
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.springblade.system.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -11,7 +25,6 @@ import org.springblade.core.boot.ctrl.BladeController;
 import org.springblade.core.mp.support.Condition;
 import org.springblade.core.mp.support.Query;
 import org.springblade.core.secure.annotation.PreAuth;
-import org.springblade.core.tenant.annotation.NonDS;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.constant.RoleConstant;
 import org.springblade.core.tool.utils.Func;
@@ -25,18 +38,17 @@ import javax.validation.Valid;
 /**
  *  应用管理控制器
  *
- *
+ * @author Chill
  */
-@NonDS
 @RestController
 @AllArgsConstructor
 @RequestMapping("/client")
 @ApiIgnore
 @Api(value = "应用管理", tags = "接口")
-@PreAuth(RoleConstant.HAS_ROLE_ADMINISTRATOR)
+@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
 public class AuthClientController extends BladeController {
 
-	private final IAuthClientService clientService;
+	private IAuthClientService clientService;
 
 	/**
 	* 详情

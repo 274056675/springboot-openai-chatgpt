@@ -22,6 +22,12 @@
         <result column="key" property="key"/>
     </resultMap>
 
+    <!-- 通用查询结果列 -->
+    <sql id="baseColumnList">
+        select
+        id, parent_id, code, dict_key, dict_value, sort, remark, is_deleted
+    </sql>
+
     <select id="selectDictPage" resultMap="dictResultMap">
         select * from blade_dict where is_deleted = 0
     </select>
@@ -29,26 +35,22 @@
     <select id="getValue" resultType="java.lang.String">
         select
             dict_value
-        from blade_dict where code = #{param1} and dict_key = #{param2} and is_deleted = 0
+        from blade_dict where code = #{param1} and dict_key = #{param2} and is_deleted = 0 limit 1
     </select>
 
     <!-- oracle 版本 -->
     <!--<select id="getValue" resultType="java.lang.String">
         select
             dict_value
-        from blade_dict where code = #{param1, jdbcType=VARCHAR} and dict_key = #{param2} and dict_key >= 0  rownum 1
+        from blade_dict where code = #{param1, jdbcType=VARCHAR} and dict_key = #{param2} and dict_value >= 0 rownum 1
     </select>-->
 
     <select id="getList" resultMap="dictResultMap">
-        select id, parent_id, code, dict_key, dict_value, sort, remark from blade_dict where code = #{param1} and parent_id > 0 and is_sealed = 0 and is_deleted = 0
+        select code, dict_key, dict_value, sort, remark from blade_dict where code = #{param1} and dict_key >= 0 and is_deleted = 0
     </select>
 
     <select id="tree" resultMap="treeNodeResultMap">
-        select id, parent_id, dict_value as title, id as "value", id as "key" from blade_dict where is_deleted = 0
-    </select>
-
-    <select id="parentTree" resultMap="treeNodeResultMap">
-        select id, parent_id, dict_value as title, id as "value", id as "key" from blade_dict where is_deleted = 0 and parent_id = 0
+        select id, parent_id, dict_value as title, id as 'value', id as 'key' from blade_dict where is_deleted = 0
     </select>
 
 </mapper>

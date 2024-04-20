@@ -50,7 +50,7 @@ export default function () {
         const chalkHandler = getHandler("chalk", "chalk-style");
 
         if (!this.chalk) {
-          const url = `/cdn/element-ui/${version}/theme-chalk/index.css`;
+          const url = `https://unpkg.com/element-ui@${version}/lib/theme-chalk/index.css`;
           this.getCSSString(url, chalkHandler, "chalk");
         } else {
           chalkHandler();

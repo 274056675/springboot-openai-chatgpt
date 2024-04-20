@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.springblade.mng.cgform.mapper.BaseSqlMapper">
+
+    <select id="getProcessingProgressTotal" resultType="int">
+        select IFNULL(total_num,0) from ${tableName} where batch_code =#{batchCode} and is_deleted=0   limit 1
+    </select>
+
+    <select id="getAdminIdList" resultType="long">
+        SELECT
+            id
+        FROM
+            (
+            SELECT
+                u.id,
+                (
+                SELECT
+                    r.id
+                FROM
+                    blade_role r
+                WHERE
+                    r.role_alias = 'admin'
+                AND FIND_IN_SET( r.id, u.role_id )) AS select_role_id
+            FROM
+                blade_user u
+            ) t
+        WHERE
+            select_role_id IS NOT NULL
+    </select>
+
+    <!-- 执行查询语句 据说可以防注入-->
+    <select id="baseSelectSqlList" parameterType="java.util.Map" resultType="map">
+        ${select_sql}
+    </select>
+
+    <!-- 执行保存语句 据说可以防注入-->
+    <insert id="baseIntegerSql" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		${select_sql}
+	</insert>
+
+    <!-- 执行编辑语句 据说可以防注入-->
+    <update id="baseUpdateSql" parameterType="java.util.Map">
+		${select_sql}
+	</update>
+
+    <!-- 执行删除语句  据说可以防注入-->
+    <delete id="baseDeleteSql" parameterType="java.util.Map">
+		${select_sql}
+	</delete>
+
+    <!-- 查询一列 据说可以防注入-->
+    <select id="baseSelectByOneColumnSql" parameterType="java.util.Map" resultType="String">
+        ${select_sql}
+    </select>
+
+    <!-- 查询一列 据说可以防注入-->
+    <select id="getKvModelList" parameterType="java.util.Map" resultType="org.springblade.mng.cgform.model.KvModel">
+        ${select_sql}
+    </select>
+
+    <select id="getSysDictItem" resultType="string">
+    SELECT
+        dictItem.item_text
+    FROM
+        sys_dict dict
+        INNER JOIN sys_dict_item dictItem
+        ON dict.id = dictItem.dict_id
+        WHERE
+        dict.id = #{sysDictId}
+        AND
+        dictItem.item_value =#{type}
+    </select>
+
+</mapper>

@@ -9,6 +9,12 @@
         <result column="role_id" property="roleId"/>
     </resultMap>
 
+    <!-- 通用查询结果列 -->
+    <sql id="baseColumnList">
+        select
+        id, menu_id, role_id, is_deleted
+    </sql>
+
     <select id="selectRoleMenuPage" resultMap="roleMenuResultMap">
         select * from blade_role_menu where is_deleted = 0
     </select>

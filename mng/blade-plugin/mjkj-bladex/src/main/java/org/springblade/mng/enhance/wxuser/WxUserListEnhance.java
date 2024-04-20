@@ -2,9 +2,9 @@ package org.springblade.mng.enhance.wxuser;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.springblade.cgform.model.CgformEnhanceJavaListInter;
-import org.springblade.common.utils.MjkjUtils;
-import org.springblade.config.exception.BusinessException;
+import org.springblade.mng.cgform.model.CgformEnhanceJavaListInter;
+import org.springblade.mng.common.utils.MjkjUtils;
+import org.springblade.mng.config.exception.BusinessException;
 import org.springblade.mng.mapper.MngMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,18 @@
-
+/**
+ * Copyright (c) 2018-2028, Chill Zhuang 庄骞 (smallchill@163.com).
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.springblade.system.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -12,7 +26,7 @@ import java.util.List;
 /**
  * 服务类
  *
- *
+ * @author Chill
  */
 public interface IRoleService extends IService<Role> {
 
@@ -36,13 +50,11 @@ public interface IRoleService extends IService<Role> {
 	/**
 	 * 权限配置
 	 *
-	 * @param roleIds      角色id集合
-	 * @param menuIds      菜单id集合
-	 * @param dataScopeIds 数据权限id集合
-	 * @param apiScopeIds  接口权限id集合
+	 * @param roleIds 角色id集合
+	 * @param menuIds 菜单id集合
 	 * @return 是否成功
 	 */
-	boolean grant(@NotEmpty List<Long> roleIds, List<Long> menuIds, List<Long> dataScopeIds, List<Long> apiScopeIds);
+	boolean grant(@NotEmpty List<Long> roleIds, @NotEmpty List<Long> menuIds, List<Long> dataScopeIds);
 
 	/**
 	 * 获取角色ID
@@ -60,38 +72,5 @@ public interface IRoleService extends IService<Role> {
 	 * @return
 	 */
 	List<String> getRoleNames(String roleIds);
-
-	/**
-	 * 获取角色名
-	 *
-	 * @param roleIds
-	 * @return
-	 */
-	List<String> getRoleAliases(String roleIds);
-
-	/**
-	 * 提交
-	 *
-	 * @param role
-	 * @return
-	 */
-	boolean submit(Role role);
-
-	/**
-	 * 角色信息查询
-	 *
-	 * @param roleName
-	 * @param parentId
-	 * @return
-	 */
-	List<RoleVO> search(String roleName, Long parentId);
-
-	/**
-	 * 删除角色
-	 *
-	 * @param ids
-	 * @return
-	 */
-	boolean removeRole(String ids);
 
 }

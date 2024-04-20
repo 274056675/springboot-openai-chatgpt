@@ -19,10 +19,3 @@ spring:
       connection-test-query: select 1
       #connection-test-query: select 1 from dual
 
-#swagger文档
-swagger:
-  base-packages:
-    - org.springblade
-    - org.springframework.security.oauth2.provider.endpoint
-
-#第三方登陆 魔晶定制，删除

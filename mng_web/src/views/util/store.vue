@@ -104,7 +104,7 @@
       },
       getAll(params = {}) {
         const list = getAllStore(params);
-        window.console.log(list);
+        
         this.$message(`结果已经打印到控制台`);
       }
     }

@@ -1,28 +1,40 @@
 package org.springblade.mng.service.impl;
 
-import org.springblade.cgform.service.IMjkjBaseSqlService;
-import org.springblade.core.redis.cache.BladeRedis;
-import org.springblade.core.sms.model.SmsData;
-import org.springblade.core.sms.model.SmsResponse;
+import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.IAcsClient;
+import com.aliyuncs.dysmsapi.model.v20170525.SendSmsRequest;
+import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
+import com.aliyuncs.profile.DefaultProfile;
+import com.aliyuncs.profile.IClientProfile;
+import lombok.extern.slf4j.Slf4j;
+import org.springblade.core.tool.jackson.JsonUtil;
+import org.springblade.mng.cgform.service.IMjkjBaseSqlService;
+import org.springblade.mng.config.constant.ChatgptConfig;
+import org.springblade.mng.config.constant.MjkjSmsConfig;
+
 import org.springblade.core.tool.utils.DateUtil;
+import org.springblade.core.tool.utils.Func;
+import org.springblade.core.tool.utils.RedisUtil;
 import org.springblade.mng.service.ISmsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 短信相关 相关
  */
 
 @Service
+@Slf4j
 public class SmsServiceImpl implements ISmsService {
 
 	@Autowired
 	private IMjkjBaseSqlService baseSqlService;
 
 	@Autowired
-	private BladeRedis bladeRedis;
+	private RedisUtil redisUtil;
 
 	private String getRedisKey(String phone){
 		String redisKey="SMS_PHONE:"+phone;
@@ -37,19 +49,33 @@ public class SmsServiceImpl implements ISmsService {
 			params.put("code", code);
 
 
+			IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", MjkjSmsConfig.getAccessKey(), MjkjSmsConfig.getSecretKey());
+			IAcsClient acsClient = new DefaultAcsClient(profile);
 
-			SmsData smsData = new SmsData(params);
+			SendSmsRequest request = new SendSmsRequest();
+			request.setPhoneNumbers(phone);
+			request.setSignName(MjkjSmsConfig.getSignName());
+			request.setTemplateCode(MjkjSmsConfig.getTemplateId());
+			request.setTemplateParam(JsonUtil.toJson(params));
+			SendSmsResponse sendSmsResponse = null;
 
-			List<String> phones = new ArrayList<>();
-			phones.add(phone);
-
-			SmsResponse smsResponse =null;
 			String sendResult="";
 			boolean flag =false;
-			//调试
-			smsResponse = new SmsResponse(true,200,null);
-			flag = true;
-			sendResult=flag?"成功":"失败";
+			if(Func.equals(ChatgptConfig.getDebug(),"true")){//调试
+				sendSmsResponse = new SendSmsResponse();
+				sendSmsResponse.setCode("OK");
+				sendSmsResponse.setMessage("test");
+				flag = true;
+				sendResult=flag?"成功":"失败";
+			}else{
+				sendSmsResponse = acsClient.getAcsResponse(request);
+				if ((sendSmsResponse.getCode() != null) && (sendSmsResponse.getCode().equals("OK"))) {
+					flag = true;
+				} else {
+					flag = false;
+				}
+
+			}
 
 			//保存日志
 			Date now = DateUtil.now();
@@ -58,12 +84,12 @@ public class SmsServiceImpl implements ISmsService {
 			addMap.put("code",code);
 			addMap.put("send_time",now);
 			addMap.put("send_result",sendResult);
-			addMap.put("remark",smsResponse.getMsg());
+			addMap.put("remark",sendSmsResponse.getMessage());
 			baseSqlService.baseInsertData("chat_log_sms",addMap);
 			//写入redis
 			String redisKey = this.getRedisKey(phone);
 			if(flag){
-				bladeRedis.setEx(redisKey,code,300L);//5分钟
+				redisUtil.set(redisKey,code,300L, TimeUnit.SECONDS);//5分钟
 			}
 
 			return flag;

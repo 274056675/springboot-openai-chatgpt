@@ -3,32 +3,35 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>BladeX</artifactId>
+        <artifactId>SpringBlade</artifactId>
         <groupId>org.springblade</groupId>
-        <version>2.9.1.RELEASE</version>
+        <version>3.7.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>blade-common</artifactId>
     <name>${project.artifactId}</name>
-    <version>${bladex.project.version}</version>
+    <version>${blade.project.version}</version>
     <packaging>jar</packaging>
-
 
     <dependencies>
         <dependency>
             <groupId>org.springblade</groupId>
             <artifactId>blade-core-launch</artifactId>
+            <version>${blade.tool.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springblade</groupId>
-            <artifactId>blade-starter-ribbon</artifactId>
+            <artifactId>blade-core-loadbalancer</artifactId>
+            <version>${blade.tool.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springblade</groupId>
-            <artifactId>blade-core-auto</artifactId>
+            <groupId>net.dreamlu</groupId>
+            <artifactId>mica-auto</artifactId>
+            <version>${mica.auto.version}</version>
             <scope>provided</scope>
         </dependency>
+
     </dependencies>
 
     <build>

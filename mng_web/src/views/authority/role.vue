@@ -6,7 +6,6 @@
                ref="crud"
                v-model="form"
                :permission="permissionList"
-               :before-open="beforeOpen"
                @row-del="rowDel"
                @row-update="rowUpdate"
                @row-save="rowSave"
@@ -15,7 +14,6 @@
                @selection-change="selectionChange"
                @current-change="currentChange"
                @size-change="sizeChange"
-               @refresh-change="refreshChange"
                @on-load="onLoad">
       <template slot="menuLeft">
         <el-button type="danger"
@@ -26,15 +24,13 @@
                    @click="handleDelete">删 除
         </el-button>
         <el-button size="small"
-                   icon="el-icon-setting"
+                   icon="el-icon-delete"
                    @click="handleRole"
-                   v-if="userInfo.role_name.includes('admin')"
                    plain>权限设置
         </el-button>
       </template>
     </avue-crud>
-    <el-dialog title="角色权限配置"
-               append-to-body
+    <el-dialog title="角色配置"
                :visible.sync="box"
                width="345px">
       <el-tabs type="border-card">
@@ -56,17 +52,7 @@
                    :props="props">
           </el-tree>
         </el-tab-pane>
-        <el-tab-pane label="接口权限">
-          <el-tree :data="apiScopeGrantList"
-                   show-checkbox
-                   node-key="id"
-                   ref="treeApiScope"
-                   :default-checked-keys="apiScopeTreeObj"
-                   :props="props">
-          </el-tree>
-        </el-tab-pane>
       </el-tabs>
-
       <span slot="footer"
             class="dialog-footer">
         <el-button @click="box = false">取 消</el-button>
@@ -78,7 +64,7 @@
 </template>
 
 <script>
-  import {add, getList, getRole, getRoleTreeById, grant, grantTree, remove, update} from "@/api/system/role";
+  import {add, getList, getRole, getRoleTree, grant, grantTree, remove, update} from "@/api/system/role";
   import {mapGetters} from "vuex";
   import website from '@/config/website';
 
@@ -93,11 +79,8 @@
         },
         menuGrantList: [],
         dataScopeGrantList: [],
-        apiScopeGrantList: [],
-        apiGrantList: [],
         menuTreeObj: [],
         dataScopeTreeObj: [],
-        apiScopeTreeObj: [],
         selectionList: [],
         query: {},
         loading: true,
@@ -107,17 +90,14 @@
           total: 0
         },
         option: {
-          tip: false,
-          simplePage: true,
           searchShow: true,
           searchMenuSpan: 6,
+          tip: false,
           tree: true,
           border: true,
           index: true,
           selection: true,
           viewBtn: true,
-          dialogWidth: 900,
-          dialogClickModal: false,
           column: [
             {
               label: "角色名称",
@@ -203,7 +183,7 @@
       };
     },
     computed: {
-      ...mapGetters(["userInfo", "permission"]),
+      ...mapGetters(["permission"]),
       permissionList() {
         return {
           addBtn: this.vaildData(this.permission.role_add, false),
@@ -216,7 +196,6 @@
         let ids = [];
         this.selectionList.forEach(ele => {
           ids.push(ele.id);
-
         });
         return ids.join(",");
       },
@@ -229,17 +208,10 @@
       }
     },
     methods: {
-      initData(roleId){
-        getRoleTreeById(roleId).then(res => {
-          const column = this.findObject(this.option.column, "parentId");
-          column.dicData = res.data.data;
-        });
-      },
       submit() {
         const menuList = this.$refs.treeMenu.getCheckedKeys();
         const dataScopeList = this.$refs.treeDataScope.getCheckedKeys();
-        const apiScopeList = this.$refs.treeApiScope.getCheckedKeys();
-        grant(this.idsArray, menuList, dataScopeList, apiScopeList).then(() => {
+        grant(this.idsArray, menuList, dataScopeList).then(() => {
           this.box = false;
           this.$message({
             type: "success",
@@ -247,15 +219,25 @@
           });
           this.onLoad(this.page);
         });
+
+        /*const menuLIst = this.$refs.tree.getCheckedKeys();
+        grant(this.idsArray, menuLIst).then(() => {
+          this.box = false;
+          this.$message({
+            type: "success",
+            message: "操作成功!"
+          });
+          this.onLoad(this.page);
+        });*/
       },
       rowSave(row, done, loading) {
         add(row).then(() => {
+          done();
           this.onLoad(this.page);
           this.$message({
             type: "success",
             message: "操作成功!"
           });
-          done();
         }, error => {
           window.console.log(error);
           loading();
@@ -263,12 +245,12 @@
       },
       rowUpdate(row, index, done, loading) {
         update(row).then(() => {
+          done();
           this.onLoad(this.page);
           this.$message({
             type: "success",
             message: "操作成功!"
           });
-          done();
         }, error => {
           window.console.log(error);
           loading();
@@ -305,16 +287,6 @@
       selectionChange(list) {
         this.selectionList = list;
       },
-      selectionClear() {
-        this.selectionList = [];
-        this.$refs.crud.toggleSelection();
-      },
-      beforeOpen(done, type) {
-        if (["add", "edit"].includes(type)) {
-          this.initData(this.form.id);
-        }
-        done();
-      },
       handleRole() {
         if (this.selectionList.length !== 1) {
           this.$message.warning("只能选择一条数据");
@@ -322,19 +294,28 @@
         }
         this.menuTreeObj = [];
         this.dataScopeTreeObj = [];
-        this.apiScopeTreeObj = [];
         grantTree()
           .then(res => {
             this.menuGrantList = res.data.data.menu;
             this.dataScopeGrantList = res.data.data.dataScope;
-            this.apiScopeGrantList = res.data.data.apiScope;
             getRole(this.ids).then(res => {
               this.menuTreeObj = res.data.data.menu;
               this.dataScopeTreeObj = res.data.data.dataScope;
-              this.apiScopeTreeObj = res.data.data.apiScope;
               this.box = true;
             });
           });
+
+
+        /*this.defaultObj = [];
+        grantTree()
+          .then(res => {
+            this.list = res.data.data;
+            return getRole(this.ids);
+          })
+          .then(res => {
+            this.defaultObj = res.data.data;
+            this.box = true;
+          });*/
       },
       handleDelete() {
         if (this.selectionList.length === 0) {
@@ -364,17 +345,20 @@
       sizeChange(pageSize) {
         this.page.pageSize = pageSize;
       },
-      refreshChange() {
-        this.onLoad(this.page, this.query);
-      },
       onLoad(page, params = {}) {
         this.loading = true;
         getList(page.currentPage, page.pageSize, Object.assign(params, this.query)).then(res => {
           this.data = res.data.data;
           this.loading = false;
-          this.selectionClear();
+          getRoleTree().then(res => {
+            const column = this.findObject(this.option.column, "parentId");
+            column.dicData = res.data.data;
+          });
         });
       }
     }
   };
 </script>
+
+<style>
+</style>

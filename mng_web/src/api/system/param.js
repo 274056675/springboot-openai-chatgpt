@@ -11,7 +11,6 @@ export const getList = (current, size, params) => {
     }
   })
 }
-
 export const remove = (ids) => {
   return request({
     url: '/api/blade-system/param/remove',

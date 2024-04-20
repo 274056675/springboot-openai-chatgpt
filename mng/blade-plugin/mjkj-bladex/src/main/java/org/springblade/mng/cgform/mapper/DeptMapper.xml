@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.springblade.mng.cgform.mapper.DeptMapper">
+
+    <select id="getUserDeptList" resultType="long">
+        select distinct dept_id from blade_user_dept where user_id =#{userId}
+    </select>
+
+    <select id="getMaxSort" resultType="int">
+        select max(sort) from blade_dept where parent_id=#{parentId}
+    </select>
+
+    <select id="getDeptIdByYytId" resultType="long">
+        SELECT
+            d.id
+        FROM
+            zhck_xtsz_yytsz y
+            INNER JOIN blade_dept d ON y.dept_id = d.id
+        WHERE
+            y.id = #{yytId}
+    </select>
+
+    <insert id="insertDeptUser" parameterType="string" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into blade_user_dept(user_id,dept_id) values(#{userId} ,#{deptId})
+    </insert>
+
+    <select id="getRenYuanByDeptId" resultType="string">
+        SELECT
+            c.ssry
+        FROM
+            zhck_xtsz_pqsz p
+            INNER JOIN zhck_xtsz_cbscsz c ON p.id = c.pq
+        WHERE
+            c.pq = #{deptId}
+    </select>
+
+</mapper>

@@ -1,43 +1,40 @@
 package org.springblade.mng.service.impl;
 
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.symmetric.AES;
 import cn.hutool.http.HttpRequest;
-import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.map.HashedMap;
-import org.springblade.cgform.model.ImageSizeModel;
-import org.springblade.cgform.service.IMjkjBaseSqlService;
-import org.springblade.common.utils.MjkjUtils;
-import org.springblade.config.constant.ChatgptConfig;
+import org.springblade.mng.cgform.model.ImageSizeModel;
+import org.springblade.mng.cgform.service.IMjkjBaseSqlService;
+import org.springblade.mng.common.utils.MjkjUtils;
+import org.springblade.mng.config.constant.ChatgptConfig;
 import org.springblade.core.log.exception.ServiceException;
-import org.springblade.core.redis.cache.BladeRedis;
 import org.springblade.core.tool.jackson.JsonUtil;
-import org.springblade.core.tool.utils.AesUtil;
 import org.springblade.core.tool.utils.DateUtil;
 import org.springblade.core.tool.utils.Func;
+import org.springblade.core.tool.utils.RedisUtil;
+import org.springblade.mng.config.LocalCache;
 import org.springblade.mng.mapper.WebMapper;
 import org.springblade.mng.model.*;
 import org.springblade.mng.param.ChatGptParam;
 import org.springblade.mng.param.ChatGptPublicParam;
 import org.springblade.mng.service.IChatGPTService;
-import org.springblade.plugin.message.feign.IMessageClient;
-import org.springblade.plugin.message.model.ChatGptMsgModel;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * CHATGPT相关
@@ -60,16 +57,9 @@ public class ChatGPTServiceImpl implements IChatGPTService {
 	private WebMapper webMapper;
 
 	@Autowired
-	private IMessageClient messageClient;
+	private RedisUtil redisUtil;
 
-	@Autowired
-	private BladeRedis bladeRedis;
-
-	private static String aesKey = "vWkzDxDfXruFpgjDH7Jy0mIWamCQvdct";
-
-	@Lazy
-	@Autowired
-	private IChatGPTService chatGPTService;
+	private static String aesKey = "EgzdVGYalHE1pUNMO3CeIKatKmuocz07";
 
 
 	/**
@@ -77,23 +67,26 @@ public class ChatGPTServiceImpl implements IChatGPTService {
 	 *
 	 * @param wxUserId
 	 * @param q_logMessageId
+	 * @param chatListIdL
 	 */
 	@Async("asyncPoolTaskExecutor")
 	@Override
-	public void sendChatGptMessage(String modelType, String wxUserId, String q_logMessageId, String question, Long startMessageId) {
+	public void sendChatGptMessage(String wxUserId, String q_logMessageId, String question, Long startMessageId, Long chatListIdL) {
 		//处理上下文
-		String sendChatGptQuestion = this.handleContext(wxUserId, question, q_logMessageId, startMessageId);
+		String sendChatGptQuestion = this.handleContext(wxUserId, question, q_logMessageId, startMessageId,chatListIdL);
 
 		AccountUseCouModel accountModel = this.getChatGptKey();
 		if (Func.isEmpty(accountModel)) {
 			return;
 		}
 
+		//使用的模型是GPT3
+		String model = "text-davinci-003";
+
 		ChatGptParam param = new ChatGptParam();
 		param.setUrl(ChatgptConfig.getChatgptUrl());
 		param.setKey(accountModel.getApiKey());
-		//param.setKey("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");
-		param.setModel(ChatgptConfig.getChatgptModel());
+		param.setModel(model); //发送的model参数值为gpt3的值
 		param.setMax_tokens(ChatgptConfig.getChatgptMaxToken());
 		param.setTop_p(ChatgptConfig.getChatgptTopP());
 		param.setPrompt(sendChatGptQuestion);
@@ -142,21 +135,12 @@ public class ChatGPTServiceImpl implements IChatGPTService {
 					insertMap.put("message_time", now);
 					insertMap.put("blade_user_id", bladeUserId);
 					insertMap.put("view_type", ViewType.TEXT);
-					insertMap.put("model_type", modelType);//分类
+					insertMap.put("model_type", 0);//分类
 					insertMap.put("api_account_id", accountModel.getId());//账户id
+					insertMap.put("chat_list_id",String.valueOf(chatListIdL));
 					baseSqlService.baseInsertData("chat_log_message", insertMap);
 
-					//发送到前端
-					ChatGptMsgModel questionMsgModel = new ChatGptMsgModel();
-					questionMsgModel.setId(id);
-					questionMsgModel.setPid(q_logMessageId);
-					questionMsgModel.setChatCode(chatCode);
-					questionMsgModel.setMessage_type(MessageType.A);//q =问题  a=答案
-					questionMsgModel.setMessage_content(choiceText);
-					questionMsgModel.setMessage_time(now);
-					questionMsgModel.setView_type(ViewType.TEXT);
-					//log.info("questionMsgModel================"+JsonUtil.toJson(questionMsgModel));
-					messageClient.sendChatGptMsg(questionMsgModel);
+
 				}
 			}
 
@@ -173,26 +157,47 @@ public class ChatGPTServiceImpl implements IChatGPTService {
 	 *
 	 * @param wxUserId
 	 * @param q_logMessageId
+	 * @param chatListIdL
 	 */
-//	@Async("asyncPoolTaskExecutor")
+	@Async("asyncPoolTaskExecutor")
 	@Override
-	public void sendChatGptTurboMessage(String modelType, String wxUserId, String q_logMessageId, String question, Long startMessageId, Date sendTime) {
+	public void sendChatGptTurboMessage(String wxUserId, String q_logMessageId, String question, Long startMessageId, Date sendTime, Long chatListIdL) {
 		Map<String, Object> wxUserMap = baseSqlService.getTableById("chat_wxuser", wxUserId);
 		Long bladeUserId = MjkjUtils.getMap2Long(wxUserMap, "blade_user_id");
 		String chatCode = MjkjUtils.getMap2Str(wxUserMap, "chat_code");
 
+		// 获取用户选择的模型
+		Map<String, Object> settingMap = baseSqlService.getDataOneByField("chat_wxuser_setting", "wxuser_id", wxUserId);
+		String aiModel = MjkjUtils.getMap2Str(settingMap,"ai_model");
+
+		if( Func.isEmpty(aiModel)){ //拿不到，设为默认模型
+			aiModel = ChatgptConfig.getChatgptModel();
+			Map<String,Object> updateMap = new HashMap<>();
+			updateMap.put("ai_model",aiModel);
+			baseSqlService.baseUpdateDataWhere("chat_wxuser_setting",updateMap,"wxuser_id",wxUserId);
+		}
 		AccountUseCouModel accountModel = this.getChatGptKey();
 		if (Func.isEmpty(accountModel)) {
 			return;
 		}
 
 		//处理上下文
-		List<MessageModel> messagesList = this.handleTurboContext(wxUserId, question, q_logMessageId, startMessageId);
+		String errorTip = "";
+		List<MessageModel> messagesList = null;
+		try {
+			messagesList = this.handleTurboContext(wxUserId, question, q_logMessageId, startMessageId,chatListIdL);
+
+		} catch (Exception e) {
+			errorTip = e.getMessage();
+		}
+
 
 		List<ChatGptTurboResult.ChoiceModel> choices = null;
-		String errorTip = "";
+
 		try {
-			choices = this.getChatGptTurboResponse(messagesList, accountModel);
+			if (Func.isEmpty(errorTip)) {//前面没有错误
+				choices = this.getChatGptTurboResponse(messagesList, accountModel, aiModel); //此方法添加了一个参数：选择的模型
+			}
 		} catch (Exception e) {
 			String error_message = e.getMessage();
 			if (Func.isNotEmpty(error_message) && Func.equals(error_message, "余额不足")) {//说明账号没有余额了
@@ -209,6 +214,8 @@ public class ChatGPTServiceImpl implements IChatGPTService {
 					updateMap.put("remark", remark);
 					baseSqlService.baseUpdateData("chat_api_account", updateMap, id);
 				}
+			}else{
+				errorTip = "网络走过太平洋，没有游回来";
 			}
 		}
 		String view_type = ViewType.TEXT;
@@ -253,28 +260,13 @@ public class ChatGPTServiceImpl implements IChatGPTService {
 		insertMap.put("message_time", now);
 		insertMap.put("blade_user_id", bladeUserId);
 		insertMap.put("view_type", view_type);
-		insertMap.put("model_type", modelType);//分类
+		insertMap.put("model_type", 0);//分类
 		insertMap.put("api_account_id", accountModel.getId());//账户id
-		insertMap.put("context_flag",1);//支持上下文
+		insertMap.put("context_flag", 1);//支持上下文
+		insertMap.put("chat_list_id",String.valueOf(chatListIdL));
 		baseSqlService.baseInsertData("chat_log_message", insertMap);
 
-		//发送到前端
-		//算出耗时
-		Long useTimeL = now.getTime() - sendTime.getTime();
-		BigDecimal useTime = BigDecimal.valueOf(useTimeL).divide(BigDecimal.valueOf(1000L));
-
-		ChatGptMsgModel questionMsgModel = new ChatGptMsgModel();
-		questionMsgModel.setId(id);
-		questionMsgModel.setPid(q_logMessageId);
-		questionMsgModel.setChatCode(chatCode);
-		questionMsgModel.setMessage_type(MessageType.A);//q =问题  a=答案
-		questionMsgModel.setMessage_content(totalContent);
-		questionMsgModel.setMessage_time(now);
-		questionMsgModel.setView_type(view_type);
-		questionMsgModel.setUseTime(useTime.stripTrailingZeros().toPlainString());//耗时
-		messageClient.sendChatGptMsg(questionMsgModel);
 	}
-
 
 	/**
 	 * 发送实时消息，长连接等着返回
@@ -283,16 +275,17 @@ public class ChatGPTServiceImpl implements IChatGPTService {
 	 * @return
 	 */
 	@Override
-	public String sendNowTimeChatGptTurboMessage(List<MessageModel> messagesList) {
+	public String sendNowTimeChatGptTurboMessage(List<MessageModel> messagesList , String model) {
 		List<ChatGptTurboResult.ChoiceModel> choices = null;
+
 		try {
-			choices = this.getChatGptTurboResponse(messagesList, null);
+			choices = this.getChatGptTurboResponse(messagesList, null, model);
 		} catch (Exception e) {
-			return "";
+			return "出现异常，请您重新提问";
 		}
 
 		if (Func.isEmpty(choices)) {
-			return "";
+			return "出现错误，请您重新提问";
 		}
 		String result = "";
 		for (ChatGptTurboResult.ChoiceModel choice : choices) {//推送给用户
@@ -305,42 +298,6 @@ public class ChatGPTServiceImpl implements IChatGPTService {
 		return result;
 	}
 
-	//获取图片
-	@Override
-	public String getDALLEImages(String prompt, String size) {
-		String url = "https://api.openai.com/v1/images/generations";
-		AccountUseCouModel accountModel = this.getChatGptKey();
-
-
-		ChatGptPublicParam publicParam = new ChatGptPublicParam();
-		publicParam.setKey(accountModel.getApiKey());
-		publicParam.setUrl(url);
-
-		Map<String, Object> bodyMap = new HashMap<>();
-		bodyMap.put("prompt", prompt);
-		bodyMap.put("n", 1);
-		bodyMap.put("size", size);
-		publicParam.setBody(JSONUtil.toJsonStr(bodyMap));
-		String jsonStr = JsonUtil.toJson(publicParam);
-
-		AES aes = SecureUtil.aes(aesKey.getBytes());
-		String body = aes.encryptHex(jsonStr);// 加密为16进制表示
-
-		String result = HttpRequest.post(ChatgptConfig.getHttpUrl())
-			.header("Content-Type", "application/json;charset:utf-8")
-			.body(body).execute().body();
-		DALLEImagesResult model = JsonUtil.parse(result, DALLEImagesResult.class);
-		Integer code = model.getCode();
-		if (code == 200) {
-			String resultStr = model.getResultStr();
-			DALLEImagesResult.ResultStrModel resultStrModel = JsonUtil.parse(resultStr, DALLEImagesResult.ResultStrModel.class);
-			DALLEImagesResult.DataModel dataModel = resultStrModel.getData().get(0);
-			String imagesUrl = dataModel.getUrl();
-			return imagesUrl;
-		}
-		throw new ServiceException("获取失败");
-	}
-
 
 	/**
 	 * 获取chatgpt 返回内容
@@ -348,7 +305,7 @@ public class ChatGPTServiceImpl implements IChatGPTService {
 	 * @param messagesList
 	 * @return
 	 */
-	public List<ChatGptTurboResult.ChoiceModel> getChatGptTurboResponse(List<MessageModel> messagesList, AccountUseCouModel accountModel) {
+	public List<ChatGptTurboResult.ChoiceModel> getChatGptTurboResponse(List<MessageModel> messagesList, AccountUseCouModel accountModel, String aiModel) {
 		try {//获取chatgpt 参数
 			if (Func.isEmpty(accountModel)) {
 				accountModel = this.getChatGptKey();
@@ -357,7 +314,7 @@ public class ChatGPTServiceImpl implements IChatGPTService {
 				}
 			}
 
-			String chaggptModel = ChatgptConfig.getChatgptModel();
+			String chaggptModel = aiModel;  //换成用户选择的模型
 
 			ChatGptPublicParam publicParam = new ChatGptPublicParam();
 			publicParam.setKey(accountModel.getApiKey());
@@ -377,11 +334,18 @@ public class ChatGPTServiceImpl implements IChatGPTService {
 			String resultStr = "";
 			String errorTip = "";
 			//最多发送5次
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < 10; i++) {
+				resultStr = "";
+				errorTip = "";
 				try {
 					String result = HttpRequest.post(ChatgptConfig.getHttpUrl())
 						.header("Content-Type", "application/json;charset:utf-8")
 						.body(body).execute().body();
+
+					if(!result.contains("choices"))
+					{
+						log.error("-------------gpt返回错误"+result+"--------------");
+					}
 					if (result.contains("This model's maximum context length")) {//说明token太长
 						List<MessageModel> messagesNewList = new ArrayList<>();
 						messagesNewList.add(messagesList.get(messagesList.size() - 1));//最后一条
@@ -397,7 +361,22 @@ public class ChatGPTServiceImpl implements IChatGPTService {
 					} else if (result.contains("You exceeded your current quota")) {//余额不足
 						errorTip = "余额不足";
 						break;
+					} else if (result.contains("Rate limit reached for")) {//被限制
+						log.error("被限制"+messagesList);
+						List<MessageModel> messagesNewList = new ArrayList<>();
+						messagesNewList.add(messagesList.get(messagesList.size() - 1));//最后一条
+						//重新封装body
+						bodyMap = new HashMap<>();
+						bodyMap.put("model", chaggptModel);
+						bodyMap.put("messages", messagesNewList);
+						bodyMap.put("max_tokens", ChatgptConfig.getChatgptMaxToken());
+						publicParam.setBody(JSONUtil.toJsonStr(bodyMap));
+						jsonStr = JsonUtil.toJson(publicParam);
+						body = aes.encryptHex(jsonStr);// 加密为16进制表示
+						Thread.sleep(2000);
+						continue;
 					}
+
 
 					if (Func.isEmpty(result)) {//为空，重新发送
 						Thread.sleep(1000);
@@ -409,6 +388,10 @@ public class ChatGPTServiceImpl implements IChatGPTService {
 						continue;//中途失败
 					}
 					resultStr = resultModel.getResultStr();
+					if (Func.isEmpty(resultStr)) {
+						Thread.sleep(2000);
+						continue;//中途失败
+					}
 					break;
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -433,6 +416,7 @@ public class ChatGPTServiceImpl implements IChatGPTService {
 		}
 	}
 
+
 	//获取账号
 	private String getAccount() {
 		String flagstudioToken = ChatgptConfig.getFlagstudioToken();
@@ -444,54 +428,24 @@ public class ChatGPTServiceImpl implements IChatGPTService {
 		String yyyyMMdd = DateUtil.format(now, DateUtil.PATTERN_DATE);
 		for (String account : accountList) {
 			String redisKey = yyyyMMdd + ":" + account;
-			if (!bladeRedis.exists(redisKey)) {
-				bladeRedis.setEx(redisKey, 1, Duration.ofDays(1));//天有效期
+			if (!redisUtil.hasKey(redisKey)) {
+				redisUtil.set(redisKey, 1, 1,TimeUnit.DAYS);//天有效期
 				return account;
 			}
-			Integer num = bladeRedis.get(account);
-			if(Func.isEmpty(num)){
-				num=1;
+			Integer num = (Integer) redisUtil.get(account);
+			if (Func.isEmpty(num)) {
+				num = 1;
 			}
 			if (num >= 490) {//换下一个账号
 				continue;
 			}
 			++num;
-			bladeRedis.setEx(redisKey, num, Duration.ofDays(1));//天有效期
+			redisUtil.set(redisKey, num, 1,TimeUnit.DAYS);//天有效期
 			return account;
 		}
 		return null;
 
 	}
-
-	//官方有效期为30天
-	private String getFlagstudioToken(String account) {
-		/*String redisKey = "token:flagstudio:" + account;
-		if (bladeRedis.exists(redisKey)) {
-			return bladeRedis.get(redisKey);
-		}*/
-
-		String url = "https://flagopen.baai.ac.cn/flagStudio/auth/getToken?apikey=" + account;
-		String result = HttpRequest.get(url)
-			.header("Accept", "application/json")
-			.execute().body();
-		if (Func.isEmpty(result)) {
-			return null;
-		}
-		FlagstudioTokenR tokenR = JsonUtil.parse(result, FlagstudioTokenR.class);
-		if (Func.isEmpty(tokenR)) {
-			return null;
-		}
-		Integer code = tokenR.getCode();
-		if (Func.isEmpty(code) || code != 200) {
-			return null;
-		}
-		FlagstudioTokenR.dataModel data = tokenR.getData();
-		String token = data.getToken();
-		//bladeRedis.setEx(redisKey, token, Duration.ofDays(29));//29天，官方是30天到期
-		return token;
-
-	}
-
 
 	private String handleChatgptResult(String result) {
 		result = result.trim();
@@ -532,8 +486,8 @@ public class ChatGPTServiceImpl implements IChatGPTService {
 			String apiKey = MjkjUtils.getMap2Str(accountMap, "api_key");
 			String redisKey = "CHAT_GPT:" + nowStr + ":ACCOUNT_ID_" + id;
 			Integer cou = 0;
-			if (bladeRedis.exists(redisKey)) {
-				cou = bladeRedis.get(redisKey);
+			if (redisUtil.hasKey(redisKey)) {
+				cou = (Integer) redisUtil.get(redisKey);
 			}
 			//使用次数
 			AccountUseCouModel couModel = new AccountUseCouModel();
@@ -552,7 +506,7 @@ public class ChatGPTServiceImpl implements IChatGPTService {
 			int cou = model.getCou();
 			if (cou == 0) {//新数据
 				String redisKey = "CHAT_GPT:" + nowStr + ":ACCOUNT_ID_" + model.getId();
-				bladeRedis.setEx(redisKey, ++cou, 7200L);//2小时
+				redisUtil.set(redisKey, ++cou, 7200L,TimeUnit.SECONDS);//2小时
 				return model;
 			}
 			if (Func.isEmpty(mincou)) {//第一个
@@ -570,7 +524,7 @@ public class ChatGPTServiceImpl implements IChatGPTService {
 			int cou = model.getCou();
 			if (mincou == cou) {
 				String redisKey = "CHAT_GPT:" + nowStr + ":ACCOUNT_ID_" + model.getId();
-				bladeRedis.setEx(redisKey, ++cou, 7200L);//2小时
+				redisUtil.set(redisKey, ++cou, 7200L,TimeUnit.DAYS);//2小时
 				return model;
 			}
 		}
@@ -584,15 +538,19 @@ public class ChatGPTServiceImpl implements IChatGPTService {
 	 * @param question
 	 * @param logMessageId   不保护该条id
 	 * @param startMessageId
+	 * @param chatListIdL
 	 * @return
 	 */
-	private String handleContext(String wxUserId, String question, String logMessageId, Long startMessageId) {
+	private String handleContext(String wxUserId, String question, String logMessageId, Long startMessageId, Long chatListIdL) {
 		String sendChatGptQuestion = "";
 		QueryWrapper<Object> queryWrapper = new QueryWrapper<>();
 		queryWrapper.eq("wxuser_id", wxUserId);
 		queryWrapper.eq("is_deleted", 0);
 		queryWrapper.eq("view_type", "text");//文本类型
 		queryWrapper.ne("id", logMessageId);//不等于
+		if(chatListIdL!=0L){
+			queryWrapper.eq("chat_list_id",String.valueOf(chatListIdL));
+		}
 		queryWrapper.gt("id+0", startMessageId);//大于
 		queryWrapper.orderByAsc("id+0");
 		List<Map<String, Object>> dataMapList = baseSqlService.getDataListByFieldParams("chat_log_message", queryWrapper);
@@ -642,24 +600,36 @@ public class ChatGPTServiceImpl implements IChatGPTService {
 	 * @param question
 	 * @param logMessageId   不保护该条id
 	 * @param startMessageId
+	 * @param chatListIdL
 	 * @return
 	 */
-	private List<MessageModel> handleTurboContext(String wxUserId, String question, String logMessageId, Long startMessageId) {
+	private List<MessageModel> handleTurboContext(String wxUserId, String question, String logMessageId, Long startMessageId, Long chatListIdL) {
 		List<MessageModel> resultModelList = new ArrayList<>();
+
+		if (question.length() > ChatgptConfig.getChatgptRequestMaxToken()) {
+			throw new ServiceException("你发送的内容过长");
+		}
 
 		QueryWrapper<Object> queryWrapper = new QueryWrapper<>();
 		queryWrapper.eq("wxuser_id", wxUserId);
 		queryWrapper.eq("is_deleted", 0);
 		queryWrapper.eq("view_type", "text");//文本类型
-		queryWrapper.eq("context_flag",1);//仅支持上下文
+		queryWrapper.eq("context_flag", 1);//仅支持上下文
 		queryWrapper.ne("id", logMessageId);//不等于
+		if(chatListIdL!=0L){
+			queryWrapper.eq("chat_list_id",String.valueOf(chatListIdL));
+		}
 		queryWrapper.gt("id+0", startMessageId);//大于
 		queryWrapper.orderByAsc("id+0");
 		List<Map<String, Object>> dataMapList = baseSqlService.getDataListByFieldParams("chat_log_message", queryWrapper);
 		if (Func.isEmpty(dataMapList)) {
+			MessageModel model0 = new MessageModel();
+			model0.setRole(MessageModelRoleType.SYSTEM);
+			model0.setContent("请你使用MarkDown格式回答");
 			MessageModel model = new MessageModel();
 			model.setRole(MessageModelRoleType.USER);
 			model.setContent(question);
+			resultModelList.add(model0);
 			resultModelList.add(model);
 			return resultModelList;
 		}
@@ -695,69 +665,27 @@ public class ChatGPTServiceImpl implements IChatGPTService {
 				}
 				lengthTmp += JsonUtil.toJson(tmpModelList).length();
 			}
-//			System.out.println("ChatgptConfig.getChatgptMaxToken()="+ChatgptConfig.getChatgptMaxToken());
-//			System.out.println("ChatgptConfig.getChatgptRequestMaxToken()="+ChatgptConfig.getChatgptRequestMaxToken());
-			//System.out.println("lengthTmp="+lengthTmp);
 			if (lengthTmp < ChatgptConfig.getChatgptRequestMaxToken()) {
 				break;//跳出死循环
 			} else {
+				if (dataMapList.size() == 1) {//只剩一条
+					resultModelList = new ArrayList<>();
+					break;
+				}
 				dataMapList.remove(0);//移除第一位
 			}
 		}
+
 		//上次，加上本次
 		MessageModel model = new MessageModel();
 		model.setRole(MessageModelRoleType.USER);
 		model.setContent(question);
 		resultModelList.add(model);
+		MessageModel model0 = new MessageModel();
+		model0.setRole(MessageModelRoleType.SYSTEM);
+		model0.setContent("请你使用MarkDown格式回答");
+		resultModelList.add(model0);
 		return resultModelList;
 	}
 
-	//获取密钥
-	private String getChatGptKeyOld(String wxUserId) {
-		Map<String, Object> wxUserMap = baseSqlService.getTableById("chat_wxuser", wxUserId);
-		String apiAccountId = MjkjUtils.getMap2Str(wxUserMap, "api_account_id");
-
-
-		if (Func.isNotEmpty(apiAccountId)) {//为空，则重新绑定一个
-			Map<String, Object> accountMap = baseSqlService.getTableById("chat_api_account", apiAccountId);
-			if (Func.isNotEmpty(accountMap)) {
-				return MjkjUtils.getMap2Str(accountMap, "api_key");
-			}
-		}
-
-
-		QueryWrapper<Object> wrapper = new QueryWrapper<>();
-		wrapper.eq("is_deleted", 0);
-		wrapper.eq("gpt_state", 0);
-		List<Map<String, Object>> accountMapList = baseSqlService.getDataListByFieldParams("chat_api_account", wrapper);
-		if (Func.isEmpty(accountMapList)) {//还没有配置账户
-			return null;
-		}
-
-		//校验是否存在新的密钥
-		for (Map<String, Object> dataMap : accountMapList) {
-			String accountId = MjkjUtils.getMap2Str(dataMap, "id");
-			Map<String, Object> wuserMap = baseSqlService.getDataOneByField("chat_wxuser", "api_account_id", accountId);
-			if (Func.isEmpty(wuserMap)) {//当前是新账户，
-				String chatgptKey = MjkjUtils.getMap2Str(dataMap, "api_key");
-				//用户绑定机器人
-				Map<String, Object> updateMap = new HashMap<>();
-				updateMap.put("api_account_id", accountId);
-				baseSqlService.baseUpdateData("chat_wxuser", updateMap, wxUserId);
-				return chatgptKey;//存在新的账户
-			}
-		}
-
-		Map<String, Object> couMap = webMapper.getMinAccountCou();
-		String accountId = MjkjUtils.getMap2Str(couMap, "api_account_id");
-		Map<String, Object> accountMap = baseSqlService.getTableById("chat_api_account", accountId);
-		String chatgptKey = MjkjUtils.getMap2Str(accountMap, "api_key");
-
-		//用户绑定机器人
-		Map<String, Object> updateMap = new HashMap<>();
-		updateMap.put("api_account_id", accountId);
-		baseSqlService.baseUpdateData("chat_wxuser", updateMap, wxUserId);
-		return chatgptKey;
-
-	}
 }

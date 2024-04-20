@@ -100,7 +100,7 @@ export default {
     },
   },
   mounted() {
-    console.log('tableItemScope', this.tableItemScope)
+    
     //获取部门数据
     getDeptTree().then((res) => {
       this.allDepartData = res.data.data
@@ -134,7 +134,7 @@ export default {
       if (!bool) {
         return false
       }
-      console.log(value, fieldName)
+      
       if (!(value instanceof Array)) {
         if (value && typeof value == 'string') {
           value = value.split(',')

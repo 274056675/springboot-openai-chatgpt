@@ -17,6 +17,7 @@
 package org.springblade.mng.mapper;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -39,6 +40,19 @@ public interface MngMapper {
 	 */
 	IPage<Map<String, Object>> getMessageMoreFunHistoryList(@Param("page") IPage<Map<String, Object>> page, @Param("params") Map<String, Object> params);
 
+	/**
+	 * 十牛 - 更多好玩-聊天记录
+	 * @return
+	 */
+	IPage<Map<String, Object>> getShiniuMessageMoreFunHistoryList(@Param("page") IPage<Map<String, Object>> page, @Param("params") Map<String, Object> params);
+
+	/**
+	 * 十牛 - 更多好玩-聊天记录2
+	 * @param page
+	 * @param params
+	 * @return
+	 */
+	IPage getShiniuMessageMoreFunHistoryListTwo(Page page, Map<String, Object> params);
 
 	/**
 	 * 获取用户列表
@@ -99,5 +113,18 @@ public interface MngMapper {
 	 * @return
 	 */
 	IPage<Map<String, Object>> getOrderList(@Param("page") IPage<Map<String, Object>> page, @Param("params") Map<String, Object> params);
+
+
+	/**
+	 * 绘图记录
+	 * @return
+	 */
+	IPage<Map<String, Object>> getViewImageList(@Param("page") IPage<Map<String, Object>> page, @Param("params") Map<String, Object> params);
+
+	/**
+	 * 绘图记录-待审核
+	 * @return
+	 */
+	IPage<Map<String, Object>> getViewImageTodoList(@Param("page") IPage<Map<String, Object>> page, @Param("params") Map<String, Object> params);
 
 }

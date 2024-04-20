@@ -261,15 +261,6 @@
           :allUserObj="allUserData"
         ></table-select-control>
       </template>
-      <!-- 自定义控件 -->
-      <!-- <template
-        v-for="(selfDefinedItem, selfDefinedIndex) in selfDefinedOption"
-        :slot="selfDefinedIndex.prop"
-        slot-scope="scope"
-      >
-        <component :key="selfDefinedItem" :class="scope.column.class" :disabled="scope.disabled" :is="item.component" v-bind="selfDefinedItem.params">
-        </component>
-      </template>-->
       <!-- 自定义子表（table） -->
       <template
         v-for="(tableItem, tableIndex) in tableOption"
@@ -353,7 +344,6 @@ import { cityObj } from '@/research/util/city'
 import { apiRequestHead } from '@/config/url.js'
 import { getDeptTree } from '@/api/system/dept'
 import { getList, getAllList } from '@/api/system/user'
-import { addFormListApi, editFormListApi } from '@/api/research/formlist'
 import form from '@/research/mixins/form'
 import {
   addDataApi,
@@ -362,7 +352,6 @@ import {
   getDicTableData,
   getUploadeFileNameApi,
 } from '@/api/research/codelist'
-import { getFormRouterListApi } from '@/api/research/formrouter'
 import DepartControl from '@/research/components/general-control/depart-control'
 import UserControl from '@/research/components/general-control/user-control'
 import TableSelectControl from '@/research/components/general-control/table-select-control.vue'
@@ -413,10 +402,6 @@ export default {
     },
     //其他页面或控件传递的方法方法
     transmitFun: {
-      type: Function,
-    },
-    //启动路由配置方法
-    openRouterFun: {
       type: Function,
     },
     // 流程提交方法
@@ -544,7 +529,7 @@ export default {
         },
       },
       formDynamicFun: (type, data) => {
-        console.log(type, data)
+        
       },
       // 其他表单
       isFormControl: false,
@@ -621,7 +606,6 @@ export default {
       this.setCustomText()
       this.setBorderHideFun()
       this.getFileNameFun()
-      this.routerOptionDisposeFun()
       //判断组件初始化是否完毕
       this.timer = setInterval(async () => {
         let valueToload = true
@@ -756,55 +740,6 @@ export default {
     },
     cancelBtnFun() {
       this.closeDialogForm()
-    },
-    //路由配置处理
-    routerOptionDisposeFun() {
-      if (
-        ['view', 'noButton', 'add_no'].includes(this.formOpenType) ||
-        this.isPreview ||
-        this.actionData.noRouter
-      ) {
-        return false
-      }
-      if (!this.actionData.desForm) {
-        return false
-      }
-      console.log('路由配置处理', this.actionData)
-      let obj = {
-        desFormCode: this.actionData.desForm.formCode,
-        current: 1,
-        size: 10,
-        status: 1,
-      }
-      getFormRouterListApi(obj)
-        .then((dataRes) => {
-          let data = dataRes.data.data
-          if (data.total >= 1) {
-            let routerData = data.records[0]
-            //接口查询当前表单是否有开启路由配置
-            this.routerType = routerData.routeType
-            if (this.routerType == '1') {
-              //转跳到表单
-              this.routerFormCode = routerData.routePath
-            } else if (this.routerType == '2' || this.routerType == '3') {
-              //转跳到菜单
-              this.redirectsUrl = routerData.routePath
-            }
-          }
-        })
-        .catch(() => {
-          console.warn('路由配置查询异常')
-        })
-    },
-    //路由配置执行
-    routerOptionExecute(formData, dataId) {
-      this.openRouterFun({
-        code: this.routerFormCode,
-        type: this.routerType,
-        url: this.redirectsUrl,
-        formData,
-        dataId,
-      })
     },
     //设置隐藏边框
     setBorderHideFun() {
@@ -953,7 +888,7 @@ export default {
       }
 
       this.$refs.form.setForm(formData)
-      console.log('执行', this.allFormListData, allProp, formData)
+      
     },
     //省市区懒加载方法
     lazyLoadFun(node, resolve, type) {
@@ -1053,7 +988,7 @@ export default {
     },
     //清空所有数据
     clearAllDataFun() {
-      console.log(this.$refs.form)
+      
       this.$refs.form.clearValidate()
       this.$refs.form.resetForm()
       if (this.$refs.formControl) {
@@ -1313,7 +1248,7 @@ export default {
       }
       //文件上传
       if (item.uploadType == 'file') {
-        console.log('item======', item)
+        
         this.fileOption.push(item)
       }
       //图片上传
@@ -1344,7 +1279,7 @@ export default {
       if (item.component == 'mavon-editor') {
         item.event = {
           imgAdd: (pos, $file) => {
-            console.log(pos, $file, this)
+            
             const loading = this.$loading({
               lock: true,
               text: '正在上传图片，请耐心等待一会~',
@@ -1468,7 +1403,7 @@ export default {
         })
       }
       let formData = await this.mixinGetApiData(apiColumn)
-      console.log('form-custom远程取值接口', formData)
+      
       for (let key in formData.formObj) {
         if (formData.formObj[key] instanceof Array) {
           formData.formObj[key] = formData.formObj[key].join(',')
@@ -1636,7 +1571,7 @@ export default {
           })
         }
         let formDataArr = await Promise.all(promiseArr)
-        console.log('form-custom=========>', formDataArr)
+        
         let isCheckFailure = false //是否校验失败
         let tabsIndexArr = []
         formDataArr.forEach((item) => {
@@ -1671,7 +1606,6 @@ export default {
             form[key] = ''
           }
         }
-        console.log('========isCheckFailure', isCheckFailure)
         if (isCheckFailure) {
           if (this.actionData && this.actionData.type == 'flow') {
             this.$message('请完善信息~')
@@ -1693,125 +1627,13 @@ export default {
           }
           done()
         }
-        //表单设计数据
-        if (this.actionData && this.actionData.type == 'formlist') {
-          // 表单数据页面 保存修改的方法
-          let formJson = JSON.stringify(form)
-          if (['add', 'add_router'].includes(this.formOpenType)) {
-            //创建时是通过表单online生成，保存、修改时会同时在表单开发保存数据
-            let codeListDataId = ''
-            if (this.onlineFormId) {
-              let addRes = ''
-              try {
-                addRes = await addDataApi(this.onlineFormId, form)
-              } catch (error) {
-                done()
-                return false
-              }
-              codeListDataId = addRes.data.data
-            }
-            let addData = {
-              desformCode: this.actionData.desForm.formCode,
-              desformDataJson: formJson,
-            }
-            if (codeListDataId) {
-              addData.onlineFormCode = this.onlineFormId
-              addData.onlineFormDataId = codeListDataId
-            }
-            addFormListApi(addData)
-              .then(async (res) => {
-                if (this.submitFormDataEnhance) {
-                  await this.submitFormDataEnhance(form, codeListDataId)
-                }
-                if (res.data.success) {
-                  this.$message({
-                    message: '新增成功',
-                    type: 'success',
-                  })
-                  // 是否执行路由配置
-                  if (this.routerType != 'false') {
-                    this.routerOptionExecute(form, res.data.data)
-                  }
-                  this.closeDialogForm()
-                }
-                done()
-              })
-              .catch(() => {
-                done()
-              })
-          } else if (this.formOpenType == 'edit') {
-            if (this.onlineFormId) {
-              let tableDataItem = this.deepClone(
-                this.allFormListData.curr__Table__List__Item__Data
-              )
-              let data = {
-                ...tableDataItem,
-                ...form,
-                id: tableDataItem.id,
-              }
-              try {
-                delete data.curr__Table__List__Item__Data
-                delete data.curr__Form__List__Item__Data
-                for (let key in data) {
-                  if (key.indexOf('$') === 0) {
-                    delete data[key]
-                  }
-                }
-                await editDataApi(this.onlineFormId, data)
-              } catch (error) {
-                done()
-                return false
-              }
-            }
-            editFormListApi({
-              ...this.allFormListData.curr__Form__List__Item__Data,
-              formDataJson: formJson,
-            })
-              .then(async (res) => {
-                if (this.submitFormDataEnhance) {
-                  await this.submitFormDataEnhance(
-                    form,
-                    this.allFormListData.curr__Table__List__Item__Data.id
-                  )
-                }
-                if (res.data.success) {
-                  this.$message({
-                    message: '修改成功',
-                    type: 'success',
-                  })
-                  // 是否执行路由配置
-                  if (!['1', 'false'].includes(this.routerType)) {
-                    this.routerOptionExecute(
-                      form,
-                      this.allFormListData.curr__Form__List__Item__Data.id
-                    )
-                  }
-                  this.closeDialogForm()
-                }
-                done()
-              })
-              .catch(() => {
-                done()
-              })
-          }
-        }
-        if (this.actionData.type == 'formlistReturnData') {
-          this.closeDialogForm(this.actionData.code, form)
-          done()
-        }
-        //流程表单
-        if (this.actionData && this.actionData.type == 'flow') {
-          let formJson = JSON.stringify(form)
-          this.flowSubmit(formJson, this.flowResourceId)
-          done()
-        }
         //单独修改表单设计数据
         if (this.actionData && this.actionData.type == 'onlineEdit') {
           let data = {
             ...form,
             id: this.allFormListData.id,
           }
-          console.log('onlineEdit', data)
+          
           try {
             await editDataApi(this.onlineFormId, data)
           } catch (error) {
@@ -1923,7 +1745,7 @@ export default {
     //tabs切换事件
     setTabsSwitchFun(tab, prop) {
       let tabsItem = this.findObject(this.tabsOption, prop)
-      console.log(tabsItem)
+      
       tabsItem.tabsValue = tab.name
       if (tabsItem.tabClick) {
         tabsItem.tabClick(tab)
@@ -2056,7 +1878,7 @@ export default {
         try {
           fun(this, this.jsEnhanceApi)
         } catch (error) {
-          console.warn(`表单设计增强执行异常${type}`)
+          console.warn(`表单设计增强执行异常${type}`+error)
         }
       } else {
         console.warn(`表单设计增强编写异常${type}`)
@@ -2182,7 +2004,7 @@ export default {
           }, 0)
         }
 
-        console.log('设置子表===>', this.$refs[type][other.index], column)
+        
       }
     },
     //js增强设置控件显示/隐藏  type:'show'/'hide'

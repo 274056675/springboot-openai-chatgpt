@@ -13,3 +13,4 @@ blade:
   log:
     request:
       enabled: true
+

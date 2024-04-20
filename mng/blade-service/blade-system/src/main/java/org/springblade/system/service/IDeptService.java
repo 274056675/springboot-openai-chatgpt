@@ -1,29 +1,42 @@
-
+/**
+ * Copyright (c) 2018-2028, Chill Zhuang 庄骞 (smallchill@163.com).
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.springblade.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springblade.system.entity.Dept;
 import org.springblade.system.vo.DeptVO;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 服务类
  *
- *
+ * @author Chill
  */
 public interface IDeptService extends IService<Dept> {
 
 	/**
-	 * 懒加载部门列表
+	 * 自定义分页
 	 *
-	 * @param tenantId
-	 * @param parentId
-	 * @param param
+	 * @param page
+	 * @param dept
 	 * @return
 	 */
-	List<DeptVO> lazyList(String tenantId, Long parentId, Map<String, Object> param);
+	IPage<DeptVO> selectDeptPage(IPage<DeptVO> page, DeptVO dept);
 
 	/**
 	 * 树形结构
@@ -32,15 +45,6 @@ public interface IDeptService extends IService<Dept> {
 	 * @return
 	 */
 	List<DeptVO> tree(String tenantId);
-
-	/**
-	 * 懒加载树形结构
-	 *
-	 * @param tenantId
-	 * @param parentId
-	 * @return
-	 */
-	List<DeptVO> lazyTree(String tenantId, Long parentId);
 
 	/**
 	 * 获取部门ID
@@ -52,15 +56,6 @@ public interface IDeptService extends IService<Dept> {
 	String getDeptIds(String tenantId, String deptNames);
 
 	/**
-	 * 获取部门ID
-	 *
-	 * @param tenantId
-	 * @param deptNames
-	 * @return
-	 */
-	String getDeptIdsByFuzzy(String tenantId, String deptNames);
-
-	/**
 	 * 获取部门名
 	 *
 	 * @param deptIds
@@ -69,36 +64,11 @@ public interface IDeptService extends IService<Dept> {
 	List<String> getDeptNames(String deptIds);
 
 	/**
-	 * 获取子部门
-	 *
-	 * @param deptId
-	 * @return
-	 */
-	List<Dept> getDeptChild(Long deptId);
-
-	/**
-	 * 删除部门
-	 *
-	 * @param ids
-	 * @return
-	 */
-	boolean removeDept(String ids);
-
-	/**
 	 * 提交
 	 *
 	 * @param dept
 	 * @return
 	 */
 	boolean submit(Dept dept);
-
-	/**
-	 * 部门信息查询
-	 *
-	 * @param deptName
-	 * @param parentId
-	 * @return
-	 */
-	List<DeptVO> search(String deptName, Long parentId);
 
 }

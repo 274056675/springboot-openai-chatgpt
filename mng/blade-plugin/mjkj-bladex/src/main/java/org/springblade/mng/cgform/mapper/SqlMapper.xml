@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.springblade.mng.cgform.mapper.SqlMapper">
+
+
+    <!-- 执行select list语句 -->
+    <select id="queryListBySqlList" parameterType="java.lang.String" resultType="map">
+		${sqlStr}
+	</select>
+
+    <!-- 执行select 分页查询集合 -->
+    <select id="selectPageBySqlList" parameterType="java.lang.String" resultType="map">
+		${sqlStr}
+	</select>
+
+    <!-- 执行update语句 据说可以防注入 -->
+    <update id="executeUpdatetSQL" parameterType="java.util.Map">
+		${execute_sql_string}
+	</update>
+
+    <!-- 执行insert语句 据说可以防注入 -->
+    <insert id="executeInsertSQL" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id"  keyColumn="id">
+		${execute_sql_string}
+	</insert>
+
+
+
+    <!-- 执行insert语句 据说可以防注入 -->
+    <insert id ="executeInsertBatchSQL">
+        ${fieldStrList}
+        values
+        <foreach collection="mapList" item="columnMap" separator=",">
+            (
+            <foreach collection="columnMap" item="value" index="key" separator=",">
+                #{value}
+            </foreach>
+            )
+        </foreach>
+    </insert>
+
+
+    <!-- 执行保存语句 -->
+    <insert id="saveFormData" parameterType="java.lang.String">
+		${sqlStr}
+	</insert>
+
+    <!-- 执行编辑语句 -->
+    <update id="editFormData" parameterType="java.lang.String">
+		${sqlStr}
+	</update>
+
+    <!-- 逻辑 删除数据 -->
+    <update id="deleteAutoList" parameterType="java.lang.String">
+		${sqlStr}
+	</update>
+
+    <!-- 逻辑 删除数据 -->
+    <delete id="deleteList" parameterType="java.lang.String">
+		${sqlStr}
+	</delete>
+
+    <!-- 执行select form语句 -->
+    <select id="queryFormData" parameterType="java.lang.String" resultType="map">
+		${sqlStr}
+	</select>
+
+    <!-- 执行select count语句 -->
+    <select id="queryCountBySql" parameterType="java.lang.String" resultType="java.lang.Integer">
+		${sqlStr}
+	</select>
+
+    <!-- 执行select 查询集合 -->
+    <select id="queryListData" parameterType="java.lang.String" resultType="map">
+		${sqlStr}
+	</select>
+
+    <!-- 查询级联数据  -->
+    <select id="queryDataListByLinkDown" parameterType="Object" resultType="org.springblade.mng.cgform.model.TreeModel">
+        select
+        ${query.key} as store,
+        ${query.txt} as label,
+        ${query.idField} as id,
+        ${query.pidField} as pid
+        from ${query.table} where 1 = 1 and is_deleted =0
+        <choose>
+            <when test="query.pidValue !=null and query.pidValue != ''">
+                AND ${query.pidField} = #{query.pidValue}
+            </when>
+            <otherwise>
+                <if test="query.condition !=null and query.condition != ''">
+                    AND ${query.condition}
+                </if>
+            </otherwise>
+        </choose>
+    </select>
+
+
+
+</mapper>

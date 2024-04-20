@@ -6,14 +6,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>BladeX</artifactId>
+        <artifactId>SpringBlade</artifactId>
         <groupId>org.springblade</groupId>
-        <version>2.9.1.RELEASE</version>
+        <version>3.7.1</version>
     </parent>
 
     <artifactId>blade-auth</artifactId>
     <name>${project.artifactId}</name>
-    <version>${bladex.project.version}</version>
+    <version>${blade.project.version}</version>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -21,123 +21,95 @@
         <dependency>
             <groupId>org.springblade</groupId>
             <artifactId>blade-common</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springblade</groupId>
-                    <artifactId>blade-scope-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springblade</groupId>
-            <artifactId>blade-core-db</artifactId>
+            <version>${blade.project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springblade</groupId>
             <artifactId>blade-core-cloud</artifactId>
+            <version>${blade.tool.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springblade</groupId>
-            <artifactId>blade-starter-metrics</artifactId>
+            <artifactId>blade-core-secure</artifactId>
+            <version>${blade.tool.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springblade</groupId>
-            <artifactId>blade-starter-redis</artifactId>
+            <artifactId>blade-core-log</artifactId>
+            <version>${blade.tool.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springblade</groupId>
-            <artifactId>blade-starter-swagger</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springblade</groupId>
-            <artifactId>blade-starter-social</artifactId>
+            <artifactId>blade-core-social</artifactId>
+            <version>${blade.tool.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springblade</groupId>
             <artifactId>blade-user-api</artifactId>
-            <version>${bladex.project.version}</version>
+            <version>${blade.project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springblade</groupId>
-            <artifactId>blade-system-api</artifactId>
-            <version>${bladex.project.version}</version>
+            <artifactId>blade-core-swagger</artifactId>
+            <version>${blade.tool.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security.oauth</groupId>
-            <artifactId>spring-security-oauth2</artifactId>
-            <version>2.3.5.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-            <version>2.2.0.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-jwt</artifactId>
-        </dependency>
-        <!-- 验证码 -->
+        <!-- Captcha -->
         <dependency>
             <groupId>com.github.whvcse</groupId>
             <artifactId>easy-captcha</artifactId>
+            <version>${captcha.version}</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springblade</groupId>-->
-<!--            <artifactId>mjkj-common</artifactId>-->
-<!--            <version>${bladex.project.version}</version>-->
-<!--        </dependency>-->
-        <!-- 链路追踪、服务监控 -->
-        <!--<dependency>
-            <groupId>org.springblade</groupId>
-            <artifactId>blade-starter-trace</artifactId>
-        </dependency>-->
-        <!-- 解决Java11无法运行的问题 -->
-        <!--<dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.2.11</version>
-        </dependency>
+        <!-- MySQL -->
         <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-core</artifactId>
-            <version>2.2.11</version>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.connector.version}</version>
+            <scope>runtime</scope>
         </dependency>
-        <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-impl</artifactId>
-            <version>2.2.11</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.activation</groupId>
-            <artifactId>activation</artifactId>
-            <version>1.1.1</version>
-        </dependency>-->
+
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
                 <groupId>com.spotify</groupId>
-                <artifactId>dockerfile-maven-plugin</artifactId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${docker.plugin.version}</version>
                 <configuration>
-                    <username>${docker.username}</username>
-                    <password>${docker.password}</password>
-                    <repository>${docker.registry.url}/${docker.namespace}/${project.artifactId}</repository>
-                    <tag>${project.version}</tag>
-                    <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
-                    <buildArgs>
-                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
-                    </buildArgs>
-                    <skip>false</skip>
+                    <imageName>${docker.registry.url}/blade/${project.artifactId}:${project.version}</imageName>
+                    <dockerDirectory>${project.basedir}</dockerDirectory>
+                    <dockerHost>${docker.registry.host}</dockerHost>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                    <registryUrl>${docker.registry.url}</registryUrl>
+                    <serverId>${docker.registry.url}</serverId>
+                    <pushImage>true</pushImage>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <!--suppress UnresolvedMavenProperty -->
+                                <copy overwrite="true"
+                                      tofile="${session.executionRootDirectory}/target/${artifactId}.jar"
+                                      file="${project.build.directory}/${artifactId}.jar" />
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

@@ -2,54 +2,62 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.springblade</groupId>
-        <artifactId>BladeX</artifactId>
-        <version>2.9.1.RELEASE</version>
+        <artifactId>SpringBlade</artifactId>
+        <version>3.7.1</version>
     </parent>
-
-    <modelVersion>4.0.0</modelVersion>
 
     <artifactId>blade-service</artifactId>
     <name>${project.artifactId}</name>
-    <version>2.9.1.RELEASE</version>
+    <version>3.7.1</version>
     <packaging>pom</packaging>
-    <description>BladeX 微服务集合</description>
+    <description>SpringBlade 微服务集合</description>
 
     <modules>
+
         <module>blade-system</module>
         <module>blade-user</module>
     </modules>
-
 
     <dependencies>
         <dependency>
             <groupId>org.springblade</groupId>
             <artifactId>blade-common</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springblade</groupId>
-            <artifactId>blade-starter-metrics</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springblade</groupId>
-            <artifactId>blade-starter-tenant</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springblade</groupId>
-            <artifactId>blade-starter-api-crypto</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springblade</groupId>
-            <artifactId>blade-dict-api</artifactId>
-            <version>${bladex.project.version}</version>
+            <version>${blade.project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springblade</groupId>
             <artifactId>blade-scope-api</artifactId>
-            <version>${bladex.project.version}</version>
+            <version>${blade.project.version}</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${docker.plugin.version}</version>
+                <configuration>
+                    <imageName>${docker.registry.url}/blade/${project.artifactId}:${project.version}</imageName>
+                    <dockerDirectory>${project.basedir}</dockerDirectory>
+                    <dockerHost>${docker.registry.host}</dockerHost>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                    <registryUrl>${docker.registry.url}</registryUrl>
+                    <serverId>${docker.registry.url}</serverId>
+                    <pushImage>true</pushImage>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

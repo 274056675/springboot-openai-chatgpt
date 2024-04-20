@@ -244,7 +244,6 @@ export default {
 
     try {
       let allChangeFun = this.allChangeFun
-      console.log(`==========>附表${this.tableKey}--allChangeFun`, allChangeFun)
       for (let key in allChangeFun) {
         let column = this.findObject(this.formOption.column, key)
         if (column != -1) {
@@ -280,7 +279,6 @@ export default {
   },
   methods: {
     codeFileControlDelFun(fileName, obj) {
-      console.log(obj, fileName, this.tableForm)
       let arr = []
       if (this.tableForm[fileName] instanceof Array) {
         arr = this.tableForm[fileName]
@@ -313,7 +311,7 @@ export default {
       formdata.append('type', 0)
       uploadeFileApi(formdata)
         .then((res) => {
-          console.log(res)
+          
           let url = res.data.data.link
           this.$refs['moavonEditor_' + index][0].$img2Url(pos, url)
           loading.close()
@@ -369,7 +367,7 @@ export default {
         message: `<${column.label}>只允许上传${limit}个文件`,
         type: 'warning',
       })
-      console.log('超过上传长度', limit, files, fileList, column)
+      
     },
     //表格格式数据处理
     setTableDataFun(obj, formSpan) {

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.springblade.mng.mapper.ImageMapper">
+
+
+    <select id="getMyStarHistoryPage" resultType="map">
+        SELECT
+            ii.*
+        FROM
+            chat_image_info ii
+            INNER JOIN chat_image_info_star iis ON ii.id = iis.image_info_id
+        WHERE
+            ii.is_deleted = 0
+            AND iis.is_deleted = 0
+            AND ii.open_flag =2
+            AND iis.wxuser_id=#{wxuserId}
+            order by iis.create_time desc
+    </select>
+
+</mapper>

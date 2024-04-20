@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.springblade.mng.cgform.mapper.CategoryMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="categoryResultMap" type="org.springblade.mng.cgform.entity.Category">
+        <result column="id" property="id"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_dept" property="createDept"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="status" property="status"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="pid" property="pid"/>
+        <result column="pstr" property="pstr"/>
+        <result column="name" property="name"/>
+        <result column="code" property="code"/>
+        <result column="has_child" property="hasChild"/>
+    </resultMap>
+
+    <!-- 根据code查询id -->
+    <select id="queryCategoryIdByCode" resultType="java.lang.String" parameterType="java.lang.String">
+		select id from sys_category WHERE code = #{code,jdbcType=VARCHAR}
+	</select>
+
+    <select id="getAllSubList" resultMap="categoryResultMap">
+        select * from sys_category where pstr like concat("%",#{id},"#%") and is_deleted =0
+    </select>
+
+</mapper>

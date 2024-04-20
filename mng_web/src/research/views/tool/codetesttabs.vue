@@ -24,10 +24,6 @@
               :formOptionData="item.params"
             ></form-view>
           </div>
-          <!-- 报表 -->
-          <div v-else-if="item.type=='statement'">
-            <statement-view :params="item.params"></statement-view>
-          </div>
           <!-- tabs -->
           <el-tabs
             v-else-if="item.type=='tabs'"
@@ -190,7 +186,7 @@ export default {
 
         //代理商-充值一览、提现一览、交易流水 特殊处理
         if(['dlsgl_czyl','dlsgl_txyl','dlsgl_jyls'].includes(this.code)){
-          console.log(this.userInfo.detail.level)
+          
           if(this.userInfo.detail.level>=item.params.searchObj.level){
             return false
           }

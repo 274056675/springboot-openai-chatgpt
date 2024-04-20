@@ -482,7 +482,7 @@ export default {
   mixins: [form],
   watch: {
     isUserControl(newVal) {
-      console.log('子表用户控件初始化执行', newVal)
+      
       if (newVal) {
         this.initUserControlDataFun()
       }
@@ -699,7 +699,7 @@ export default {
         //处理文件名
         if (fileArr.length > 0) {
           fileArr.forEach((fileItem) => {
-            console.log(item, fileItem)
+            
 
             if (item[fileItem] != '' && item[fileItem] != undefined) {
               this.tableData[index]['$Name' + fileItem] = []
@@ -710,7 +710,7 @@ export default {
                 if (fileRes.data.success && fileRes.data.data) {
                   fileName = fileRes.data.data
                 }
-                console.log(fileName, index, this.tableData)
+                
                 this.tableData[index]['$Name' + fileItem] = [
                   ...this.tableData[index]['$Name' + fileItem],
                   fileName,
@@ -837,7 +837,7 @@ export default {
         }
         //用户
         if (item.type == 'user') {
-          console.log()
+          
           item.dicData = []
           // item.dataType="string"
           item.type = 'select'
@@ -874,7 +874,7 @@ export default {
         }
         //文件
         if (item.uploadType == 'file') {
-          console.log('item======', item)
+          
           this.fileOption.push(item)
         }
         //省市区联动
@@ -967,19 +967,19 @@ export default {
           )
         }
       }
-      console.log('表格初始化配置完毕', this.tableOption)
+      
       // 对所有用户控件添加字典
       if (this.userOption.length > 0) {
         let timer = setInterval(() => {
           if (this.allUserObj.allList && this.allUserObj.allList.length > 0) {
             this.userOption.forEach((item) => {
-              console.log(this.tableOption.column, item.prop)
+              
               let column = this.findObject(this.tableOption.column, item.prop)
               if (column != -1) {
                 column.dicData = this.allUserObj.allList
               }
             })
-            console.log('用户控件赋值完毕', this.tableOption)
+            
             clearInterval(timer)
           }
         }, 1000)
@@ -1008,7 +1008,7 @@ export default {
       this.fieldWidth.forEach((item, index) => {
         this.viewCustomEllipsisArr[index].lengths = item
       })
-      console.log(this.fieldWidth)
+      
     },
     //远程取值方法
     async getApiDataFun() {
@@ -1142,7 +1142,7 @@ export default {
           column[key] = options[key]
         }
       }
-      console.log('setFormMoreOptionsFun', column)
+      
     },
     //js增强设置控件显示/隐藏
     setFormControlStateFun(key, value) {

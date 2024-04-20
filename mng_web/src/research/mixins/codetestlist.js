@@ -11,7 +11,6 @@ import DepartControl from '@/research/components/general-control/depart-control'
 import UserControl from '@/research/components/general-control/user-control'
 import TableSelectControl from '@/research/components/general-control/table-select-control'
 
-import AdvancedSearch from '@/research/components/general-control/advanced-search.vue'
 import tableView from "@/research/components/general-control/table-view.vue"
 import TableTree from '@/research/components/general-control/table-tree.vue'
 import FormView from '@/research/components/general-control/form-view.vue'
@@ -33,7 +32,6 @@ export default {
     DepartControl,
     UserControl,
     TableSelectControl,
-    AdvancedSearch,
     tableView,
     TableTree,
     FormView,
@@ -57,7 +55,6 @@ export default {
       tableSearchType: '',
       tablePermission: {
         addBtn: false,
-        advancedSearchBtn: false,
         allDelBtn: false,
         editBtn: false,
         exportBtn: false,
@@ -223,9 +220,6 @@ export default {
       customButtonFormEnd: [], //表单操作菜单 底部
       customButtonFormSide: [], //表单操作菜单 侧面
 
-      //高级查询
-      advancedSearchKey: '',
-      advancedSearchSelectField: [],
       dicAllData: {},
       //end 高级查询
       customOnlineEnhanceJsList: {}, //js增强list所有方法

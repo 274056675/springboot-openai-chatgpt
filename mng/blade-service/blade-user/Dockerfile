@@ -1,15 +1,15 @@
-FROM bladex/alpine-java:openjdk8-openj9_cn_slim
+FROM anapsix/alpine-java:8_server-jre_unlimited
 
-MAINTAINER bladejava@qq.com
+MAINTAINER smallchill@163.com
 
 RUN mkdir -p /blade/user
 
 WORKDIR /blade/user
 
-EXPOSE 9876
+EXPOSE 8102
 
 ADD ./target/blade-user.jar ./app.jar
 
 ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "app.jar"]
 
-CMD ["--spring.profiles.active=prod"]
+CMD ["--spring.profiles.active=test"]

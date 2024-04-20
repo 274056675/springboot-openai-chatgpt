@@ -16,14 +16,6 @@ import java.util.Hashtable;
 import java.util.Random;
 
 /**
- * 二维码工具
- *
- * @Author:debug (SteadyJack)
- * @Link: weixin-> debug0868  qq-> 1948831260
- * @Date: 2020/11/16 22:38
- **/
-
-/**
  * @author zhang
  * @date 2021/9/30 8:19
  */

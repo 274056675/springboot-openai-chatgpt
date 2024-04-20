@@ -12,4 +12,15 @@ public class QuestionParam {
 
 	//上下文id
 	private String startMessageId;
+
+	private String uuid;
+
+	//回复的文本类型
+	private String text_type;
+
+	//对应聊天列表的id
+	private String chatListId;
+
+	//当前的的客户端类型 新版pc端为pc
+	private String type;
 }

@@ -62,6 +62,30 @@
         order by lm.id+0 desc
     </select>
 
+    <select id="getShiniuMessageMoreFunHistoryList" resultType="map">
+        SELECT
+        lm.id as id,
+        wx.wx_name as view_wxname,
+        lm.more_name,
+        lm.message_q,
+        lm.message_a,
+        lm.message_q_time,
+        lm.message_a_time
+        FROM
+        chat_shiniu_log_message  lm
+        INNER JOIN chat_wxuser wx on lm.wxuser_id =wx.id
+        WHERE
+        lm.is_deleted =0
+        and wx.is_deleted =0
+        <if test="params.more_name!=null and params.more_name!=''">
+            and lm.more_name =#{params.more_name}
+        </if>
+        <if test="params.view_wxname!=null and params.view_wxname!=''">
+            and wx.wx_name like concat('%', #{params.view_wxname}, '%')
+        </if>
+        order by lm.id+0 desc
+    </select>
+
 
 
     <select id="getWxUserList" resultType="map">
@@ -86,7 +110,11 @@
             (select ifnull(count(id),'0') from chat_log_share where is_deleted =0 and wxuser_id=wuser.id ) as view_share_cou,
             p_wuser.wx_name as view_p_wx_name,
             ifnull(wal.amount,0) as view_amount,
-            wuser.is_agent
+            wuser.is_agent,
+            wuser.source,
+            wuser.rl_cou,
+            wuser.rl_used_cou,
+            wuser.last_login_ip
             FROM
             chat_wxuser wuser
             left join chat_wxuser p_wuser on wuser.pid =p_wuser.id
@@ -109,8 +137,8 @@
             </if>
             <if test="params !=null and params.register_time != null and params.register_time != ''">
                 <![CDATA[
-                    and SUBSTRING_INDEX(#{params.message_time}, ',', 1) <= DATE_FORMAT(wuser.register_time, '%Y-%m-%d')
-                    and SUBSTRING_INDEX(#{params.message_time}, ',', -1) >= DATE_FORMAT(wuser.register_time, '%Y-%m-%d')
+                    and SUBSTRING_INDEX(#{params.register_time}, ',', 1) <= DATE_FORMAT(wuser.register_time, '%Y-%m-%d')
+                    and SUBSTRING_INDEX(#{params.register_time}, ',', -1) >= DATE_FORMAT(wuser.register_time, '%Y-%m-%d')
                 ]]>
             </if>
         ) t where 1=1
@@ -195,7 +223,7 @@
 
     <select id="getShareHistoryList" resultType="map">
         SELECT
-        wuser.id as id,
+        ls.id as id,
         wuser.wx_name AS wx_name,
         ls.share_time
         FROM
@@ -366,5 +394,85 @@
         order by gor.id+0 desc
     </select>
 
+    <select id="getShiniuMessageMoreFunHistoryListTwo" resultType="map">
+        SELECT
+        lm.id as id,
+        wx.wx_name as view_wxname,
+        lm.fun_name,
+        lm.message_q,
+        lm.message_a,
+        lm.message_q_time,
+        lm.message_a_time
+        FROM
+        chat_shiniu_log_message_fun  lm
+        INNER JOIN chat_wxuser wx on lm.wxuser_id =wx.id
+        WHERE
+        lm.is_deleted =0
+        and wx.is_deleted =0
+        <if test="params.fun_name!=null and params.fun_name!=''">
+            and lm.fun_name =#{params.fun_name}
+        </if>
+        <if test="params.view_wxname!=null and params.view_wxname!=''">
+            and wx.wx_name like concat('%', #{params.view_wxname}, '%')
+        </if>
+        order by lm.id+0 desc
+    </select>
+
+    <select id="getViewImageList" resultType="map">
+        SELECT
+            id,
+            wxuser_name,
+            image_title,
+            use_point,
+            use_gas,
+            view_cou,
+            star as star_cou,
+            open_flag,
+            image_url1,
+            image_url2,
+            image_url3,
+            image_url4,
+            create_time as send_time
+        FROM
+            chat_image_info
+        where
+            is_deleted=0
+        <if test="params.wxuser_name!=null and params.wxuser_name!=''">
+            and wxuser_name like concat('%', #{params.wxuser_name}, '%')
+        </if>
+        <if test="params.image_title!=null and params.image_title!=''">
+            and image_title like concat('%', #{params.image_title}, '%')
+        </if>
+        order by id+0 desc
+    </select>
+
+
+    <select id="getViewImageTodoList" resultType="map">
+        SELECT
+        id,
+        wxuser_name,
+        image_title,
+        use_point,
+        image_url1,
+        image_url2,
+        image_url3,
+        image_url4,
+        create_time as send_time
+        FROM
+        chat_image_info
+        where
+        is_deleted=0
+        and open_flag=1
+        <if test="params.id!=null and params.id!=''">
+            and id =#{params.id}
+        </if>
+        <if test="params.wxuser_name!=null and params.wxuser_name!=''">
+            and wxuser_name like concat('%', #{params.wxuser_name}, '%')
+        </if>
+        <if test="params.image_title!=null and params.image_title!=''">
+            and image_title like concat('%', #{params.image_title}, '%')
+        </if>
+        order by id+0 asc
+    </select>
 
 </mapper>

@@ -11,9 +11,10 @@ export default {
     return {};
   },
   watch: {},
-  created() {},
+  created() {
+  },
   methods: {},
-  computed: {},
+  computed: {}
 };
 </script>
 <style lang="scss">
@@ -22,23 +23,7 @@ export default {
   height: 100%;
   overflow: hidden;
 }
-.avue--detail .el-col {
+.avue--detail .el-col{
   margin-bottom: 0;
-}
-.avue-dialog {
-  .el-dialog__body {
-    .avue-input-icon__list {
-      .avue-input-icon__item {
-        p {
-          display: none;
-        }
-      }
-    }
-  }
-}
-.avue-ueditor {
-  ._wangEditor_btn_sourcecode {
-    display: none;
-  }
 }
 </style>

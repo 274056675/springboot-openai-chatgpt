@@ -1,5 +1,4 @@
 import request from '@/router/axios';
-import crypto from '@/util/crypto.js';
 import { apiRequestHead } from '@/config/url.js';
 
 // 根据表单code查询表单id
@@ -10,7 +9,6 @@ export const getFormIdApi = (code) => {
     data: {},
   })
 }
-
 //获取当前表单详情数据
 export const getdetailDataApi = (headId, lock) => {
   let params = {}

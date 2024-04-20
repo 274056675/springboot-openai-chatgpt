@@ -21,9 +21,7 @@ if (process.env.NODE_ENV === 'production') {
     ignoreOrder: true
   }
 }
-
 module.exports = {
-  //路径前缀
   publicPath: "/",
   lintOnSave: true,
   productionSourceMap: false,
@@ -35,11 +33,17 @@ module.exports = {
       'vuex': 'Vuex',
       'axios': 'axios',
       'element-ui': 'ELEMENT',
-    });
-    const entry = config.entry('app');
-    entry.add('babel-polyfill').end();
-    entry.add('classlist-polyfill').end();
-    entry.add('@/mock').end();
+    })
+    const entry = config.entry('app')
+    entry
+      .add('babel-polyfill')
+      .end()
+    entry
+      .add('classlist-polyfill')
+      .end()
+    entry
+      .add('@/mock')
+      .end()
   },
   css,
   configureWebpack: {
@@ -55,16 +59,14 @@ module.exports = {
       new MonacoWebpackPlugin(),
     ]
   },
-  //开发模式反向代理配置，生产模式请使用Nginx部署并配置反向代理
   devServer: {
+    // 端口配置
     port: 1888,
+    // 反向代理配置
     proxy: {
       '/api': {
-        //本地服务接口地址,需要连接后端的网关服务
-        // 9872为gateway服务的端口号，如果后端更改了端口，这里也要更改。
-        target: 'http://127.0.0.1:9872',
-        //远程演示服务地址,可用于直接启动项目
-        //target: 'https://saber.bladex.vip/api',
+        //本地服务接口地址
+        target: 'http://192.168.5.85:9872',
         ws: true,
         pathRewrite: {
           '^/api': '/'
@@ -73,6 +75,4 @@ module.exports = {
     },
     disableHostCheck: true
   }
-};
-
-
+}

@@ -2,7 +2,7 @@ import request from '@/router/axios';
 
 export const getList = (current, size, params) => {
   return request({
-    url: '/api/blade-system/role/list',
+    url: '/api/blade-system/role/list', //ok
     method: 'get',
     params: {
       ...params,
@@ -13,27 +13,26 @@ export const getList = (current, size, params) => {
 }
 export const grantTree = () => {
   return request({
-    url: '/api/blade-system/menu/grant-tree',
+    url: '/api/blade-system/menu/grant-tree', //ok
     method: 'get',
   })
 }
 
-export const grant = (roleIds, menuIds, dataScopeIds, apiScopeIds) => {
+export const grant = (roleIds, menuIds, dataScopeIds) => {
   return request({
     url: '/api/blade-system/role/grant',
     method: 'post',
     data: {
       roleIds,
       menuIds,
-      dataScopeIds,
-      apiScopeIds
+      dataScopeIds
     }
   })
 }
 
 export const remove = (ids) => {
   return request({
-    url: '/api/blade-system/role/remove',
+    url: '/api/blade-system/role/remove', //ok
     method: 'post',
     params: {
       ids,
@@ -43,7 +42,7 @@ export const remove = (ids) => {
 
 export const add = (row) => {
   return request({
-    url: '/api/blade-system/role/submit',
+    url: '/api/blade-system/role/submit', //ok
     method: 'post',
     data: row
   })
@@ -51,7 +50,7 @@ export const add = (row) => {
 
 export const update = (row) => {
   return request({
-    url: '/api/blade-system/role/submit',
+    url: '/api/blade-system/role/submit',//ok
     method: 'post',
     data: row
   })
@@ -60,7 +59,7 @@ export const update = (row) => {
 
 export const getRole = (roleIds) => {
   return request({
-    url: '/api/blade-system/menu/role-tree-keys',
+    url: '/api/blade-system/menu/role-tree-keys', //ok
     method: 'get',
     params: {
       roleIds,
@@ -70,20 +69,10 @@ export const getRole = (roleIds) => {
 
 export const getRoleTree = (tenantId) => {
   return request({
-    url: '/api/blade-system/role/tree',
+    url: '/api/blade-system/role/tree', //ok
     method: 'get',
     params: {
       tenantId,
-    }
-  })
-}
-
-export const getRoleTreeById = (roleId) => {
-  return request({
-    url: '/api/blade-system/role/tree-by-id',
-    method: 'get',
-    params: {
-      roleId,
     }
   })
 }

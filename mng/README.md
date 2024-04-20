@@ -1,3 +1,1 @@
-# Chat gpt Mng
-
-后台
+# Chat gpt后台

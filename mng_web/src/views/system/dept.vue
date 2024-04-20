@@ -7,7 +7,6 @@
                v-model="form"
                :permission="permissionList"
                :before-open="beforeOpen"
-               :before-close="beforeClose"
                @row-del="rowDel"
                @row-update="rowUpdate"
                @row-save="rowSave"
@@ -16,9 +15,7 @@
                @selection-change="selectionChange"
                @current-change="currentChange"
                @size-change="sizeChange"
-               @refresh-change="refreshChange"
-               @on-load="onLoad"
-               @tree-load="treeLoad">
+               @on-load="onLoad">
       <template slot="menuLeft">
         <el-button type="danger"
                    size="small"
@@ -34,27 +31,16 @@
           icon="el-icon-circle-plus-outline"
           size="small"
           @click.stop="handleAdd(scope.row,scope.index)"
-          v-if="userInfo.role_name.includes('admin')"
+          v-if="userInfo.authority.includes('admin')"
         >新增子项
         </el-button>
-      </template>
-      <template slot-scope="{row}"
-                slot="deptCategory">
-        <el-tag>{{row.deptCategoryName}}</el-tag>
       </template>
     </avue-crud>
   </basic-container>
 </template>
 
 <script>
-  import {
-    getLazyList,
-    remove,
-    update,
-    add,
-    getDept,
-    getDeptTree
-  } from "@/api/system/dept";
+  import {add, getDept, getDeptTree, getList, remove, update} from "@/api/system/dept";
   import {mapGetters} from "vuex";
   import website from '@/config/website';
 
@@ -63,35 +49,31 @@
       return {
         form: {},
         selectionList: [],
-        query: {},
         loading: true,
-        parentId: 0,
+        query: {},
         page: {
           pageSize: 10,
           currentPage: 1,
-          total: 0,
+          total: 0
         },
         option: {
-          lazy: true,
-          tip: false,
-          simplePage: true,
           searchShow: true,
           searchMenuSpan: 6,
+          tip: false,
           tree: true,
           border: true,
           index: true,
           selection: true,
           viewBtn: true,
           menuWidth: 300,
-          dialogClickModal: false,
           column: [
             {
-              label: "机构名称",
+              label: "部门名称",
               prop: "deptName",
               search: true,
               rules: [{
                 required: true,
-                message: "请输入机构名称",
+                message: "请输入部门名称",
                 trigger: "blur"
               }]
             },
@@ -117,55 +99,34 @@
               }]
             },
             {
-              label: "机构全称",
+              label: "部门全称",
               prop: "fullName",
               search: true,
               rules: [{
                 required: true,
-                message: "请输入机构全称",
+                message: "请输入部门全称",
                 trigger: "blur"
               }]
             },
             {
-              label: "上级机构",
+              label: "上级部门",
               prop: "parentId",
               dicData: [],
               type: "tree",
               hide: true,
-              addDisabled: false,
               props: {
                 label: "title"
               },
               rules: [{
                 required: false,
-                message: "请选择上级机构",
+                message: "请选择上级部门",
                 trigger: "click"
-              }]
-            },
-            {
-              label: "机构类型",
-              type: "select",
-              dicUrl: "/api/blade-system/dict/dictionary?code=org_category",
-              props: {
-                label: "dictValue",
-                value: "dictKey"
-              },
-              dataType: "number",
-              width: 120,
-              prop: "deptCategory",
-              slot: true,
-              rules: [{
-                required: true,
-                message: "请输入机构类型",
-                trigger: "blur"
               }]
             },
             {
               label: "排序",
               prop: "sort",
               type: "number",
-              align: "right",
-              width: 80,
               rules: [{
                 required: true,
                 message: "请输入排序",
@@ -175,12 +136,13 @@
             {
               label: "备注",
               prop: "remark",
+              span: 24,
+              hide: true,
               rules: [{
                 required: false,
                 message: "请输入备注",
                 trigger: "blur"
-              }],
-              hide: true
+              }]
             }
           ]
         },
@@ -206,32 +168,24 @@
       }
     },
     methods: {
-      initData() {
-        getDeptTree().then(res => {
-          const column = this.findObject(this.option.column, "parentId");
-          column.dicData = res.data.data;
-        });
-      },
       handleAdd(row) {
-        this.parentId = row.id;
-        const column = this.findObject(this.option.column, "parentId");
-        column.value = row.id;
-        column.addDisabled = true;
+        this.$refs.crud.value.parentId = row.id;
+        this.$refs.crud.option.column.filter(item => {
+          if (item.prop === "parentId") {
+            item.value = row.id;
+            item.addDisabled = true;
+          }
+        });
         this.$refs.crud.rowAdd();
       },
       rowSave(row, done, loading) {
-        add(row).then((res) => {
-          // 获取新增数据的相关字段
-          const data = res.data.data;
-          row.id = data.id;
-          row.deptCategoryName = data.deptCategoryName;
-          row.tenantId = data.tenantId;
+        add(row).then(() => {
+          done();
+          this.onLoad(this.page);
           this.$message({
             type: "success",
             message: "操作成功!"
           });
-          // 数据回调进行刷新
-          done(row);
         }, error => {
           window.console.log(error);
           loading();
@@ -239,18 +193,18 @@
       },
       rowUpdate(row, index, done, loading) {
         update(row).then(() => {
+          done();
+          this.onLoad(this.page);
           this.$message({
             type: "success",
             message: "操作成功!"
           });
-          // 数据回调进行刷新
-          done(row);
         }, error => {
           window.console.log(error);
           loading();
         });
       },
-      rowDel(row, index, done) {
+      rowDel(row) {
         this.$confirm("确定将选择数据删除?", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
@@ -260,12 +214,11 @@
             return remove(row.id);
           })
           .then(() => {
+            this.onLoad(this.page);
             this.$message({
               type: "success",
               message: "操作成功!"
             });
-            // 数据回调进行刷新
-            done(row);
           });
       },
       handleDelete() {
@@ -282,27 +235,20 @@
             return remove(this.ids);
           })
           .then(() => {
-            // 刷新表格数据并重载
-            this.data = [];
-            this.parentId = 0;
-            this.$refs.crud.refreshTable();
-            this.$refs.crud.toggleSelection();
-            // 表格数据重载
             this.onLoad(this.page);
             this.$message({
               type: "success",
               message: "操作成功!"
             });
+            this.$refs.crud.toggleSelection();
           });
       },
       searchReset() {
         this.query = {};
-        this.parentId = 0;
         this.onLoad(this.page);
       },
       searchChange(params, done) {
         this.query = params;
-        this.parentId = '';
         this.page.currentPage = 1;
         this.onLoad(this.page, params);
         done();
@@ -310,14 +256,7 @@
       selectionChange(list) {
         this.selectionList = list;
       },
-      selectionClear() {
-        this.selectionList = [];
-        this.$refs.crud.toggleSelection();
-      },
       beforeOpen(done, type) {
-        if (["add", "edit"].includes(type)) {
-          this.initData();
-        }
         if (["edit", "view"].includes(type)) {
           getDept(this.form.id).then(res => {
             this.form = res.data.data;
@@ -325,34 +264,21 @@
         }
         done();
       },
-      beforeClose(done) {
-        this.parentId = "";
-        const column = this.findObject(this.option.column, "parentId");
-        column.value = "";
-        column.addDisabled = false;
-        done();
-      },
-      currentChange(currentPage) {
+      currentChange(currentPage){
         this.page.currentPage = currentPage;
       },
-      sizeChange(pageSize) {
+      sizeChange(pageSize){
         this.page.pageSize = pageSize;
-      },
-      refreshChange() {
-        this.onLoad(this.page, this.query);
       },
       onLoad(page, params = {}) {
         this.loading = true;
-        getLazyList(this.parentId, Object.assign(params, this.query)).then(res => {
+        getList(page.currentPage, page.pageSize, Object.assign(params, this.query)).then(res => {
           this.data = res.data.data;
           this.loading = false;
-          this.selectionClear();
-        });
-      },
-      treeLoad(tree, treeNode, resolve) {
-        const parentId = tree.id;
-        getLazyList(parentId).then(res => {
-          resolve(res.data.data);
+          getDeptTree().then(res => {
+            const column = this.findObject(this.option.column, "parentId");
+            column.dicData = res.data.data;
+          });
         });
       }
     }

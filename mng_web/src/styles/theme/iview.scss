@@ -4,16 +4,19 @@
     box-shadow: none;
     text-align: center;
     .avue-logo_title{
-      padding: 5px 8px 8px 8px;
-      border-top-left-radius: 5px;
-      border-top-right-radius: 5px;
-      border-bottom-left-radius: 3px;
-      border-bottom-right-radius: 3px;
-      font-size: 20px;
-      color:#fff;
-      font-weight: 500;
-      display: inline;
-      background-color: #409EFF;
+      div{
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+        font-size: 22px;
+        color:#fff;
+        font-weight: 500;
+        margin:  10px auto;
+        width: 180px;
+        height: 45px;
+        background-color: #409EFF;
+      }
     }
   }
   .avue-tags{

@@ -1,28 +1,19 @@
 import request from '@/router/axios';
 
-export const getList = (current, size, params, deptId) => {
+export const getList = (current, size, params) => {
   return request({
-    url: '/api/blade-user/page',
+    url: '/api/blade-user/list', //ok
     method: 'get',
     params: {
       ...params,
       current,
       size,
-      deptId,
     }
   })
 }
-export const getAllList = (params = {}) => {
-  return request({
-    url: '/api/blade-user/allList',
-    method: 'get',
-    params,
-  })
-}
-
 export const remove = (ids) => {
   return request({
-    url: '/api/blade-user/remove',
+    url: '/api/blade-user/remove',  //ok
     method: 'post',
     params: {
       ids,
@@ -32,7 +23,7 @@ export const remove = (ids) => {
 
 export const add = (row) => {
   return request({
-    url: '/api/blade-user/submit',
+    url: '/api/blade-user/submit', //ok
     method: 'post',
     data: row
   })
@@ -40,37 +31,26 @@ export const add = (row) => {
 
 export const update = (row) => {
   return request({
-    url: '/api/blade-user/update',
+    url: '/api/blade-user/update', //ok
     method: 'post',
     data: row
   })
 }
 
-export const updatePlatform = (userId, userType, userExt) => {
+export const grant = (userIds, roleIds) => {
   return request({
-    url: '/api/blade-user/update-platform',
+    url: '/api/blade-user/grant', //ok
     method: 'post',
     params: {
-      userId,
-      userType,
-      userExt,
+      userIds,
+      roleIds,
     }
   })
 }
 
 export const getUser = (id) => {
   return request({
-    url: '/api/blade-user/detail',
-    method: 'get',
-    params: {
-      id,
-    }
-  })
-}
-
-export const getUserPlatform = (id) => {
-  return request({
-    url: '/api/blade-user/platform-detail',
+    url: '/api/blade-user/detail', //ok
     method: 'get',
     params: {
       id,
@@ -80,14 +60,14 @@ export const getUserPlatform = (id) => {
 
 export const getUserInfo = () => {
   return request({
-    url: '/api/blade-user/info',
+    url: '/api/blade-user/info', //ok
     method: 'get',
   })
 }
 
 export const resetPassword = (userIds) => {
   return request({
-    url: '/api/blade-user/reset-password',
+    url: '/api/blade-user/reset-password', //ok
     method: 'post',
     params: {
       userIds,
@@ -97,7 +77,7 @@ export const resetPassword = (userIds) => {
 
 export const updatePassword = (oldPassword, newPassword, newPassword1) => {
   return request({
-    url: '/api/blade-user/update-password',
+    url: '/api/blade-user/update-password', //ok
     method: 'post',
     params: {
       oldPassword,
@@ -107,31 +87,3 @@ export const updatePassword = (oldPassword, newPassword, newPassword1) => {
   })
 }
 
-export const updateInfo = (row) => {
-  return request({
-    url: '/api/blade-user/update-info',
-    method: 'post',
-    data: row
-  })
-}
-
-export const grant = (userIds, roleIds) => {
-  return request({
-    url: '/api/blade-user/grant',
-    method: 'post',
-    params: {
-      userIds,
-      roleIds,
-    }
-  })
-}
-
-export const unlock = (userIds) => {
-  return request({
-    url: '/api/blade-user/unlock',
-    method: 'post',
-    params: {
-      userIds,
-    }
-  })
-}

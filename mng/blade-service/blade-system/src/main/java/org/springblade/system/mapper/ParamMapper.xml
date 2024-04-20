@@ -17,4 +17,21 @@
         <result column="remark" property="remark"/>
     </resultMap>
 
+    <!-- 通用查询结果列 -->
+    <sql id="baseColumnList">
+        select
+        id,
+        create_user AS createUser,
+        create_time AS createTime,
+        update_user AS updateUser,
+        update_time AS updateTime,
+        status,
+        is_deleted AS isDeleted,
+        param_name, param_key, param_value, remark
+    </sql>
+
+    <select id="selectParamPage" resultMap="paramResultMap">
+        select * from blade_param where is_deleted = 0
+    </select>
+
 </mapper>

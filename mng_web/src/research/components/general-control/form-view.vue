@@ -92,7 +92,7 @@ export default {
   watch: {
     formOptionData: {
       handler(newVal) {
-        console.log(newVal)
+        
         if (this.isInit == false) {
           if (newVal.defaultData && !newVal.viewObj.isGetData) {
             this.formData = {
@@ -256,7 +256,7 @@ export default {
           }
         }
         let objKey = Object.keys(searchObj)
-        console.log('form-view======>搜索数据', searchObj)
+        
         let bool = true
         objKey.forEach((item) => {
           let value = searchObj[item]
@@ -283,7 +283,6 @@ export default {
             }
           }
           isGetDataInfo = true
-          // console.log('form-view======>数据设置成功', this.isShow)
         } else {
           //通过数据id取数据赋值给表单
           //获取父子表数据

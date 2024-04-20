@@ -1,33 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>BladeX</artifactId>
-        <groupId>org.springblade</groupId>
-        <version>2.9.1.RELEASE</version>
-    </parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+    <parent>
+        <groupId>org.springblade</groupId>
+        <artifactId>SpringBlade</artifactId>
+        <version>3.7.1</version>
+    </parent>
     <artifactId>blade-plugin-api</artifactId>
-    <name>${project.artifactId}</name>
-    <version>2.9.1.RELEASE</version>
+    <name>blade-plugin-api</name>
+    <version>3.7.1</version>
     <packaging>pom</packaging>
 
     <modules>
         <module>mjkj-bladex-api</module>
-        <module>mjkj-message-api</module>
     </modules>
-
 
     <dependencies>
         <dependency>
-            <groupId>org.springblade</groupId>
-            <artifactId>blade-starter-mybatis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springblade</groupId>
-            <artifactId>blade-starter-tenant</artifactId>
+            <groupId>com.baomidou</groupId>
+            <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+            <version>2.5.6</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -49,10 +41,12 @@
         </dependency>
         <dependency>
             <groupId>org.springblade</groupId>
-            <artifactId>blade-core-auto</artifactId>
-            <scope>provided</scope>
+            <artifactId>blade-core-tool</artifactId>
+            <version>3.7.1</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
+
 
     <build>
         <plugins>
@@ -66,5 +60,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

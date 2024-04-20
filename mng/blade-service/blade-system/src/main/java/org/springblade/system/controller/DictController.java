@@ -1,20 +1,32 @@
-
+/**
+ * Copyright (c) 2018-2028, Chill Zhuang 庄骞 (smallchill@163.com).
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.springblade.system.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
 import org.springblade.core.boot.ctrl.BladeController;
-import org.springblade.core.cache.utils.CacheUtil;
 import org.springblade.core.mp.support.Condition;
-import org.springblade.core.mp.support.Query;
-import org.springblade.core.tenant.annotation.NonDS;
 import org.springblade.core.tool.api.R;
+import org.springblade.core.tool.utils.Func;
 import org.springblade.system.entity.Dict;
 import org.springblade.system.service.IDictService;
 import org.springblade.system.vo.DictVO;
 import org.springblade.system.wrapper.DictWrapper;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -22,22 +34,21 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
-import static org.springblade.core.cache.constant.CacheConstant.DICT_CACHE;
-
+import static org.springblade.common.cache.CacheNames.DICT_LIST;
+import static org.springblade.common.cache.CacheNames.DICT_VALUE;
 
 /**
  * 控制器
  *
- *
+ * @author Chill
  */
-@NonDS
 @RestController
 @AllArgsConstructor
 @RequestMapping("/dict")
 @Api(value = "字典", tags = "字典")
 public class DictController extends BladeController {
 
-	private final IDictService dictService;
+	private IDictService dictService;
 
 	/**
 	 * 详情
@@ -62,44 +73,16 @@ public class DictController extends BladeController {
 	@ApiOperation(value = "列表", notes = "传入dict")
 	public R<List<DictVO>> list(@ApiIgnore @RequestParam Map<String, Object> dict) {
 		List<Dict> list = dictService.list(Condition.getQueryWrapper(dict, Dict.class).lambda().orderByAsc(Dict::getSort));
-		DictWrapper dictWrapper = new DictWrapper();
-		return R.data(dictWrapper.listNodeVO(list));
-	}
-
-	/**
-	 * 顶级列表
-	 */
-	@GetMapping("/parent-list")
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "code", value = "字典编号", paramType = "query", dataType = "string"),
-		@ApiImplicitParam(name = "dictValue", value = "字典名称", paramType = "query", dataType = "string")
-	})
-	@ApiOperationSupport(order = 3)
-	@ApiOperation(value = "列表", notes = "传入dict")
-	public R<IPage<DictVO>> parentList(@ApiIgnore @RequestParam Map<String, Object> dict, Query query) {
-		return R.data(dictService.parentList(dict, query));
-	}
-
-	/**
-	 * 子列表
-	 */
-	@GetMapping("/child-list")
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "code", value = "字典编号", paramType = "query", dataType = "string"),
-		@ApiImplicitParam(name = "dictValue", value = "字典名称", paramType = "query", dataType = "string"),
-		@ApiImplicitParam(name = "parentId", value = "字典名称", paramType = "query", dataType = "string")
-	})
-	@ApiOperationSupport(order = 4)
-	@ApiOperation(value = "列表", notes = "传入dict")
-	public R<List<DictVO>> childList(@ApiIgnore @RequestParam Map<String, Object> dict, @RequestParam(required = false, defaultValue = "-1") Long parentId) {
-		return R.data(dictService.childList(dict, parentId));
+		return R.data(DictWrapper.build().listNodeVO(list));
 	}
 
 	/**
 	 * 获取字典树形结构
+	 *
+	 * @return
 	 */
 	@GetMapping("/tree")
-	@ApiOperationSupport(order = 5)
+	@ApiOperationSupport(order = 3)
 	@ApiOperation(value = "树形结构", notes = "树形结构")
 	public R<List<DictVO>> tree() {
 		List<DictVO> tree = dictService.tree();
@@ -107,24 +90,12 @@ public class DictController extends BladeController {
 	}
 
 	/**
-	 * 获取字典树形结构
-	 */
-	@GetMapping("/parent-tree")
-	@ApiOperationSupport(order = 5)
-	@ApiOperation(value = "树形结构", notes = "树形结构")
-	public R<List<DictVO>> parentTree() {
-		List<DictVO> tree = dictService.parentTree();
-		return R.data(tree);
-	}
-
-	/**
 	 * 新增或修改
 	 */
 	@PostMapping("/submit")
-	@ApiOperationSupport(order = 6)
+	@ApiOperationSupport(order = 4)
 	@ApiOperation(value = "新增或修改", notes = "传入dict")
 	public R submit(@Valid @RequestBody Dict dict) {
-		CacheUtil.clear(DICT_CACHE, Boolean.FALSE);
 		return R.status(dictService.submit(dict));
 	}
 
@@ -133,33 +104,24 @@ public class DictController extends BladeController {
 	 * 删除
 	 */
 	@PostMapping("/remove")
-	@ApiOperationSupport(order = 7)
+	@CacheEvict(cacheNames = {DICT_LIST, DICT_VALUE}, allEntries = true)
+	@ApiOperationSupport(order = 5)
 	@ApiOperation(value = "删除", notes = "传入ids")
 	public R remove(@ApiParam(value = "主键集合", required = true) @RequestParam String ids) {
-		CacheUtil.clear(DICT_CACHE, Boolean.FALSE);
-		return R.status(dictService.removeDict(ids));
+		return R.status(dictService.removeByIds(Func.toLongList(ids)));
 	}
 
 	/**
 	 * 获取字典
+	 *
+	 * @return
 	 */
 	@GetMapping("/dictionary")
-	@ApiOperationSupport(order = 8)
+	@ApiOperationSupport(order = 6)
 	@ApiOperation(value = "获取字典", notes = "获取字典")
 	public R<List<Dict>> dictionary(String code) {
 		List<Dict> tree = dictService.getList(code);
 		return R.data(tree);
-	}
-
-	/**
-	 * 获取字典树
-	 */
-	@GetMapping("/dictionary-tree")
-	@ApiOperationSupport(order = 9)
-	@ApiOperation(value = "获取字典树", notes = "获取字典树")
-	public R<List<DictVO>> dictionaryTree(String code) {
-		List<Dict> tree = dictService.getList(code);
-		return R.data(DictWrapper.build().listNodeVO(tree));
 	}
 
 

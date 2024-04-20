@@ -35,18 +35,6 @@
       @click="that.carryTableButtonFun('inport')"
       v-if="that.tablePermission.inportBtn"
     >{{that.tableOption.inportBtnText ? that.tableOption.inportBtnText : "导入"}}</el-button>
-    <!-- 高级查询 -->
-    <!-- <advanced-search
-      :fieldList="advancedSearchSelectField"
-      :storageKey="advancedSearchKey"
-      :dicAllData="dicAllData"
-      @set-advanced-search="advancedSearchFun"
-      @reset-advanced-search="advancedSearchResetFun"
-      v-if="
-              that.tablePermission.advancedSearchBtn === undefined ||
-              that.tablePermission.advancedSearchBtn === true
-            "
-    ></advanced-search>-->
     <!-- 批量删除 -->
     <el-button
       size="small"

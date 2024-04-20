@@ -3,7 +3,6 @@ package org.springblade.mng.service;
 import org.springblade.mng.model.AccountUseCouModel;
 import org.springblade.mng.model.ChatGptTurboResult;
 import org.springblade.mng.model.MessageModel;
-import org.springblade.plugin.message.model.ChatGptMsgModel;
 
 import java.util.Date;
 import java.util.List;
@@ -14,21 +13,22 @@ import java.util.List;
 public interface IChatGPTService {
 
 	//gpt3.0
-	void sendChatGptMessage(String modelType,String wxUserId,String q_logMessageId,String question,Long startMessageId);
+	void sendChatGptMessage(String wxUserId, String q_logMessageId, String question, Long startMessageId, Long chatListIdL);
 
 	//gpt3.5
-	void sendChatGptTurboMessage(String modelType, String wxUserId, String q_logMessageId, String question, Long startMessageId, Date sendTime);
+	void sendChatGptTurboMessage(String wxUserId, String q_logMessageId, String question, Long startMessageId, Date sendTime, Long chatListIdL);
+
+	//机器人发送图片
+
 
 
 	//发送实时消息，长连接等着返回
-	String sendNowTimeChatGptTurboMessage(List<MessageModel> messagesList);
+	String sendNowTimeChatGptTurboMessage(List<MessageModel> messagesList, String model);
 
-	//获取图片
-	String getDALLEImages(String prompt,String size);
 
 	AccountUseCouModel getChatGptKey();
 
-	List<ChatGptTurboResult.ChoiceModel> getChatGptTurboResponse(List<MessageModel> messagesList, AccountUseCouModel accountModel);
+	List<ChatGptTurboResult.ChoiceModel> getChatGptTurboResponse(List<MessageModel> messagesList, AccountUseCouModel accountModel, String aiModel);
 
 
 }

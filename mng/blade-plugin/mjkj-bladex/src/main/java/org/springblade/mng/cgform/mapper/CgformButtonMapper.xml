@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.springblade.mng.cgform.mapper.CgformButtonMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="cgformButtonResultMap" type="org.springblade.mng.cgform.entity.CgformButton">
+        <result column="id" property="id"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_dept" property="createDept"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="status" property="status"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="button_code" property="buttonCode"/>
+        <result column="button_icon" property="buttonIcon"/>
+        <result column="button_name" property="buttonName"/>
+        <result column="button_status" property="buttonStatus"/>
+        <result column="button_style" property="buttonStyle"/>
+        <result column="exp" property="exp"/>
+        <result column="cgform_head_id" property="cgformHeadId"/>
+        <result column="opt_type" property="optType"/>
+        <result column="order_num" property="orderNum"/>
+        <result column="opt_position" property="optPosition"/>
+    </resultMap>
+
+
+
+</mapper>

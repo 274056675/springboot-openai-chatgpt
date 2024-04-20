@@ -3,6 +3,9 @@
 .el-menu--popup{
     .el-menu-item{
         background-color: #20222a;
+        i{
+            margin-right: 5px;
+        }
         i,span{
             color:hsla(0,0%,100%,.7);
         }
@@ -39,9 +42,6 @@
     transition: width .2s;
     box-sizing: border-box;
     box-shadow: 2px 0 6px rgba(0,21,41,.35);
-    .el-scrollbar__wrap {
-        overflow-x: hidden;
-    }
     &--tip{
         width:90%;
         height: 140px;
@@ -60,7 +60,7 @@
     }
     .el-menu-item,.el-submenu__title{
         i{
-            margin-right: 10px;
+            margin-right: 5px;
         }
         i,span{
             color:hsla(0,0%,100%,.7);
@@ -87,5 +87,4 @@
             }
         }
     }
-    
 }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.springblade.mng.cgform.mapper.CgformEnhanceSqlMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="cgformEnhanceSqlResultMap" type="org.springblade.mng.cgform.entity.CgformEnhanceSql">
+        <result column="id" property="id"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_dept" property="createDept"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="status" property="status"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="button_code" property="buttonCode"/>
+        <result column="cgb_sql" property="cgbSql"/>
+        <result column="cgb_sql_name" property="cgbSqlName"/>
+        <result column="content" property="content"/>
+        <result column="cgform_head_id" property="cgformHeadId"/>
+    </resultMap>
+
+    <!-- 执行ddl语句 -->
+    <update id="executeDDL" parameterType="java.lang.String">
+		${sqlStr}
+	</update>
+    <!-- 查询多条语句 -->
+    <select id="getListData" resultType="map">
+        ${sqlStr}
+    </select>
+
+    <select id="getListDataPage" resultType="map">
+        ${sqlStr}
+    </select>
+
+    <select id="executeSql"  parameterType="java.util.Map" resultType="map">
+        ${executeSql}
+    </select>
+
+</mapper>

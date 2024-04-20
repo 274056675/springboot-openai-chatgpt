@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.springblade.mng.cgform.mapper.CheckRuleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="checkRuleResultMap" type="org.springblade.mng.cgform.entity.CheckRule">
+        <result column="id" property="id"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_dept" property="createDept"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="status" property="status"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="rule_name" property="ruleName"/>
+        <result column="rule_code" property="ruleCode"/>
+        <result column="rule_json" property="ruleJson"/>
+        <result column="rule_description" property="ruleDescription"/>
+    </resultMap>
+
+
+
+
+</mapper>

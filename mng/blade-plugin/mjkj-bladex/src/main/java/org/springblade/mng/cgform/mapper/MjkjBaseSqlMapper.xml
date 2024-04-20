@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.springblade.mng.cgform.mapper.MjkjBaseSqlMapper">
+    <!--获取所以数据-->
+    <select id="getDataByTable" resultType="map">
+        select ${selectField}
+        from ${tableName} as tb
+        where is_deleted = 0
+        order by (id + 0) desc
+    </select>
+
+    <!--获取单个信息-->
+    <select id="getTableById" resultType="map">
+        select ${selectField}
+        from ${tableName} as tb
+        where is_deleted = 0
+          and id = #{id}
+    </select>
+    <select id="getTableByIdL" resultType="map">
+        select ${selectField}
+        from ${tableName} as tb
+        where is_deleted = 0
+          and id = #{id}
+    </select>
+
+    <select id="getDataListByField" resultType="map">
+        select ${selectField}
+        from ${tableName} as tb
+        where is_deleted = 0
+          and ${whereFieldName} = #{whereFieldValue}
+        order by (id + 0) desc
+    </select>
+
+    <select id="getDataListByFieldOrderBy" resultType="map">
+        select ${selectField}
+        from ${tableName} as tb
+        where is_deleted = 0
+          and ${whereFieldName} = #{whereFieldValue}
+        order by ${orderByField} ${orderStr}
+    </select>
+
+    <select id="getDataListByLike" resultType="map">
+        select ${selectField} from ${tableName} as tb
+        where is_deleted=0
+        <if test="type=='ALL'.toString()">
+            and ${whereFieldName} like CONCAT('%',#{whereFieldValue},'%')
+        </if>
+        <if test="type=='L'.toString()">
+            and ${whereFieldName} like CONCAT('%',#{whereFieldValue})
+        </if>
+        <if test="type=='R'.toString()">
+            and ${whereFieldName} like CONCAT(#{whereFieldValue},'%')
+        </if>
+        order by (id+0) desc
+    </select>
+
+    <select id="getDataListByIn" resultType="map">
+        select ${selectField} from ${tableName} as tb
+        where is_deleted=0
+        and ${whereFieldName} in
+        <foreach item="item" index="index" collection="whereFieldValueList" open="(" separator="," close=" )">
+            #{item}
+        </foreach>
+        order by (id+0) desc
+    </select>
+
+    <select id="getSysDictItemList" resultType="org.springblade.mng.cgform.model.KvModel">
+        SELECT item.item_value as k,
+               item.item_text  as v
+        FROM sys_dict dict
+                 INNER JOIN sys_dict_item item ON dict.id = item.dict_id
+        where dict.is_deleted = 0
+          and item.is_deleted = 0
+          and dict.dict_code = #{dictCode}
+    </select>
+
+    <select id="getSysDictItemValue" resultType="string">
+        SELECT item.item_text
+        FROM sys_dict dict
+                 INNER JOIN sys_dict_item item ON dict.id = item.dict_id
+        where dict.is_deleted = 0
+          and item.is_deleted = 0
+          and dict_code = #{dictCode}
+          and item.item_value = #{itemValue} limit 1
+    </select>
+
+    <select id="getSysDictItemValueByText" resultType="string">
+        SELECT item.item_value
+        FROM sys_dict dict
+                 INNER JOIN sys_dict_item item ON dict.id = item.dict_id
+        where dict.is_deleted = 0
+          and item.is_deleted = 0
+          and dict_code = #{dictCode}
+          and item.item_text = #{itemText} limit 1
+    </select>
+
+    <!-- 执行保存语句 据说可以防注入-->
+    <insert id="baseInsertSql" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        ${select_sql}
+    </insert>
+
+    <!-- 执行编辑语句 据说可以防注入-->
+    <update id="baseUpdateSql" parameterType="java.util.Map">
+        ${select_sql}
+    </update>
+
+    <update id="baseDeleteSqlStr">
+        update ${tableName}
+        set is_deleted = -1
+        where id = #{id}
+    </update>
+    <update id="baseDeleteSql">
+        update ${tableName}
+        set is_deleted = -1
+        where id = #{id}
+    </update>
+    <!--    自定义公共删除-->
+    <update id="baseZdyDeleteSql">
+        update ${tableName}
+        set is_deleted = -1
+        where ${whereFieldName} = #{id}
+    </update>
+    <delete id="baseRealDeleteSql">
+        delete
+        from ${tableName}
+        where id = #{id}
+    </delete>
+
+    <select id="getAdminIdList" resultType="long">
+        SELECT id
+        FROM (SELECT u.id,
+                     (SELECT r.id
+                      FROM blade_role r
+                      WHERE r.role_alias = 'admin'
+                        AND FIND_IN_SET(r.id, u.role_id)) AS select_role_id
+              FROM blade_user u) t
+        WHERE select_role_id IS NOT NULL
+    </select>
+    <select id="getProcessingProgress" resultType="int">
+        select IFNULL(count(1), 0)
+        from ${tableName}
+        where batch_code = #{batchCode}
+          and is_deleted = 0
+          and handle_flag = 1
+    </select>
+
+    <select id="getProcessingProgressTotal" resultType="int">
+        select IFNULL(total_num, 0)
+        from ${tableName}
+        where batch_code = #{batchCode}
+          and is_deleted = 0 limit 1
+    </select>
+
+    <select id="getBladeUserOauth" resultType="map">
+        select *
+        from blade_user_oauth
+        where uuid = #{uuid}
+          and source = #{source}
+    </select>
+
+    <select id="getBladeUserOauthByUserId" resultType="map">
+        select *
+        from blade_user_oauth
+        where user_id = #{userId}
+        order by id desc
+    </select>
+
+    <delete id="unBindBladeUserOauth">
+        delete
+        from blade_user_oauth
+        where id = #{id}
+    </delete>
+    <select id="getDataListByWrapper" resultType="map">
+        select
+        <choose>
+            <when test=" ew.SqlSelect == null or ew.SqlSelect == ''">
+                *
+            </when>
+            <otherwise>
+                ${ew.sqlSelect}
+            </otherwise>
+        </choose>
+        from
+        ${tableName}
+        <if test="ew.emptyOfWhere == false">
+            ${ew.customSqlSegment}
+        </if>
+    </select>
+
+    <select id="getAllBorrowMemberId" resultType="string">
+        SELECT
+            distinct member_id
+        FROM
+            coin_member_wallet_margin_borrow
+            where margin_type='all'
+            and borrow_status=0
+            and is_deleted=0
+    </select>
+
+    <select id="getAllContractMemberId" resultType="string">
+        SELECT
+            distinct member_id
+        FROM
+            coin_log_contract
+            where pattern=2
+            and order_status=0
+            and is_deleted=0
+    </select>
+
+    <select id="getMyAllContractSymbolName" resultType="string">
+        SELECT
+            distinct symbol_name
+        FROM
+            coin_log_contract
+            where pattern=2
+            and member_id=#{memberId}
+            and order_status=0
+            and is_deleted=0
+    </select>
+
+</mapper>

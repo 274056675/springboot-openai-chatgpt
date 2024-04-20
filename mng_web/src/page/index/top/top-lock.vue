@@ -13,7 +13,7 @@
                       prop="passwd"
                       :rules="[{ required: true, message: '锁屏密码不能为空'}]">
           <el-input v-model="form.passwd"
-                    placeholder="请输入锁屏密码" />
+                    placeholder="请输入锁屏密码"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer"

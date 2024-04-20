@@ -14,7 +14,11 @@
 
 <img src="./images/架构图.png" />
 
+## 项目关系
+[本项目基于Bladex开源版本3.7.1.RELEASE开发](https://gitee.com/smallc/SpringBlade)
+
 ## 演示环境
+
 　　　　[后端：http://gpt.ht.mj.ink:8899](http://gpt.ht.mj.ink:8899)
 
 　　　　[前端：http://www.mj.ink](http://www.mj.ink)
@@ -328,10 +332,10 @@ P7分类：场景  风格：赛博朋克   比例：1:1   尺寸：512*512
 
 **开发工具：** Idea、Maven
 
-**默认已启动中间件：**[Nacos2.0.0++](https://nacos.io/)、[Mysql8.0](http://mysql.p2hp.com/)、[Redis](https://redis.io/)、[Minio](http://www.minio.org.cn/)
+**默认已启动中间件：**[Nacos2.0.0++](https://pan.baidu.com/s/1TC89DNq2-w7u7Fr6r6BoYw?pwd=mjkj)、[Mysql8.0](http://mysql.p2hp.com/)、[Redis](https://redis.io/)
 
 
-如果觉得以上麻烦，推荐使用phpStudy简化环境配置：[phpstudy](https://www.xp.cn/)
+如果觉得以上麻烦，推荐使用宝塔集成了Mysql,Redis：[宝塔](https://www.xp.cn/)
 
 #### 4.1.2后端代码运行
 
@@ -342,10 +346,11 @@ P7分类：场景  风格：赛博朋克   比例：1:1   尺寸：512*512
         <td ><img src="https://ai.oss.mj.ink/chatgpt/github/1682411107813.png"/></td>
     </tr>
 </table>
+因为本项目依赖BladeX框架开源版本 3.7.1.RELEASE而搭建
 
-因为本项目依赖BladeX框架而搭建，因此在项目正式运行之前，我们需要再检查一遍本项目的正确maven路径,而后导入bladex-tool(本项目版本为2.9.1)工具包。
-依赖导入失败可以通过此链接下载 https://pan.baidu.com/s/1aoOWtaTX8H6cuz_1PcrSPA?pwd=mjkj 
-之后我们还需要配置nacos文件，**打开nacos,新增chatgpt_open命名空间，空间id为chatgpt_open**,而后分别新增配置blade.yaml、blade-dev.yaml文件。
+Naco下载
+
+链接：https://pan.baidu.com/s/1TC89DNq2-w7u7Fr6r6BoYw?pwd=mjkj
 
 如图：(在这里关于部分中间件的地址于yaml文件中已有示例，具体还需与个人本地的地址相对应进行配置)
 
@@ -430,9 +435,10 @@ P7分类：场景  风格：赛博朋克   比例：1:1   尺寸：512*512
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/AFBB12D7-6EC7-4984-BD8E-87C4792DC47C.png"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/新版登录.png"/></td>
     </tr>
 </table>
+
 
 #### 4.2.2项目前端后台代码运行
 

@@ -1,26 +1,18 @@
-
 package org.springblade.common.constant;
 
 import org.springblade.core.launch.constant.AppConstant;
 
-import static org.springblade.core.launch.constant.AppConstant.APPLICATION_NAME_PREFIX;
-
 /**
- * 启动常量
+ * 通用常量
  *
- *
+ * @author Chill
  */
 public interface LauncherConstant {
 
 	/**
-	 * xxljob
+	 * nacos namespace id
 	 */
-	String APPLICATION_XXLJOB_NAME = APPLICATION_NAME_PREFIX + "xxljob";
-
-	/**
-	 * xxljob
-	 */
-	String APPLICATION_XXLJOB_ADMIN_NAME = APPLICATION_NAME_PREFIX + "xxljob-admin";
+	String NACOS_NAMESPACE = "chat_dev";
 
 	/**
 	 * nacos dev 地址
@@ -35,7 +27,7 @@ public interface LauncherConstant {
 	/**
 	 * nacos test 地址
 	 */
-	String NACOS_TEST_ADDR = "50.229.2.4:8848";
+	String NACOS_TEST_ADDR = "127.0.0.1:8848";
 
 	/**
 	 * sentinel dev 地址
@@ -53,21 +45,6 @@ public interface LauncherConstant {
 	String SENTINEL_TEST_ADDR = "172.30.0.58:8858";
 
 	/**
-	 * seata dev 地址
-	 */
-	String SEATA_DEV_ADDR = "127.0.0.1:8091";
-
-	/**
-	 * seata prod 地址
-	 */
-	String SEATA_PROD_ADDR = "172.30.0.68:8091";
-
-	/**
-	 * seata test 地址
-	 */
-	String SEATA_TEST_ADDR = "172.30.0.68:8091";
-
-	/**
 	 * zipkin dev 地址
 	 */
 	String ZIPKIN_DEV_ADDR = "http://127.0.0.1:9411";
@@ -75,27 +52,27 @@ public interface LauncherConstant {
 	/**
 	 * zipkin prod 地址
 	 */
-	String ZIPKIN_PROD_ADDR = "http://172.30.0.71:9411";
+	String ZIPKIN_PROD_ADDR = "http://127.0.0.1:9411";
 
 	/**
 	 * zipkin test 地址
 	 */
-	String ZIPKIN_TEST_ADDR = "http://172.30.0.71:9411";
+	String ZIPKIN_TEST_ADDR = "http://127.0.0.1:9411";
 
 	/**
 	 * elk dev 地址
 	 */
-	String ELK_DEV_ADDR = "154.207.98.223:9000";
+	String ELK_DEV_ADDR = "127.0.0.1:9000";
 
 	/**
 	 * elk prod 地址
 	 */
-	String ELK_PROD_ADDR = "172.31.13.66:9000";
+	String ELK_PROD_ADDR = "127.0.0.1:9000";
 
 	/**
 	 * elk test 地址
 	 */
-	String ELK_TEST_ADDR = "154.207.98.223:9000";
+	String ELK_TEST_ADDR = "127.0.0.1:9000";
 
 	/**
 	 * seata file模式
@@ -162,23 +139,6 @@ public interface LauncherConstant {
 	}
 
 	/**
-	 * 动态获取seata地址
-	 *
-	 * @param profile 环境变量
-	 * @return addr
-	 */
-	static String seataAddr(String profile) {
-		switch (profile) {
-			case (AppConstant.PROD_CODE):
-				return SEATA_PROD_ADDR;
-			case (AppConstant.TEST_CODE):
-				return SEATA_TEST_ADDR;
-			default:
-				return SEATA_DEV_ADDR;
-		}
-	}
-
-	/**
 	 * 动态获取zipkin地址
 	 *
 	 * @param profile 环境变量
@@ -192,23 +152,6 @@ public interface LauncherConstant {
 				return ZIPKIN_TEST_ADDR;
 			default:
 				return ZIPKIN_DEV_ADDR;
-		}
-	}
-
-	/**
-	 * 动态获取elk地址
-	 *
-	 * @param profile 环境变量
-	 * @return addr
-	 */
-	static String elkAddr(String profile) {
-		switch (profile) {
-			case (AppConstant.PROD_CODE):
-				return ELK_PROD_ADDR;
-			case (AppConstant.TEST_CODE):
-				return ELK_TEST_ADDR;
-			default:
-				return ELK_DEV_ADDR;
 		}
 	}
 

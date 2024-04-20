@@ -12,4 +12,5 @@ public class MngMemberParam {
 	private Integer day;
 	private String amount;
 	private String remark;
+	private Integer rlCou;
 }

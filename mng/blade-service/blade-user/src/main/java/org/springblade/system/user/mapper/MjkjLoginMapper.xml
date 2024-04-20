@@ -101,4 +101,22 @@
         and wx_union_id =#{unionId}
     </select>
 
+    <select id="getBladeUserIdByUUID" resultType="Long">
+        select
+            blade_user_id
+        from chat_wxuser
+        where
+        is_deleted =0
+        and uuid =#{uuid}
+    </select>
+    <select id="getBladeUserIdByOpenid" resultType="java.lang.Long">
+        select
+            blade_user_id
+        from chat_wxuser
+        where
+            is_deleted =0
+          and openid =#{openid}
+          and user_type='shiniu'
+    </select>
+
 </mapper>

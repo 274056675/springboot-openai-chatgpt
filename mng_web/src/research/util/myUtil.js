@@ -66,7 +66,7 @@ export const findFlowStepDataFun = (json, resourceId, option) => {
     }
     columnKey = dataArr.map((item) => item.prop);
     columnKey = columnKey.filter(item => item);
-    console.log('所有的key', columnKey)
+    
     let step = json.childShapes
     //当前步骤
     let currStep = {}
@@ -103,7 +103,7 @@ export const findFlowStepDataFun = (json, resourceId, option) => {
         succeedId.push(item.outgoing[0].resourceId)
       }
     })
-    console.log(succeedId, failId)
+    
     let flowArr = []
     //获取 审批通过/驳回指向的流程数据
     step.forEach((item) => {

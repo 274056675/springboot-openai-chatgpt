@@ -23,7 +23,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springblade.cgform.service.IMjkjBaseSqlService;
+import org.springblade.mng.cgform.service.IMjkjBaseSqlService;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.mng.param.mng.MngMemberParam;

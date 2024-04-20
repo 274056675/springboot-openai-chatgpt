@@ -1,9 +1,9 @@
 package org.springblade.mng.enhance.statistics;
 
-import org.springblade.cgform.model.CgformEnhanceJavaListInter;
-import org.springblade.cgform.service.IMjkjBaseSqlService;
-import org.springblade.common.utils.MjkjUtils;
-import org.springblade.config.exception.BusinessException;
+import org.springblade.mng.cgform.model.CgformEnhanceJavaListInter;
+import org.springblade.mng.cgform.service.IMjkjBaseSqlService;
+import org.springblade.mng.common.utils.MjkjUtils;
+import org.springblade.mng.config.exception.BusinessException;
 import org.springblade.core.tool.utils.DateUtil;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.mng.mapper.MngMapper;
@@ -104,7 +104,7 @@ public class MessageCountEnhance implements CgformEnhanceJavaListInter {
 
 
 			BigDecimal amountCou = MjkjUtils.getMap2BigD(payMap, dateStr);
-			String amountCouStr= Func.isEmpty(amountCou)||amountCou.compareTo(BigDecimal.ZERO)!=1?"-":amountCou.setScale(2).stripTrailingZeros().toPlainString();
+			String amountCouStr=Func.isEmpty(amountCou)||amountCou.compareTo(BigDecimal.ZERO)!=1?"-":amountCou.setScale(2).stripTrailingZeros().toPlainString();
 
 			twCou= Func.isEmpty(twCou)?"-":twCou;
 			zcCou= Func.isEmpty(zcCou)?"-":zcCou;

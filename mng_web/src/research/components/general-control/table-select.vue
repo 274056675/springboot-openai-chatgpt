@@ -189,7 +189,7 @@ export default {
           if (this.optionData.addType.isCell) {
             obj.$cellEdit = true
           }
-          console.log(this.optionData.defaultData)
+          
           if (this.optionData.defaultData) {
             obj = {
               ...obj,
@@ -233,7 +233,7 @@ export default {
       } else {
         this.tableSelectData = column
       }
-      console.log('当前选择的数据', column)
+      
     },
     //随机抽取
     randomExtractFun() {
@@ -279,7 +279,7 @@ export default {
                   this.tableSelectData.push(randomData[index])
                 }
               }
-              console.log('=========', indexArr, this.tableSelectData)
+              
             }
             if (this.tableSelectData.length <= 0) {
               this.$message('抽取失败，没有可抽取数据~')

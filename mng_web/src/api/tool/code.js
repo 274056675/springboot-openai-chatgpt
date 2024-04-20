@@ -18,7 +18,7 @@ export const build = (ids) => {
     method: 'post',
     params: {
       ids,
-      system: 'saber'
+      system: 'open-cjaidn'
     }
   })
 }

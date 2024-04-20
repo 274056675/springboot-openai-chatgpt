@@ -1,4 +1,18 @@
-
+/**
+ * Copyright (c) 2018-2028, Chill Zhuang 庄骞 (smallchill@163.com).
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.springblade.system.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -16,7 +30,8 @@ import java.io.Serializable;
 /**
  * 实体类
  *
- *
+ * @author Chill
+ * @since 2018-12-24
  */
 @Data
 @TableName("blade_dict")
@@ -28,16 +43,16 @@ public class Dict implements Serializable {
 	/**
 	 * 主键
 	 */
-	@JsonSerialize(using = ToStringSerializer.class)
 	@ApiModelProperty(value = "主键")
 	@TableId(value = "id", type = IdType.ASSIGN_ID)
+	@JsonSerialize(using = ToStringSerializer.class)
 	private Long id;
 
 	/**
 	 * 父主键
 	 */
-	@JsonSerialize(using = ToStringSerializer.class)
 	@ApiModelProperty(value = "父主键")
+	@JsonSerialize(using = ToStringSerializer.class)
 	private Long parentId;
 
 	/**
@@ -50,7 +65,7 @@ public class Dict implements Serializable {
 	 * 字典值
 	 */
 	@ApiModelProperty(value = "字典值")
-	private String dictKey;
+	private Integer dictKey;
 
 	/**
 	 * 字典名称
@@ -69,12 +84,6 @@ public class Dict implements Serializable {
 	 */
 	@ApiModelProperty(value = "字典备注")
 	private String remark;
-
-	/**
-	 * 是否已封存
-	 */
-	@ApiModelProperty(value = "是否已封存")
-	private Integer isSealed;
 
 	/**
 	 * 是否已删除

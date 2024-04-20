@@ -1,29 +1,42 @@
-
+/**
+ * Copyright (c) 2018-2028, Chill Zhuang 庄骞 (smallchill@163.com).
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.springblade.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springblade.system.entity.Dept;
 import org.springblade.system.vo.DeptVO;
 
 import java.util.List;
-import java.util.Map;
 
 /**
- * DeptMapper 接口
+ * Mapper 接口
  *
- *
+ * @author Chill
  */
 public interface DeptMapper extends BaseMapper<Dept> {
 
 	/**
-	 * 懒加载部门列表
+	 * 自定义分页
 	 *
-	 * @param tenantId
-	 * @param parentId
-	 * @param param
+	 * @param page
+	 * @param dept
 	 * @return
 	 */
-	List<DeptVO> lazyList(String tenantId, Long parentId, Map<String, Object> param);
+	List<DeptVO> selectDeptPage(IPage page, DeptVO dept);
 
 	/**
 	 * 获取树形节点
@@ -32,15 +45,6 @@ public interface DeptMapper extends BaseMapper<Dept> {
 	 * @return
 	 */
 	List<DeptVO> tree(String tenantId);
-
-	/**
-	 * 懒加载获取树形节点
-	 *
-	 * @param tenantId
-	 * @param parentId
-	 * @return
-	 */
-	List<DeptVO> lazyTree(String tenantId, Long parentId);
 
 	/**
 	 * 获取部门名

@@ -1,79 +1,55 @@
-
+/**
+ * Copyright (c) 2018-2028, Chill Zhuang 庄骞 (smallchill@163.com).
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.springblade.system.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springblade.core.log.exception.ServiceException;
-import org.springblade.core.secure.utils.AuthUtil;
+import org.springblade.core.secure.utils.SecureUtil;
 import org.springblade.core.tool.constant.BladeConstant;
 import org.springblade.core.tool.node.ForestNodeMerger;
+import org.springblade.core.tool.utils.CacheUtil;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.StringPool;
-import org.springblade.system.cache.SysCache;
 import org.springblade.system.entity.Dept;
 import org.springblade.system.mapper.DeptMapper;
 import org.springblade.system.service.IDeptService;
 import org.springblade.system.vo.DeptVO;
-import org.springblade.system.wrapper.DeptWrapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
  * 服务实现类
  *
- *
+ * @author Chill
  */
 @Service
 public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements IDeptService {
 
-	private static final String TENANT_ID = "tenantId";
-	private static final String PARENT_ID = "parentId";
-
 	@Override
-	public List<DeptVO> lazyList(String tenantId, Long parentId, Map<String, Object> param) {
-		// 设置租户ID
-		if (AuthUtil.isAdministrator()) {
-			tenantId = StringPool.EMPTY;
-		}
-		String paramTenantId = Func.toStr(param.get(TENANT_ID));
-		if (Func.isNotEmpty(paramTenantId) && AuthUtil.isAdministrator()) {
-			tenantId = paramTenantId;
-		}
-		// 判断点击搜索但是没有查询条件的情况
-		if (Func.isEmpty(param.get(PARENT_ID)) && param.size() == 1) {
-			parentId = 0L;
-		}
-		// 判断数据权限控制,非超管角色只可看到本级及以下数据
-		if (Func.toLong(parentId) == 0L && !AuthUtil.isAdministrator()) {
-			Long deptId = Func.firstLong(AuthUtil.getDeptId());
-			Dept dept = SysCache.getDept(deptId);
-			if (dept.getParentId() != 0) {
-				parentId = dept.getParentId();
-			}
-		}
-		// 判断点击搜索带有查询条件的情况
-		if (Func.isEmpty(param.get(PARENT_ID)) && param.size() > 1 && Func.toLong(parentId) == 0L) {
-			parentId = null;
-		}
-		return baseMapper.lazyList(tenantId, parentId, param);
+	public IPage<DeptVO> selectDeptPage(IPage<DeptVO> page, DeptVO dept) {
+		return page.setRecords(baseMapper.selectDeptPage(page, dept));
 	}
-
 
 	@Override
 	public List<DeptVO> tree(String tenantId) {
 		return ForestNodeMerger.merge(baseMapper.tree(tenantId));
-	}
-
-	@Override
-	public List<DeptVO> lazyTree(String tenantId, Long parentId) {
-		if (AuthUtil.isAdministrator()) {
-			tenantId = StringPool.EMPTY;
-		}
-		return ForestNodeMerger.merge(baseMapper.lazyTree(tenantId, parentId));
 	}
 
 	@Override
@@ -86,42 +62,15 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements ID
 	}
 
 	@Override
-	public String getDeptIdsByFuzzy(String tenantId, String deptNames) {
-		LambdaQueryWrapper<Dept> queryWrapper = Wrappers.<Dept>query().lambda().eq(Dept::getTenantId, tenantId);
-		queryWrapper.and(wrapper -> {
-			List<String> names = Func.toStrList(deptNames);
-			names.forEach(name -> wrapper.like(Dept::getDeptName, name).or());
-		});
-		List<Dept> deptList = baseMapper.selectList(queryWrapper);
-		if (deptList != null && deptList.size() > 0) {
-			return deptList.stream().map(dept -> Func.toStr(dept.getId())).distinct().collect(Collectors.joining(","));
-		}
-		return null;
-	}
-
-	@Override
 	public List<String> getDeptNames(String deptIds) {
 		return baseMapper.getDeptNames(Func.toLongArray(deptIds));
 	}
 
 	@Override
-	public List<Dept> getDeptChild(Long deptId) {
-		return baseMapper.selectList(Wrappers.<Dept>query().lambda().like(Dept::getAncestors, deptId));
-	}
-
-	@Override
-	public boolean removeDept(String ids) {
-		Long cnt = baseMapper.selectCount(Wrappers.<Dept>query().lambda().in(Dept::getParentId, Func.toLongList(ids)));
-		if (cnt > 0L) {
-			throw new ServiceException("请先删除子节点!");
-		}
-		return removeByIds(Func.toLongList(ids));
-	}
-
-	@Override
 	public boolean submit(Dept dept) {
+		CacheUtil.clear(CacheUtil.SYS_CACHE);
 		if (Func.isEmpty(dept.getParentId())) {
-			dept.setTenantId(AuthUtil.getTenantId());
+			dept.setTenantId(SecureUtil.getTenantId());
 			dept.setParentId(BladeConstant.TOP_PARENT_ID);
 			dept.setAncestors(String.valueOf(BladeConstant.TOP_PARENT_ID));
 		}
@@ -136,23 +85,6 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements ID
 		}
 		dept.setIsDeleted(BladeConstant.DB_NOT_DELETED);
 		return saveOrUpdate(dept);
-	}
-
-	@Override
-	public List<DeptVO> search(String deptName, Long parentId) {
-		String tenantId = AuthUtil.getTenantId();
-		LambdaQueryWrapper<Dept> queryWrapper = Wrappers.<Dept>query().lambda();
-		if (Func.isNotEmpty(tenantId)) {
-			queryWrapper.eq(Dept::getTenantId, tenantId);
-		}
-		if (Func.isNotEmpty(deptName)) {
-			queryWrapper.like(Dept::getDeptName, deptName);
-		}
-		if (Func.isNotEmpty(parentId) && parentId > 0L) {
-			queryWrapper.eq(Dept::getParentId, parentId);
-		}
-		List<Dept> deptList = baseMapper.selectList(queryWrapper);
-		return DeptWrapper.build().listNodeVO(deptList);
 	}
 
 }

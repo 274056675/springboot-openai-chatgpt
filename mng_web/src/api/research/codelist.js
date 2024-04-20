@@ -170,14 +170,6 @@ export const getUploadeFileNameApi = (link) => {
   })
 }
 
-// 获取联动数据
-export const getLinkDownDataApi = (params) => {
-  return request({
-    url: `/api/${apiRequestHead}/cgform-api/querySelectOptions`,
-    method: 'get',
-    params,
-  })
-}
 
 // sql增强触发接口
 export const touchSqlEnhanceApi = (data) => {
@@ -198,18 +190,7 @@ export const getErpColumnsApi = (headId) => {
   })
 }
 
-//根据父表获取父表的所有子表
-export const getSubFormHadeApi = (tableNames) => {
-  return request({
-    url: `/api/${apiRequestHead}/cgform-api/queryByTableNames`,
-    method: 'get',
-    params: {
-      tableNames
-    },
-  })
-}
 
-// ======================= //
 //获取所有数据
 export const getActionApi = (url, params) => {
   return request({

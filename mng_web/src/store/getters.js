@@ -19,11 +19,9 @@ const getters = {
   roles: state => state.user.roles,
   permission: state => state.user.permission,
   menu: state => state.user.menu,
-  menuId: state => state.user.menuId,
   menuAll: state => state.user.menuAll,
   logsList: state => state.logs.logsList,
   logsLen: state => state.logs.logsList.length || 0,
-  logsFlag: (state, getters) => getters.logsLen === 0,
-  flowRoutes: state => state.dict.flowRoutes,
+  logsFlag: (state, getters) => getters.logsLen === 0
 }
 export default getters

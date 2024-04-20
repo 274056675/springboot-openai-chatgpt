@@ -14,8 +14,6 @@
         <el-button-group>
           <el-button v-if="permission.region_add" type="primary" size="small" icon="el-icon-circle-plus-outline" @click="addChildren">新增下级</el-button>
           <el-button v-if="permission.region_delete" type="primary" size="small" icon="el-icon-delete" @click="handleDelete">删除</el-button>
-          <el-button v-if="permission.region_import" type="primary" size="small" icon="el-icon-upload2" @click="handleImport">导入</el-button>
-          <el-button v-if="permission.region_export" type="primary" size="small" icon="el-icon-download" @click="handleExport">导出</el-button>
           <el-button v-if="permission.region_debug" type="primary" size="small" icon="el-icon-video-play" @click="handleDebug">调试</el-button>
         </el-button-group>
       </basic-container>
@@ -27,18 +25,6 @@
             </el-input>
           </template>
         </avue-form>
-        <el-dialog title="行政区划数据导入"
-                   append-to-body
-                   :visible.sync="excelBox"
-                   width="555px">
-          <avue-form :option="excelOption" v-model="excelForm" :upload-after="uploadAfter">
-            <template slot="excelTemplate">
-              <el-button type="primary" @click="handleTemplate">
-                点击下载<i class="el-icon-download el-icon--right"></i>
-              </el-button>
-            </template>
-          </avue-form>
-        </el-dialog>
         <el-dialog title="行政区划数据调试"
                    append-to-body
                    :visible.sync="debugBox"
@@ -52,14 +38,8 @@
 
 <script>
   import {getLazyTree, getDetail, submit, remove} from "@/api/base/region";
-  import {exportBlob} from "@/api/common";
   import {mapGetters} from "vuex";
   import {validatenull} from "@/util/validate";
-  import {downloadXls} from "@/util/util";
-  import {dateNow} from "@/util/date";
-  import {getToken} from "@/util/auth";
-  import NProgress from 'nprogress';
-  import 'nprogress/nprogress.css';
 
   export default {
     data() {
@@ -141,7 +121,7 @@
             },
             {
               label: "区划等级",
-              prop: "regionLevel",
+              prop: "level",
               type: "radio",
               dicUrl: "/api/blade-system/dict/dictionary?code=region",
               props: {
@@ -176,59 +156,6 @@
             },
           ]
         },
-        excelBox: false,
-        excelForm: {},
-        excelOption: {
-          submitBtn: false,
-          emptyBtn: false,
-          column: [
-            {
-              label: '模板上传',
-              prop: 'excelFile',
-              type: 'upload',
-              drag: true,
-              loadText: '模板上传中，请稍等',
-              span: 24,
-              propsHttp: {
-                res: 'data'
-              },
-              tip: '请上传 .xls,.xlsx 标准格式文件',
-              action: "/api/blade-system/region/import-region"
-            },
-            {
-              label: "数据覆盖",
-              prop: "isCovered",
-              type: "switch",
-              align: "center",
-              width: 80,
-              dicData: [
-                {
-                  label: "否",
-                  value: 0
-                },
-                {
-                  label: "是",
-                  value: 1
-                }
-              ],
-              value: 0,
-              slot: true,
-              rules: [
-                {
-                  required: true,
-                  message: "请选择是否覆盖",
-                  trigger: "blur"
-                }
-              ]
-            },
-            {
-              label: '模板下载',
-              prop: 'excelTemplate',
-              formslot: true,
-              span: 24,
-            }
-          ]
-        },
         debugBox: false,
         debugForm: {},
         debugOption: {
@@ -244,7 +171,7 @@
                 label: 'name',
                 value: 'code'
               },
-              cascader: ['city'],
+              cascaderItem: ['city', 'district'],
               dicUrl: '/api/blade-system/region/select',
               span: 24,
             },
@@ -256,9 +183,8 @@
                 label: 'name',
                 value: 'code'
               },
-              cascader: ['district'],
               dicFlag: false,
-              dicUrl: '/api/blade-system/region/select?code={{province}}',
+              dicUrl: '/api/blade-system/region/select?code={{key}}',
               span: 24,
             },
             {
@@ -270,7 +196,7 @@
                 value: 'code'
               },
               dicFlag: false,
-              dicUrl: '/api/blade-system/region/select?code={{city}}',
+              dicUrl: '/api/blade-system/region/select?code={{key}}',
               span: 24,
             }
           ]
@@ -338,7 +264,7 @@
         this.regionForm.code = '';
         this.regionForm.subCode = '';
         this.regionForm.name = '';
-        this.regionForm.regionLevel = (this.regionForm.regionLevel === 5) ? 5 : this.regionForm.regionLevel + 1;
+        this.regionForm.level = (this.regionForm.level === 5) ? 5 : this.regionForm.level + 1;
       },
       handleSubmit(form, done, loading) {
         const parentCode = form.parentCode === this.topCode ? '' : form.parentCode;
@@ -388,27 +314,6 @@
       },
       handleDebug() {
         this.debugBox = true;
-      },
-      handleImport() {
-        this.excelBox = true;
-      },
-      handleExport() {
-        this.$confirm("是否导出行政区划数据?", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(() => {
-          NProgress.start();
-          exportBlob(`/api/blade-system/region/export-region?${this.website.tokenHeader}=${getToken()}`).then(res => {
-            downloadXls(res.data, `行政区划数据${dateNow()}.xlsx`);
-            NProgress.done();
-          })
-        });
-      },
-      handleTemplate() {
-        exportBlob(`/api/blade-system/region/export-template?${this.website.tokenHeader}=${getToken()}`).then(res => {
-          downloadXls(res.data, "行政区划模板.xlsx");
-        })
       },
     }
   };

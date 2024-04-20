@@ -1,19 +1,32 @@
-
+/**
+ * Copyright (c) 2018-2028, Chill Zhuang 庄骞 (smallchill@163.com).
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.springblade.gateway.filter;
 
+import com.alibaba.nacos.common.utils.StringUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
-import org.springblade.core.jwt.JwtUtil;
-import org.springblade.core.jwt.props.JwtProperties;
-import org.springblade.core.launch.constant.TokenConstant;
+import org.springblade.core.launch.props.BladeProperties;
 import org.springblade.gateway.props.AuthProperties;
 import org.springblade.gateway.provider.AuthProvider;
-import org.springblade.gateway.provider.RequestProvider;
 import org.springblade.gateway.provider.ResponseProvider;
+import org.springblade.gateway.utils.JwtCrypto;
+import org.springblade.gateway.utils.JwtUtil;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -28,10 +41,12 @@ import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 
+import static org.springblade.gateway.utils.JwtCrypto.BLADE_CRYPTO_AES_KEY;
+
 /**
  * 鉴权认证
  *
- *
+ * @author Chill
  */
 @Slf4j
 @Component
@@ -39,18 +54,15 @@ import java.nio.charset.StandardCharsets;
 public class AuthFilter implements GlobalFilter, Ordered {
 	private final AuthProperties authProperties;
 	private final ObjectMapper objectMapper;
-	private final JwtProperties jwtProperties;
+	private final BladeProperties bladeProperties;
 	private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-		//校验 Token 放行
-		String originalRequestUrl = RequestProvider.getOriginalRequestUrl(exchange);
 		String path = exchange.getRequest().getURI().getPath();
-		if (isSkip(path) || isSkip(originalRequestUrl)) {
+		if (isSkip(path)) {
 			return chain.filter(exchange);
 		}
-		//校验 Token 合法性
 		ServerHttpResponse resp = exchange.getResponse();
 		String headerToken = exchange.getRequest().getHeaders().getFirst(AuthProvider.AUTH_KEY);
 		String paramToken = exchange.getRequest().getQueryParams().getFirst(AuthProvider.AUTH_KEY);
@@ -59,18 +71,13 @@ public class AuthFilter implements GlobalFilter, Ordered {
 		}
 		String auth = StringUtils.isBlank(headerToken) ? paramToken : headerToken;
 		String token = JwtUtil.getToken(auth);
-		Claims claims = JwtUtil.parseJWT(token);
-		if (token == null || claims == null) {
-			return unAuth(resp, "请求未授权");
+		//校验 加密Token 合法性
+		if (JwtUtil.isCrypto(auth)) {
+			token = JwtCrypto.decryptToString(token, bladeProperties.getEnvironment().getProperty(BLADE_CRYPTO_AES_KEY));
 		}
-		//判断 Token 状态
-		if (jwtProperties.getState()) {
-			String tenantId = String.valueOf(claims.get(TokenConstant.TENANT_ID));
-			String userId = String.valueOf(claims.get(TokenConstant.USER_ID));
-			String accessToken = JwtUtil.getAccessToken(tenantId, userId, token);
-			if (!token.equalsIgnoreCase(accessToken)) {
-				return unAuth(resp, "令牌已失效");
-			}
+		Claims claims = JwtUtil.parseJWT(token);
+		if (claims == null) {
+			return unAuth(resp, "请求未授权");
 		}
 		return chain.filter(exchange);
 	}
@@ -92,7 +99,6 @@ public class AuthFilter implements GlobalFilter, Ordered {
 		DataBuffer buffer = resp.bufferFactory().wrap(result.getBytes(StandardCharsets.UTF_8));
 		return resp.writeWith(Flux.just(buffer));
 	}
-
 
 	@Override
 	public int getOrder() {

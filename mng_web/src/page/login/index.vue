@@ -110,6 +110,7 @@ export default {
         })
         this.$store
           .dispatch('LoginBySocial', this.socialForm)
+         
           .then(() => {
             window.location.href = topUrl.split(redirectUrl)[0]
             this.$router.push({ path: this.tagWel.value })

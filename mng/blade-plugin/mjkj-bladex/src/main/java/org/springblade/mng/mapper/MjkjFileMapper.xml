@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.springblade.mng.mapper.MjkjFileMapper">
+
+    <select id="isExistPrivateFolder" resultType="Integer">
+        select count(1) from mjkj_file_list
+        where pid=0 and file_type=1 and tenant_id=#{tenantId}
+    </select>
+    <select id="isExistPublicFolder" resultType="Integer">
+        select count(1) from mjkj_file_list
+        where pid=0 and file_type=2 and tenant_id=#{tenantId}
+    </select>
+    <select id="isExistUserFolder" resultType="Integer">
+        select count(1) from mjkj_file_list
+        where  file_type=4 and tenant_id=#{tenantId} and upload_user_id =#{userId}
+    </select>
+
+
+    <select id="getUserName" resultType="String">
+        select group_concat(name) from blade_user where is_deleted =0 and id in
+        <foreach collection="userIdList" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getDeptName" resultType="String">
+        select group_concat(dept_name) from blade_dept where is_deleted =0 and id in
+        <foreach collection="deptIdList" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getRoleName" resultType="String">
+        select group_concat(role_name) from blade_role where is_deleted =0 and id in
+        <foreach collection="roleIdList" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <update id="removeUserIdByFileId">
+        update mjkj_file_role_user set is_deleted=-1 where file_id=#{fileId}
+    </update>
+    <update id="removeRoleIdByFileId">
+        update mjkj_file_role_role set is_deleted=-1 where file_id=#{fileId}
+    </update>
+    <update id="removeDeptIdByFileId">
+        update mjkj_file_role_dept set is_deleted=-1 where file_id=#{fileId}
+    </update>
+
+    <select id="getDeptParentId" resultType="string">
+	    select ancestors from blade_dept where id =#{deptId}
+    </select>
+
+    <select id="getFileRoleUserId" resultType="int">
+        select count(1) from mjkj_file_role_user
+        where is_deleted=0
+        and file_id=#{fileId} and  blade_user_id=#{userId}
+    </select>
+
+    <select id="getFileRoleRoleId" resultType="int">
+        select count(1) from mjkj_file_role_role
+        where is_deleted=0
+        and file_id=#{fileId} and  role_id=#{roleId}
+    </select>
+
+    <select id="getFileRoleDeptId" resultType="int">
+        select count(1) from mjkj_file_role_dept
+        where is_deleted=0
+        and file_id=#{fileId} and  dept_id=#{deptId}
+    </select>
+
+    <select id="getMyRoleFileIdList" resultType="long">
+          (select IFNULL(file_id,0) as file_id from mjkj_file_role_user where is_deleted = 0 and blade_user_id =#{bladeUserId})
+        <if test="roleIdList!=null and roleIdList.size() >0">
+            UNION ALL (
+            select IFNULL(file_id,0) as file_id from mjkj_file_role_role where is_deleted = 0 and role_id in
+            <foreach collection="roleIdList" index="index" item="itemRole" open="(" separator="," close=")">
+                #{itemRole}
+            </foreach>
+            )
+        </if>
+        <if test="deptIdList!=null and deptIdList.size() >0">
+            UNION ALL (
+            select IFNULL(file_id,0) as file_id from mjkj_file_role_dept where is_deleted =0 and dept_id in
+            <foreach collection="deptIdList" index="index" item="itemDept" open="(" separator="," close=")">
+                #{itemDept}
+            </foreach>
+            )
+        </if>
+    </select>
+
+    <select id="getMyRoleFileIdListUserId" resultType="long">
+          select distinct blade_user_id from mjkj_file_role_user where is_deleted = 0 and file_id =#{fileId}
+    </select>
+    <select id="getMyRoleFileIdListDeptId" resultType="long">
+          select distinct dept_id from mjkj_file_role_dept where is_deleted = 0 and file_id =#{fileId}
+    </select>
+    <select id="getMyRoleFileIdListRoleId" resultType="long">
+          select distinct role_id from mjkj_file_role_role where is_deleted = 0 and file_id =#{fileId}
+    </select>
+
+    <select id="getAllFolderList" resultType="map">
+        SELECT
+            *
+        FROM
+            mjkj_file_list
+        WHERE
+            type = 1
+            and is_deleted =0
+        ORDER BY
+            id DESC
+    </select>
+
+    <update id="updateSubPstr">
+        update mjkj_file_list set  pstr=REPLACE(pstr, #{oPstr}, #{nPstr})  where pstr like concat(#{oPstr},'%')
+    </update>
+
+    <select id="getSubDeptId" resultType="long">
+        select id from blade_dept where id =#{deptId} or ancestors like CONCAT('%,',#{deptId},'%')
+    </select>
+
+    <select id="getFileList"  resultType="map">
+        select fl.*,bu.name as create_name from mjkj_file_list fl
+        left join blade_user bu on bu.id =fl.create_user
+        where fl.is_deleted =0
+        order by fl.id desc
+    </select>
+
+    <select id="getFileViewEnhanceList" resultType="map">
+        select
+        fl.id as id,
+        fl.title as file_name,
+        DATE_FORMAT(fl.create_time, '%Y/%m/%d') as file_upload_time,
+        (
+        SELECT
+            item_text
+        FROM
+            sys_dict d
+            INNER JOIN sys_dict_item di ON d.id = di.dict_id
+        WHERE
+            d.dict_code = 'file_type_str'
+            AND di.item_value = fl.type
+            LIMIT 1
+        ) AS file_type,
+        fl.file_size as file_size,
+        bu.name as file_user
+        from
+        mjkj_file_list fl
+        INNER JOIN blade_user bu on fl.create_user =bu.id
+        where fl.is_deleted =0 and bu.is_deleted =0
+        <if test="params.file_name != null and params.file_name !=''">
+            and fl.title like CONCAT('%',#{params.file_name},'%')
+        </if>
+        <if test="params.file_user != null and params.file_user !=''">
+            and bu.name like CONCAT('%',#{params.file_user},'%')
+        </if>
+        order by id desc
+    </select>
+
+    <select id="getFileTypeList" resultType="map">
+        SELECT
+            item_text,di.item_value
+        FROM
+            sys_dict d
+            INNER JOIN sys_dict_item di ON d.id = di.dict_id
+        WHERE
+            d.dict_code = 'file_type_list'
+    </select>
+
+    <select id="getMyPrivateFile" resultType="map">
+        SELECT
+            *
+        FROM
+            mjkj_file_list
+        WHERE
+            is_deleted = 0
+            AND file_type = 4
+            AND create_user = #{userId}
+    </select>
+
+    <select id="getMyPublicFile" resultType="map">
+        SELECT
+            *
+        FROM
+            mjkj_file_list
+        WHERE
+            is_deleted = 0
+            AND file_type in(1,2,3)
+    </select>
+    <select id="getSubFileList" resultType="map">
+         SELECT
+            *
+        FROM
+            mjkj_file_list
+        WHERE
+            is_deleted = 0
+           and pstr like concat('%,',#{fileId},'%')
+    </select>
+
+    <select id="getSrkjList" resultType="long">
+        select create_user from mjkj_file_list where file_type=4 and pid in(
+         select id from mjkj_file_list where is_deleted =0 and file_type=1 and pid=0
+        )
+    </select>
+
+    <select id="getPrivateFile" resultType="map">
+        select * from mjkj_file_list where file_type =1 and tenant_id = #{tenantId} limit 1
+    </select>
+
+    <select id="getMyPtFile" resultType="map">
+        SELECT
+            *
+        FROM
+            mjkj_file_list
+        WHERE
+            is_deleted = 0
+            AND file_type in(0)
+    </select>
+
+    <select id="fileListById" resultType="map">
+        select * from mjkj_file_list where id =#{id}
+    </select>
+
+</mapper>

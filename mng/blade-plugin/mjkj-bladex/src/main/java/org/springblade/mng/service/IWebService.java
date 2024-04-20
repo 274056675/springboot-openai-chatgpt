@@ -1,23 +1,24 @@
 package org.springblade.mng.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.springblade.mng.model.ChatGptMsgModel;
 import org.springblade.mng.model.WxUserInfoModel;
-import org.springblade.mng.param.ChatLogShareMessageParam;
 import org.springblade.mng.param.MoreFunParam;
-import org.springblade.plugin.message.model.ChatGptMsgModel;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 前
- */
+
 public interface IWebService {
 
+	//删除用户
+	void delWuserInfo(String wxuserId);
 	//获取用户详情
 	WxUserInfoModel getWxUsrInfo();
+
+	WxUserInfoModel getWxUsrInfo(String type);
+
 
 	//获取openId
 	String getOpenId();
@@ -28,28 +29,26 @@ public interface IWebService {
 	//获取微信id
 	String getWxuserId();
 
-	//获取问题可提问次数
-	Integer getWuserQuestionCou(Long bladeUserId);
+	//获取各类次数
+	Integer getWuserQuestionCou(Long bladeUserId, String numType);
 
-	//获取是否开启 提问消耗次数
-	boolean getQuestionNumFlag();
-	//更多好玩
-	boolean getMoreFunQuestionNumFlag();
+
 	//获取提问一次消耗多少次
 	Integer getOneQuestionUseNum();
 
-	//发送问题 不用发送
-	List<ChatGptMsgModel> sendQuestion(String question,Long startMessageId, String modelType,boolean memberFlag);
+	//发送问题
+	List<ChatGptMsgModel> sendQuestion(String question, Long startMessageId, Integer useNum, String textType, Long chatListIdL);
+
 
 	//获取历史聊天记录
-	IPage<Map<String, Object>>  getMessageHistoryList(Long startNum,String modelType,IPage<Object> page);
+	IPage<Map<String, Object>>  getMessageHistoryList(Long startNum, String modelType, IPage<Object> page, String chatListId, String type);
 
 	//获取我的最新消息
-	List<Map<String, Object>>  getMessageLastList(Long startNum,String modelType);
+	List<Map<String, Object>>  getMessageLastList(Long startNum, String modelType, String type, String chatListId);
 
 
 	//获取消息次数
-	Integer getMessageCou(Long bladeUserId);
+	Integer getMessageCou(String wxuserId);
 
 	//获取等级列表
 	List<Map<String,Object>> getLevelList();
@@ -58,19 +57,14 @@ public interface IWebService {
 	String getLevelTitle(int cou);
 
 	//获取参数设置
-	String getCsszVal(String code,String defaultVal);
-
-	//校验敏感词
-	boolean checkSensitiveWord(String str);
-
-	//获取手机号码
+	String getCsszVal(String code, String defaultVal);
 
 
 	//增加用户次数  【注册->1】【分享->2】【分享注册->3】【提问->4】【5=人工】【6=广告奖励】【7=签到】【8=会员奖励】【9=更多好玩】【10=口令福利】
-	void  addWxuserQuestionNum(Long bladeUserId,String wxuserId,Integer serviceType,Integer num,String questionId,String remark);
+	void  addWxuserQuestionNum(Long bladeUserId, String wxuserId, Integer serviceType, Integer num, String questionId, String remark, String numType);
 
 	//减用户次数  【注册->1】【分享->2】【分享注册->3】【提问->4】【5=人工】【6=广告奖励】【7=签到】【8=会员奖励】【9=更多好玩】【10=口令福利】
-	void  subWxuserQuestionNum(Long bladeUserId,String wxuserId,Integer serviceType,Integer num,String questionId,String remark);
+	void  subWxuserQuestionNum(Long bladeUserId, String wxuserId, Integer serviceType, Integer num, String questionId, String remark, String numType);
 
 	//获取新邀请码
 	String getNewInviteCode();
@@ -80,29 +74,56 @@ public interface IWebService {
 
 	Map<String,Object> getWxuserMapByInvitecode(String invitecode);
 
+	Map<String,Object> getWxuseridByUUID(String uuid);
 
-
+	//生成邀请码
+	String generateQrcode();
 
 
 	//获取用户自定义设置
 	Map<String,Object> getWxUserSetting(String wxUserId);
 
+	//获取热门消息
+	IPage<Map<String, Object>>  getMessageHotList(IPage<Object> page);
+
 	//发送更多好玩
-	void sendMoreFun(String wxuserId,Long bladeUserId,boolean memberFlag,MoreFunParam param);
+	void sendMoreFun(String wxuserId, Long bladeUserId, Integer oneUseNum, MoreFunParam param);
 
 	//签到
 	void sign(String wxuserId, Date date);
 
-	//添加用户分享的消息
-	void addShareLog(String wxuserId,ChatLogShareMessageParam param);
-	//用户获取被分享的消息
-	List<Map<String, Object>> getShareLog(String onlyId);
-
-	//获取本微信用户id下所有的子用户(推广)
-	List<Map<String, Object>> getChildUsers(String wxuserId);
-
 	//获取历史聊天记录
-	IPage<Map<String, Object>>  getSubCouList(String wxuserId,IPage<Object> page);
+	IPage<Map<String, Object>>  getSubCouList(String wxuserId, IPage<Object> page);
 
+	//判断模型是否需要燃料
+	Integer judgeModel(String modelName);
+
+	//获取收藏列表
+	IPage<Map<String,Object>>  getStoreMessage(IPage<Object> page);
+
+	//获取聊天列表
+	IPage<Map<String,Object>> getChatList(IPage<Object> page);
+
+	//创建聊天列表
+	void createNewChatList(Long id, String type, String name, String content, String fundataId, String funJson);
+
+	//获取积分列表
+	IPage<Map<String,Object>> getCreditList(IPage<Object> page);
+
+	//获取加分列表
+	IPage<Map<String,Object>> getAddCreditList(IPage<Object> page);
+
+	//获取减分列表
+	IPage<Map<String,Object>> getSubCreditList(IPage<Object> page);
+
+	//收藏功能
+	String chatStore(String messageId, String type);
+
+	//获取被你邀请的用户
+	IPage<Map<String,Object>> getInvitedUsers(IPage<Object> page);
+
+
+	//获取fun历史记录
+	IPage<Map<String,Object>> getFunHistory(IPage<Object> page, String funDataId);
 
 }

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.springblade.mng.cgform.mapper.CgformHeadMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="cgformHeadResultMap" type="org.springblade.mng.cgform.entity.CgformHead">
+        <result column="id" property="id"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_dept" property="createDept"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="status" property="status"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="table_name" property="tableName"/>
+        <result column="table_type" property="tableType"/>
+        <result column="table_version" property="tableVersion"/>
+        <result column="table_txt" property="tableTxt"/>
+        <result column="is_checkbox" property="isCheckbox"/>
+        <result column="is_db_synch" property="isDbSynch"/>
+        <result column="is_page" property="isPage"/>
+        <result column="is_tree" property="isTree"/>
+        <result column="id_sequence" property="idSequence"/>
+        <result column="id_type" property="idType"/>
+        <result column="query_mode" property="queryMode"/>
+        <result column="relation_type" property="relationType"/>
+        <result column="sub_table_str" property="subTableStr"/>
+        <result column="tab_order_num" property="tabOrderNum"/>
+        <result column="tree_parent_id_field" property="treeParentIdField"/>
+        <result column="tree_id_field" property="treeIdField"/>
+        <result column="tree_fieldname" property="treeFieldname"/>
+        <result column="form_category" property="formCategory"/>
+        <result column="form_template" property="formTemplate"/>
+        <result column="form_template_mobile" property="formTemplateMobile"/>
+        <result column="scroll" property="scroll"/>
+        <result column="copy_version" property="copyVersion"/>
+        <result column="copy_type" property="copyType"/>
+        <result column="physic_id" property="physicId"/>
+        <result column="theme_template" property="themeTemplate"/>
+        <result column="is_des_form" property="isDesForm"/>
+        <result column="des_form_code" property="desFormCode"/>
+        <result column="basic_function" property="basicFunction"/>
+        <result column="menu_style" property="menuStyle"/>
+
+
+    </resultMap>
+
+    <!-- 执行查询语句 -->
+    <select id="queryList" parameterType="java.lang.String" resultType="java.util.HashMap">
+		${sqlStr}
+	</select>
+
+
+    <!-- 执行ddl语句 -->
+    <update id="executeDDL" parameterType="java.lang.String">
+		${sqlStr}
+	</update>
+
+    <select id="getMaxCopyVersion" resultType="int">
+        select max(copy_version) from onl_cgform_head where physic_id = #{physicId}
+    </select>
+
+    <!-- 逻辑 删除数据 -->
+    <update id="deleteOne" parameterType="java.lang.String">
+		${sqlStr}
+	</update>
+
+    <!-- 执行查询语句返回一个map -->
+    <select id="queryOneByTableNameAndId" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select * from ${tbname} where id = #{dataId}
+	</select>
+</mapper>

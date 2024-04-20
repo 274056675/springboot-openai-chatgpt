@@ -7,7 +7,7 @@
              :show-close="false"
              width="20%">
     <el-form :model="form" ref="form" label-width="80px">
-      <el-form-item v-if="tenantMode" label="租户编号">
+      <el-form-item label="租户编号">
         <el-input v-model="form.tenantId" placeholder="请输入租户编号"></el-input>
       </el-form-item>
       <el-form-item label="用户姓名">
@@ -33,9 +33,6 @@
   import {mapGetters} from "vuex";
   import {validatenull} from "@/util/validate";
   import {registerGuest} from "@/api/user";
-  import {getTopUrl} from "@/util/util";
-  import {info} from "@/api/system/tenant";
-  import {resetRouter} from "@/router/router";
 
   export default {
     name: "thirdRegister",
@@ -49,7 +46,6 @@
           password2: '',
         },
         loading: false,
-        tenantMode: true,
         accountBox: false,
       };
     },
@@ -57,13 +53,13 @@
       ...mapGetters(["userInfo"]),
     },
     created() {
-      this.getTenant();
+
     },
     mounted() {
       // 若未登录则弹出框进行绑定
-      if (validatenull(this.userInfo.user_id) || this.userInfo.user_id < 0) {
-        this.form.name = this.userInfo.user_name;
-        this.form.account = this.userInfo.user_name;
+      if (validatenull(this.userInfo.userId) || this.userInfo.userId < 0) {
+        this.form.name = this.userInfo.account;
+        this.form.account = this.userInfo.account;
         this.accountBox = true;
       }
     },
@@ -86,14 +82,13 @@
           return;
         }
         this.loading = true;
-        registerGuest(this.form, this.userInfo.oauth_id).then(res => {
+        registerGuest(this.form, this.userInfo.oauthId).then(res => {
           this.loading = false;
           const data = res.data;
           if (data.success) {
             this.accountBox = false;
             this.$alert("注册申请已提交,请耐心等待管理员通过!", '注册提示').then(() => {
               this.$store.dispatch("LogOut").then(() => {
-                resetRouter();
                 this.$router.push({path: "/login"});
               });
             })
@@ -104,18 +99,6 @@
           window.console.log(error);
           this.loading = false;
         });
-      },
-      getTenant() {
-        let domain = getTopUrl();
-        // 临时指定域名，方便测试
-        //domain = "https://bladex.vip";
-        info(domain).then(res => {
-          const data = res.data;
-          if (data.success && data.data.tenantId) {
-            this.form.tenantId = data.data.tenantId;
-            this.tenantMode = false;
-          }
-        })
       },
     },
   };

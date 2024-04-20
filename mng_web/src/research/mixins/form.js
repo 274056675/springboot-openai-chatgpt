@@ -68,7 +68,7 @@ export default {
           rules,
           commonFormData
         })
-        console.log('====>填值规则', res)
+        
         let ruleResObj = {}
         res.data.data.forEach(item => {
           ruleResObj[item.ruleCode] = item.result

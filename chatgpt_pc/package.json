@@ -1,0 +1,43 @@
+{
+  "name": "chat_ai_web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@microsoft/fetch-event-source": "^2.0.1",
+    "axios": "^1.6.2",
+    "core-js": "^3.8.3",
+    "default-passive-events": "^2.0.0",
+    "element-ui": "^2.15.14",
+    "github-markdown-css": "^5.4.0",
+    "highlight.js": "^11.9.0",
+    "qrcodejs2": "0.0.2",
+    "qs": "^6.11.2",
+    "scss": "^0.2.4",
+    "vue": "^2.6.14",
+    "vue-axios": "^3.5.2",
+    "vue-cropper": "^0.6.4",
+    "vue-markdown": "^2.2.4",
+    "vue-puzzle-vcode": "^1.1.10",
+    "vue-router": "^3.5.1",
+    "vuex": "^3.6.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-plugin-router": "~5.0.0",
+    "@vue/cli-plugin-vuex": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.0.3",
+    "node-sass": "^6.0.1",
+    "sass-loader": "^10.0.5",
+    "vue-template-compiler": "^2.6.14"
+  }
+}

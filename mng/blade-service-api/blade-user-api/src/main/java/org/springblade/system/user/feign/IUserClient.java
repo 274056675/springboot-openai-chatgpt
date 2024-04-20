@@ -1,4 +1,18 @@
-
+/**
+ * Copyright (c) 2018-2028, Chill Zhuang 庄骞 (smallchill@163.com).
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.springblade.system.user.feign;
 
 
@@ -16,21 +30,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 /**
  * User Feign接口类
  *
- *
+ * @author Chill
  */
 @FeignClient(
-	value = AppConstant.APPLICATION_USER_NAME
+	value = AppConstant.APPLICATION_USER_NAME,
+	fallback = IUserClientFallback.class
 )
 public interface IUserClient {
 
-	String API_PREFIX = "/client";
-	String USER_INFO = API_PREFIX + "/user-info";
-	String USER_INFO_BY_TYPE = API_PREFIX + "/user-info-by-type";
-	String USER_INFO_BY_ID = API_PREFIX + "/user-info-by-id";
-	String USER_INFO_BY_ACCOUNT = API_PREFIX + "/user-info-by-account";
-	String USER_AUTH_INFO = API_PREFIX + "/user-auth-info";
-	String SAVE_USER = API_PREFIX + "/save-user";
-	String REMOVE_USER = API_PREFIX + "/remove-user";
+	String API_PREFIX = "/user";
 
 	/**
 	 * 获取用户信息
@@ -38,40 +46,19 @@ public interface IUserClient {
 	 * @param userId 用户id
 	 * @return
 	 */
-	@GetMapping(USER_INFO_BY_ID)
-	R<User> userInfoById(@RequestParam("userId") Long userId);
-
-
-	/**
-	 * 根据账号获取用户信息
-	 *
-	 * @param tenantId 租户id
-	 * @param account  账号
-	 * @return
-	 */
-	@GetMapping(USER_INFO_BY_ACCOUNT)
-	R<User> userByAccount(@RequestParam("tenantId") String tenantId, @RequestParam("account") String account);
+	@GetMapping(API_PREFIX + "/user-info-by-id")
+	R<UserInfo> userInfo(@RequestParam("userId") Long userId);
 
 	/**
 	 * 获取用户信息
 	 *
 	 * @param tenantId 租户ID
-	 * @param account  账号
+	 * @param account    账号
+	 * @param password   密码
 	 * @return
 	 */
-	@GetMapping(USER_INFO)
-	R<UserInfo> userInfo(@RequestParam("tenantId") String tenantId, @RequestParam("account") String account);
-
-	/**
-	 * 获取用户信息
-	 *
-	 * @param tenantId 租户ID
-	 * @param account  账号
-	 * @param userType 用户平台
-	 * @return
-	 */
-	@GetMapping(USER_INFO_BY_TYPE)
-	R<UserInfo> userInfo(@RequestParam("tenantId") String tenantId, @RequestParam("account") String account, @RequestParam("userType") String userType);
+	@GetMapping(API_PREFIX + "/user-info")
+	R<UserInfo> userInfo(@RequestParam("tenantId") String tenantId, @RequestParam("account") String account, @RequestParam("password") String password);
 
 	/**
 	 * 获取第三方平台信息
@@ -79,7 +66,7 @@ public interface IUserClient {
 	 * @param userOauth 第三方授权用户信息
 	 * @return UserInfo
 	 */
-	@PostMapping(USER_AUTH_INFO)
+	@PostMapping(API_PREFIX + "/user-auth-info")
 	R<UserInfo> userAuthInfo(@RequestBody UserOauth userOauth);
 
 	/**
@@ -88,16 +75,7 @@ public interface IUserClient {
 	 * @param user 用户实体
 	 * @return
 	 */
-	@PostMapping(SAVE_USER)
+	@PostMapping(API_PREFIX + "/save-user")
 	R<Boolean> saveUser(@RequestBody User user);
-
-	/**
-	 * 删除用户
-	 *
-	 * @param tenantIds 租户id集合
-	 * @return
-	 */
-	@PostMapping(REMOVE_USER)
-	R<Boolean> removeUser(@RequestParam("tenantIds") String tenantIds);
 
 }

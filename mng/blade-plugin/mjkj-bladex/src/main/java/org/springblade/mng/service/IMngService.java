@@ -13,5 +13,5 @@ public interface IMngService {
 	//修改可提问问题次数
 	void updateQuestionCou(MngQuestionCouParam param);
 	//人工充值
-	void addGoodsOrder(Map<String, Object> wxuserMap , MngMemberParam param);
+	void addGoodsOrder(Map<String, Object> wxuserMap, MngMemberParam param);
 }

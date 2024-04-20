@@ -1,7 +1,6 @@
 #服务器端口
 server:
-  port: 9874
-
+  port: 9878
 #mjkj专用配置
 mjkj:
   excludeTable: linaaa_ #onl_,sys_,blade_ #排除表明开头
@@ -24,3 +23,20 @@ blade:
   jackson:
     # 支持text文本请求,与报文加密同时开启
     support-text-plain: true
+  secure:
+    #接口放行
+    skip-url:
+      - /mjkj-chat/chat/open/**
+      - /mjkj-chat/sys/sys/dict/getDictItems/**
+      - /mjkj-chat/cgform-api/getData/**
+      - /mjkj-chat/cgform-api/detailData/**
+      - /mjkj-chat/desform-api/desform/**
+      - /blade-message/message/**
+      - /mjkj-chat/chat/ai/level/list
+      - /mjkj-chat/chat/ai/problem/list
+      - /mjkj-chat-lin/**
+      - /mjkj-chat-pj/**
+      - /mjkj-chat-sh/chat/open/**
+      - /mjkj-chat-zh/chat/open/**
+      - /blade-system/**
+debug: true

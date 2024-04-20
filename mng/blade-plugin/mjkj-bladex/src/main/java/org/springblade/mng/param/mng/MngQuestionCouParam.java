@@ -13,4 +13,6 @@ public class MngQuestionCouParam {
 	private String type;//add=增加  sub=减少
 	private Integer num;
 	private String remark;
+
+	private String manageType; //question 提问次数 rl 燃料次数
 }

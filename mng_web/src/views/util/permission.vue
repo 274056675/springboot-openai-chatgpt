@@ -5,7 +5,8 @@
       <avue-crud ref="crud"
                  :permission="permission"
                  :option="option"
-                 :data="data">
+                 :data="data"
+                 @expand-change="expandChange">
         <template slot="expand"
                   slot-scope="scope">
           {{scope}}

@@ -1,9 +1,8 @@
 export default {
-  propsDefault: {
-    label: 'label',
-    path: 'path',
-    icon: 'icon',
-    children: 'children',
-    isOpen: 'isOpen'
-  }
+    propsDefault: {
+        label: 'label',
+        path: 'path',
+        icon: 'icon',
+        children: 'children'
+    }
 }

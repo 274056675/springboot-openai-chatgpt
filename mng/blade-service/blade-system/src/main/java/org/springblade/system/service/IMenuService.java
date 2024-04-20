@@ -1,9 +1,23 @@
-
+/**
+ * Copyright (c) 2018-2028, Chill Zhuang 庄骞 (smallchill@163.com).
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.springblade.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springblade.core.secure.BladeUser;
-import org.springblade.core.tool.node.TreeNode;
 import org.springblade.core.tool.support.Kv;
 import org.springblade.system.entity.Menu;
 import org.springblade.system.vo.MenuVO;
@@ -14,18 +28,18 @@ import java.util.Map;
 /**
  * 服务类
  *
- *
+ * @author Chill
  */
 public interface IMenuService extends IService<Menu> {
 
 	/**
-	 * 懒加载列表
+	 * 自定义分页
 	 *
-	 * @param parentId
-	 * @param param
+	 * @param page
+	 * @param menu
 	 * @return
 	 */
-	List<MenuVO> lazyList(Long parentId, Map<String, Object> param);
+	IPage<MenuVO> selectMenuPage(IPage<MenuVO> page, MenuVO menu);
 
 	/**
 	 * 懒加载菜单列表
@@ -40,10 +54,9 @@ public interface IMenuService extends IService<Menu> {
 	 * 菜单树形结构
 	 *
 	 * @param roleId
-	 * @param topMenuId
 	 * @return
 	 */
-	List<MenuVO> routes(String roleId, Long topMenuId);
+	List<MenuVO> routes(String roleId);
 
 	/**
 	 * 按钮树形结构
@@ -58,7 +71,7 @@ public interface IMenuService extends IService<Menu> {
 	 *
 	 * @return
 	 */
-	List<TreeNode> tree();
+	List<MenuVO> tree();
 
 	/**
 	 * 授权树形结构
@@ -66,18 +79,7 @@ public interface IMenuService extends IService<Menu> {
 	 * @param user
 	 * @return
 	 */
-	List<TreeNode> grantTree(BladeUser user);
-
-	//魔晶定制
-	List<TreeNode> grantTree();
-
-	/**
-	 * 顶部菜单树形结构
-	 *
-	 * @param user
-	 * @return
-	 */
-	List<TreeNode> grantTopTree(BladeUser user);
+	List<MenuVO> grantTree(BladeUser user);
 
 	/**
 	 * 数据权限授权树形结构
@@ -85,15 +87,7 @@ public interface IMenuService extends IService<Menu> {
 	 * @param user
 	 * @return
 	 */
-	List<TreeNode> grantDataScopeTree(BladeUser user);
-
-	/**
-	 * 接口权限授权树形结构
-	 *
-	 * @param user
-	 * @return
-	 */
-	List<TreeNode> grantApiScopeTree(BladeUser user);
+	List<MenuVO> grantDataScopeTree(BladeUser user);
 
 	/**
 	 * 默认选中节点
@@ -106,26 +100,10 @@ public interface IMenuService extends IService<Menu> {
 	/**
 	 * 默认选中节点
 	 *
-	 * @param topMenuIds
-	 * @return
-	 */
-	List<String> topTreeKeys(String topMenuIds);
-
-	/**
-	 * 默认选中节点
-	 *
 	 * @param roleIds
 	 * @return
 	 */
 	List<String> dataScopeTreeKeys(String roleIds);
-
-	/**
-	 * 默认选中节点
-	 *
-	 * @param roleIds
-	 * @return
-	 */
-	List<String> apiScopeTreeKeys(String roleIds);
 
 	/**
 	 * 获取配置的角色权限
@@ -134,21 +112,5 @@ public interface IMenuService extends IService<Menu> {
 	 * @return
 	 */
 	List<Kv> authRoutes(BladeUser user);
-
-	/**
-	 * 删除菜单
-	 *
-	 * @param ids
-	 * @return
-	 */
-	boolean removeMenu(String ids);
-
-	/**
-	 * 提交
-	 *
-	 * @param menu
-	 * @return
-	 */
-	boolean submit(Menu menu);
 
 }

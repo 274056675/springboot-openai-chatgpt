@@ -136,7 +136,7 @@ export default {
   },
   watch: {
     'tabOptionData.viewObj.isShow': function (value) {
-      console.log('监听====》', value)
+      
       if (value && this.tabOptionData.openIndex != undefined) {
         try {
           this.tabsActiveName =
@@ -153,13 +153,13 @@ export default {
     },
     tabOptionData: {
       handler(newVal, oldVal) {
-        console.log(newVal, oldVal)
+        
       },
       deep: true, //深监听
     },
     //监听tab切换 查看是否需要刷新表格
     tabsActiveName(newVal) {
-      console.log(newVal)
+      
       this.anewCurrTabsData(newVal)
     },
     tableViewDeclareFun() {},
@@ -251,7 +251,7 @@ export default {
         }
         return item
       })
-      console.log('=========>ascas', data)
+      
       return data
     },
   },
@@ -336,7 +336,7 @@ export default {
     },
     tabsHandleClick() {},
     childTabsHandleClick(dom) {
-      console.log(dom)
+      
       this.anewCurrTabsData(this.tabsActiveName)
     },
     tableBindFun(allSearchObj, params) {

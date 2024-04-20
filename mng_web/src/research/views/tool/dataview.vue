@@ -139,14 +139,14 @@ export default {
       let iframe = this.$refs[refs]
       let clientHeight =
         document.documentElement.clientHeight - (screen > 1 ? 200 : 130)
-      console.log(clientHeight)
+      
       if (!iframe) {
         this.iframeLoading = false
         return false
       }
       clientHeight = clientHeight > 400 ? clientHeight : 400
       iframe.style.height = `${clientHeight}px`
-      console.log(clientHeight, iframe)
+      
       if (iframe.attachEvent) {
         iframe.attachEvent('onload', () => {
           this.iframeLoading = false
@@ -171,7 +171,7 @@ export default {
       this.fullLoading = true
       setTimeout(() => {
         let iframe = this.$refs.iframefull
-        console.log(iframe)
+        
         if (iframe.attachEvent) {
           iframe.attachEvent('onload', () => {
             this.fullLoading = false

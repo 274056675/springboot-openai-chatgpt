@@ -1,8 +1,22 @@
-
+/**
+ * Copyright (c) 2018-2028, Chill Zhuang 庄骞 (smallchill@163.com).
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.springblade.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.springblade.core.tool.node.TreeNode;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springblade.system.dto.MenuDTO;
 import org.springblade.system.entity.Menu;
 import org.springblade.system.vo.MenuVO;
@@ -10,22 +24,21 @@ import org.springblade.system.vo.MenuVO;
 import java.util.List;
 import java.util.Map;
 
-
 /**
- * MenuMapper 接口
+ * Mapper 接口
  *
- *
+ * @author Chill
  */
 public interface MenuMapper extends BaseMapper<Menu> {
 
 	/**
-	 * 懒加载列表
+	 * 自定义分页
 	 *
-	 * @param parentId
-	 * @param param
+	 * @param page
+	 * @param menu
 	 * @return
 	 */
-	List<MenuVO> lazyList(Long parentId, Map<String, Object> param);
+	List<MenuVO> selectMenuPage(IPage page, MenuVO menu);
 
 	/**
 	 * 懒加载菜单列表
@@ -41,21 +54,14 @@ public interface MenuMapper extends BaseMapper<Menu> {
 	 *
 	 * @return
 	 */
-	List<TreeNode> tree();
+	List<MenuVO> tree();
 
 	/**
 	 * 授权树形结构
 	 *
 	 * @return
 	 */
-	List<TreeNode> grantTree();
-
-	/**
-	 * 授权树形结构
-	 *
-	 * @return
-	 */
-	List<TreeNode> grantTreeSelf();
+	List<MenuVO> grantTree();
 
 	/**
 	 * 授权树形结构
@@ -63,36 +69,14 @@ public interface MenuMapper extends BaseMapper<Menu> {
 	 * @param roleId
 	 * @return
 	 */
-	List<TreeNode> grantTreeByRole(List<Long> roleId);
-
-	/**
-	 * 顶部菜单树形结构
-	 *
-	 * @return
-	 */
-	List<TreeNode> grantTopTree();
-
-	/**
-	 * 顶部菜单树形结构
-	 *
-	 * @param roleId
-	 * @return
-	 */
-	List<TreeNode> grantTopTreeByRole(List<Long> roleId);
+	List<MenuVO> grantTreeByRole(List<Long> roleId);
 
 	/**
 	 * 数据权限授权树形结构
 	 *
 	 * @return
 	 */
-	List<TreeNode> grantDataScopeTree();
-
-	/**
-	 * 接口权限授权树形结构
-	 *
-	 * @return
-	 */
-	List<TreeNode> grantApiScopeTree();
+	List<MenuVO> grantDataScopeTree();
 
 	/**
 	 * 数据权限授权树形结构
@@ -100,15 +84,7 @@ public interface MenuMapper extends BaseMapper<Menu> {
 	 * @param roleId
 	 * @return
 	 */
-	List<TreeNode> grantDataScopeTreeByRole(List<Long> roleId);
-
-	/**
-	 * 接口权限授权树形结构
-	 *
-	 * @param roleId
-	 * @return
-	 */
-	List<TreeNode> grantApiScopeTreeByRole(List<Long> roleId);
+	List<MenuVO> grantDataScopeTreeByRole(List<Long> roleId);
 
 	/**
 	 * 所有菜单
@@ -121,26 +97,9 @@ public interface MenuMapper extends BaseMapper<Menu> {
 	 * 权限配置菜单
 	 *
 	 * @param roleId
-	 * @param topMenuId
 	 * @return
 	 */
-	List<Menu> roleMenu(List<Long> roleId, Long topMenuId);
-
-	/**
-	 * 权限配置菜单
-	 *
-	 * @param roleId
-	 * @return
-	 */
-	List<Menu> roleMenuByRoleId(List<Long> roleId);
-
-	/**
-	 * 权限配置菜单
-	 *
-	 * @param topMenuId
-	 * @return
-	 */
-	List<Menu> roleMenuByTopMenuId(Long topMenuId);
+	List<Menu> roleMenu(List<Long> roleId);
 
 	/**
 	 * 菜单树形结构
@@ -149,13 +108,6 @@ public interface MenuMapper extends BaseMapper<Menu> {
 	 * @return
 	 */
 	List<Menu> routes(List<Long> roleId);
-
-	/**
-	 * 按钮树形结构
-	 *
-	 * @return
-	 */
-	List<Menu> allButtons();
 
 	/**
 	 * 按钮树形结构

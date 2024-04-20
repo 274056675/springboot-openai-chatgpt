@@ -1,6 +1,5 @@
 package org.springblade.mng.model;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
 import java.util.Date;
@@ -53,4 +52,13 @@ public class WxUserInfoModel {
 
 	private String isAgent;//是否代理商
 
+	private String userCode;//用户好
+
+	private String ShiniuPayOpen;//在十牛获取用户信息时使用
+
+	private Integer rl_cou; //燃料次数
+
+	private Integer rl_used_cou; //燃料已使用次数
+
+	private String sign; //个性签名
 }

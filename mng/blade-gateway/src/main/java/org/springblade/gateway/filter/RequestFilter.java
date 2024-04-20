@@ -16,33 +16,16 @@ import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.G
 import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.addOriginalRequestUrl;
 
 /**
- * <p>
- * 全局拦截器，作用所有的微服务
- * <p>
- * 1. 对请求头中参数进行处理 from 参数进行清洗
- * 2. 重写StripPrefix = 1,支持全局
+ * request过滤器
  *
  * @author lengleng
  */
 @Component
 public class RequestFilter implements GlobalFilter, Ordered {
 
-	/**
-	 * Process the Web request and (optionally) delegate to the next
-	 * {@code WebFilter} through the given {@link GatewayFilterChain}.
-	 *
-	 * @param exchange the current server exchange
-	 * @param chain    provides a way to delegate to the next filter
-	 * @return {@code Mono<Void>} to indicate when request processing is complete
-	 */
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-		// 1. 清洗请求头中from 参数
-		ServerHttpRequest request = exchange.getRequest().mutate()
-			.headers(httpHeaders -> httpHeaders.remove("X"))
-			.build();
-
-		// 2. 重写StripPrefix
+		ServerHttpRequest request = exchange.getRequest();
 		addOriginalRequestUrl(exchange, request.getURI());
 		String rawPath = request.getURI().getRawPath();
 		String newPath = "/" + Arrays.stream(StringUtils.tokenizeToStringArray(rawPath, "/"))
@@ -51,7 +34,6 @@ public class RequestFilter implements GlobalFilter, Ordered {
 			.path(newPath)
 			.build();
 		exchange.getAttributes().put(GATEWAY_REQUEST_URL_ATTR, newRequest.getURI());
-
 		return chain.filter(exchange.mutate().request(newRequest.mutate().build()).build());
 	}
 

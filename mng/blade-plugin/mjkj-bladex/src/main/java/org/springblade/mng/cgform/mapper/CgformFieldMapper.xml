@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.springblade.mng.cgform.mapper.CgformFieldMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="cgformFieldResultMap" type="org.springblade.mng.cgform.entity.CgformField">
+        <result column="id" property="id"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_dept" property="createDept"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="status" property="status"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="cgform_head_id" property="cgformHeadId"/>
+        <result column="db_field_name" property="dbFieldName"/>
+        <result column="db_field_txt" property="dbFieldTxt"/>
+        <result column="db_field_name_old" property="dbFieldNameOld"/>
+        <result column="db_is_key" property="dbIsKey"/>
+        <result column="db_is_null" property="dbIsNull"/>
+        <result column="db_type" property="dbType"/>
+        <result column="db_length" property="dbLength"/>
+        <result column="db_point_length" property="dbPointLength"/>
+        <result column="db_default_val" property="dbDefaultVal"/>
+        <result column="dict_field" property="dictField"/>
+        <result column="dict_table" property="dictTable"/>
+        <result column="dict_text" property="dictText"/>
+        <result column="field_show_type" property="fieldShowType"/>
+        <result column="field_href" property="fieldHref"/>
+        <result column="field_length" property="fieldLength"/>
+        <result column="field_valid_type" property="fieldValidType"/>
+        <result column="field_must_input" property="fieldMustInput"/>
+        <result column="field_extend_json" property="fieldExtendJson"/>
+        <result column="field_default_value" property="fieldDefaultValue"/>
+        <result column="is_query" property="isQuery"/>
+        <result column="is_show_form" property="isShowForm"/>
+        <result column="is_show_list" property="isShowList"/>
+        <result column="is_read_only" property="isReadOnly"/>
+        <result column="query_mode" property="queryMode"/>
+        <result column="main_table" property="mainTable"/>
+        <result column="main_field" property="mainField"/>
+        <result column="order_num" property="orderNum"/>
+        <result column="converter" property="converter"/>
+        <result column="query_def_val" property="queryDefVal"/>
+        <result column="query_dict_text" property="queryDictText"/>
+        <result column="query_dict_field" property="queryDictField"/>
+        <result column="query_dict_table" property="queryDictTable"/>
+        <result column="query_show_type" property="queryShowType"/>
+        <result column="query_config_flag" property="queryConfigFlag"/>
+        <result column="query_valid_type" property="queryValidType"/>
+        <result column="query_must_input" property="queryMustInput"/>
+        <result column="sort_flag" property="sortFlag"/>
+    </resultMap>
+
+    <!-- 执行查询语句返回一个map -->
+    <select id="queryOneByTableNameAndId" parameterType="java.lang.String" resultType="map">
+		select * from ${tbname} where id = #{dataId}
+	</select>
+
+    <select id="getBlobCou" resultType="int">
+            SELECT
+                count( id )
+            FROM
+                onl_cgform_field
+            WHERE
+            is_deleted = 0
+            AND cgform_head_id = #{headId}
+            AND db_type IN ('Blob')
+    </select>
+
+</mapper>

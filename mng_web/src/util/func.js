@@ -79,7 +79,7 @@ export default class func {
    * @returns {string}
    */
   static join(arr) {
-    return arr ? arr.join(',') : '';
+    return Array.isArray(arr) ? arr.join(',') : arr;
   }
 
   /**
