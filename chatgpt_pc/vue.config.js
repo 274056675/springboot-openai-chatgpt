@@ -7,7 +7,7 @@ module.exports = defineConfig({
         //   '.mj.ink'   // .是二级域名的通配符   
         // ],
         compress: false,
-        port: 1889, // 访问端口
+        port: 1888, // 访问端口
         proxy: {
             '/api': {
                 //本地服务接口地址

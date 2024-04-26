@@ -4,15 +4,24 @@
 
 **温馨提醒**
 
-1. 本项目仅适用学习交流，并且`不提供无偿的` 维护修改服务（但可提issue）<br/>
-2. 本项目不在任何平台出售,如有发现请积极举报<br/>
-3. 为了更好的体验，友情提示此项目是一个全栈项目，认真刻苦的掌握它，熟练掌握后你就比较牛掰了<br/>
-4. 不要只是白嫖 ,如果帮到你了麻烦**点个Star**<br/>
-5. 发现有问题？添加下方微信客服一起探讨，或者直接提Issues
+1. 亲，动动您发财的手为我们点一颗star，是对我们最好的鼓励和支持，也是我们前进的动力<br/>
+2. 本项目是一个微服务全栈项目，认真刻苦的掌握它，你会对微服务有深刻理解<br/>
+3. 发现有问题？添加下方微信客服一起探讨，或者直接提Issues<br/>
+4. 演示环境<br/>
+
+　　　　[前端：http://www.mj.ink](http://www.mj.ink)
+
+　　　　[后端：http://gpt.ht.mj.ink:8899](http://gpt.ht.mj.ink:8899)
+
+　　　　[技术社区 http://doc.mj.ink](http://doc.mj.ink)
+
+5. 本项目不在任何平台出售,如有发现请积极举报<br/>
+
+
 
 ## 超级AI大脑产品架构图
 
-<img src="./images/架构图.png" />
+<img src="https://ai.oss.mj.ink/chatgpt/github/架构图.png" />
 
 ## 项目关系
 [本项目基于Bladex开源版本3.7.1.RELEASE开发](https://gitee.com/smallc/SpringBlade)
@@ -22,12 +31,11 @@
 　　　　[后端：http://gpt.ht.mj.ink:8899](http://gpt.ht.mj.ink:8899)
 
 　　　　[前端：http://www.mj.ink](http://www.mj.ink)
-
 ## 在线体验
 
 1. Web端在线体验地址(点击图片可访问)：http://www.mj.ink
 
-     <a href="http://www.mj.ink"><a href="http://www.mj.ink"><img src="./images/PC端聊天.png" /></a>
+     <a href="http://www.mj.ink"><img src="https://ai.oss.mj.ink/chatgpt/github/PC端聊天.png" /></a>
 
 2. 微信关注超级AI大脑公众号及手机扫码下载App
 
@@ -39,8 +47,9 @@
 3. 新用户第一次登录即为注册，可微信进行登录。如图：
 
  <div align=left>
-     <td ><img height="" width="" src="./images/PC端登录页.png"/></td>
+    <td ><img height="" width="" src="https://ai.oss.mj.ink/chatgpt/github/PC端登录页.png"/></td>
  </div>
+
 
 
 
@@ -53,9 +62,9 @@
 
 <table>
     <tr>
-        <td><img src="./images/desk1.png"/></td>
-       <td><img src="https://ai.oss.mj.ink/chatgpt/github/desk2.png"/></td>
-        <td><img src="./images/desk3.png"/></td>
+        <td><img src="https://ai.oss.mj.ink/chatgpt/github/desk1.png"/></td>
+       	<td><img src="https://ai.oss.mj.ink/chatgpt/github/desk2.png"/></td>
+        <td><img src="https://ai.oss.mj.ink/chatgpt/github/desk3.png"/></td>
         <td><img src="https://ai.oss.mj.ink/chatgpt/github/desk4.png"/></td>
     </tr>
 </table>
@@ -64,25 +73,25 @@
 
 ###### 聊天页
 
-<img src="./images/PC端聊天.png" />
+<img src="https://ai.oss.mj.ink/chatgpt/github/聊天医生.png" />
 
 
 
 ###### 绘画广场
 
-<img src="./images/PC端绘画广场_20230922100319.png" />
+<img src="https://ai.oss.mj.ink/chatgpt/github/PC端绘画广场_20230922100319.png" />
 
 
 
 ###### PC端绘画界面
 
-<img src="./images/PC端绘画界面2.png" />
+<img src="https://ai.oss.mj.ink/chatgpt/github/PC端绘画界面2.png" />
 
 
 
 ###### PC端绘画生成
 
-<img src="./images/PC端绘画生成.png" />
+<img src="https://ai.oss.mj.ink/chatgpt/github/PC端绘画生成.png" />
 ## 2.主要功能点展示
 
 ### 2.1 AI聊天工具箱
@@ -91,7 +100,7 @@
 
 <table>
     <tr>
-        <td><img src="./images/首页1.jpg" /></td>
+        <td><img src="https://ai.oss.mj.ink/chatgpt/github/首页1.jpg" /></td>
         <td><img src="https://ai.oss.mj.ink/chatgpt/github/%E5%89%8D%E5%8F%B02.jpg" /></td>
         <td><img src="https://ai.oss.mj.ink/chatgpt/github/首页3.jpg"/></td>
     </tr>
@@ -137,13 +146,11 @@ P1分类：通用   风格：自定义   比例：1:1   尺寸：512*512   生�
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="./images/少女1.png" /></td>
-        <td height="220" width="210"><img src="./images/少女4.png" /></td>
-        <td height="220" width="210"><img src="./images/少女2.png" /></td>
+        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/少女1.png" /></td>
+        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/少女4.png" /></td>
+        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/少女2.png" /></td>
     </tr>
 </table>
-
-
 
 
 
@@ -155,12 +162,11 @@ P2分类：通用   风格：自定义   比例：1:1   尺寸：512*512   生�
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="./images/卡通少女2.png" /></td>
-        <td height="220" width="210"><img src="./images/卡通少女1.png" /></td>
-        <td height="220" width="210"><img src="./images/卡通少女3.png" /></td>
+        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/卡通少女2.png" /></td>
+        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/卡通少女1.png" /></td>
+        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/卡通少女3.png" /></td>
     </tr>
 </table>
-
 
 
 
@@ -172,13 +178,11 @@ P3分类：通用   风格：漫画   比例：1:1   尺寸：512*512   生成�
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="./images/卡通猫咪2.png" /></td>
-        <td height="220" width="210"><img src="./images/卡通猫咪1.png" /></td>
-        <td height="220" width="210"><img src="./images/卡通猫咪3.png" /></td>
+        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/卡通猫咪2.png" /></td>
+        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/卡通猫咪1.png" /></td>
+        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/卡通猫咪3.png" /></td>
     </tr>
 </table>
-
-
 
 
 
@@ -189,13 +193,11 @@ P4分类：通用   风格：写实主义   比例：1:1   尺寸：512*512   �
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="./images/鲜花4.png" /></td>
-        <td height="220" width="210"><img src="./images/新鲜花2.png" /></td>
-        <td height="220" width="210"><img src="./images/新鲜花3.png" /></td>
+        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/鲜花4.png" /></td>
+        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/新鲜花2.png" /></td>
+        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/新鲜花3.png" /></td>
     </tr>
 </table>
-
-
 
 
 
@@ -207,12 +209,11 @@ P5分类：中国风   风格：国画   比例：1:1   尺寸：512*512   生�
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="./images/水墨画1.png" /></td>
-        <td height="220" width="210"><img src="./images/水墨画2.png" /></td>
-        <td height="220" width="210"><img src="./images/水墨画3.png" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/水墨画1.png" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/水墨画2.png" /></td>
+        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/水墨画3.png" /></td>
     </tr>
 </table>
-
 
 
 
@@ -224,12 +225,11 @@ P6分类：场景   风格：史诗大片   比例：1:1   尺寸：512*512   �
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="./images/机器人1.png" /></td>
-        <td height="220" width="210"><img src="./images/机器人2.png" /></td>
-        <td height="220" width="210"><img src="./images/机器人3.png" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/机器人1.png" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/机器人2.png" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/机器人3.png" /></td>
     </tr>
 </table>
-
 
 
 
@@ -240,13 +240,11 @@ P7分类：场景  风格：赛博朋克   比例：1:1   尺寸：512*512
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="./images/赛博朋克1.png" /></td>
-        <td height="220" width="210"><img src="./images/赛博朋克2.png" /></td>
-        <td height="220" width="210"><img src="./images/赛博朋克3.png" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/赛博朋克1.png" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/赛博朋克2.png" /></td>
+        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/赛博朋克3.png" /></td>
     </tr>
 </table>
-
-
 
 
 
@@ -335,22 +333,41 @@ P7分类：场景  风格：赛博朋克   比例：1:1   尺寸：512*512
 **默认已启动中间件：**[Nacos2.0.0++](https://pan.baidu.com/s/1TC89DNq2-w7u7Fr6r6BoYw?pwd=mjkj)、[Mysql8.0](http://mysql.p2hp.com/)、[Redis](https://redis.io/)
 
 
-如果觉得以上麻烦，推荐使用宝塔集成了Mysql,Redis：[宝塔](https://www.xp.cn/)
+如果觉得以上麻烦，推荐使用宝塔集成了Mysql,Redis：[宝塔](https://www.bt.cn/)
 
 #### 4.1.2后端代码运行
+
+第一步：下载[BLade 3.7.1.RELEASE](https://gitee.com/smallc/SpringBlade/releases/download/v3.7.1/SpringBlade-3.7.1.zip)
+第二步：拉取超级AI大脑mng项目
+第三步：把超级AI大脑的mng覆盖Blader3.7.1
+第四步：运行Blader3.7.1
 
 通过git拉取代码到本地后，项目结构如图：
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/1682411107813.png"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/项目结构.png"/></td>
     </tr>
 </table>
-因为本项目依赖BladeX框架开源版本 3.7.1.RELEASE而搭建
+下载BLade 3.7.1.RELEASE解压后，把图片中选中的文件复制到blade项目中，选择**覆盖**操作。
+
+![image-20240425174613986](images/image-20240425174613986.png)
+
+复制后的项目结构：
+
+![image-20240425174938524](images/image-20240425174938524.png)
+
+总共有5个服务需要启动,为GateWayApplication，AuthApplication，SystemApplication，UserApplication，MjkjApplication，其他服务可选择删除。
 
 Naco下载
 
-链接：https://pan.baidu.com/s/1TC89DNq2-w7u7Fr6r6BoYw?pwd=mjkj
+链接：https://pan.baidu.com/s/1TC89DNq2-w7u7Fr6r6BoYw?pwd=mjkj  
+
+<table>
+    <tr>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/nacos启动.png"/></td>
+    </tr>
+</table>
 
 如图：(在这里关于部分中间件的地址于yaml文件中已有示例，具体还需与个人本地的地址相对应进行配置)
 
@@ -371,14 +388,10 @@ Naco下载
         <td ><img src="https://ai.oss.mj.ink/chatgpt/github/Snipaste_2023-04-28_11-12-24.png"/></td>
     </tr>
 </table>
+配置好nacos后分别在项目中**启动**以下5个服务，并能被nacos正常访问到，如图：
 
-配置好nacos后分别在项目中**启动**以下6个服务，并能被nacos正常访问到，如图：
+![image-20240425175152653](images/image-20240425175152653.png)
 
-<table>
-    <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1%E6%88%AA%E5%9B%BE.jpg"/></td>
-    </tr>
-</table>
 
 至此，后端代码运行成功！
 
@@ -386,81 +399,54 @@ Naco下载
 
 #### 4.2.1项目前端前台代码运行
 
-**前台运行环境：** 无需配置node.js
+**运行环境：** node12.13.0
 
-**开发工具：** HBuilder X
+**开发工具**：VsCode
 
-官方下载对应软件HBuilder X，安装步骤非常简单，如图:
+通过git拉取代码chatgpt_pc到本地，在配置好node.js环境的前提下，使用VsCode打开文件夹，运行命令npm i, npm run serve启动项目，如图：
 
-官方地址：[Windows - HBuilderX 文档 (dcloud.net.cn)](https://hx.dcloud.net.cn/Tutorial/install/windows)
+
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/Snipaste_2023-04-28_02-54-21.png"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/gateway网关.png"/></td>
     </tr>
 </table>
 
 
 
-通过提供的git地址拉取代码到本地后，将下载好的项目文件夹拖曳到打开的HBuilder X下，项目结构如图：
-
-<table>
-    <div >
-    <td ><img src="https://ai.oss.mj.ink/chatgpt/github/Snipaste_2023-04-25_17-17-50.png"/></td>
-</div>
-</table>
-
-其中，需要注意网关地址是否与nacos中对应网关服务显示地址一致，如图：
-
- <table>
-     <div >
-    <td ><img src="https://ai.oss.mj.ink/chatgpt/github/Snipaste_2023-04-28_02-16-13.png" width="85%"/></td>
- </div>
-</table>
-
- <table> 
-     <div >
- <td ><img src="https://ai.oss.mj.ink/chatgpt/github/Snipaste_2023-04-28_02-12-02.png" width="85%"/></td>   
- </div></table>
-
-运行项目，选择使用chorm运行项目，如图：
-
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/Snipaste_2023-04-25_17-27-20.png"/></td>
+        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/开源pc截图.png"/></td>
     </tr>
 </table>
 
-进入页面需要认证，点击发送验证码，输入123456即可(有需要可在nacos配置文件中添加阿里云短信配置)。
-
-<table>
-    <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/新版登录.png"/></td>
-    </tr>
-</table>
 
 
 #### 4.2.2项目前端后台代码运行
 
 **后台运行环境：** node12.13.0
 
-**开发工具：** vscode
+**开发工具：** VsCode
+
+第一步：下载[Saber3.7.1](https://gitee.com/smallc/SpringBlade/releases/download/v3.7.1/Saber-3.7.1.zip)
+第二步：拉取超级AI大脑mng_web项目
+第三步：把超级AI大脑的mng_web项目覆盖Saber3.7.1
+第四步：运行Saber3.7.1
+
+把图片中选中的文件复制到Saber项目中，选择**覆盖**操作。
+
+![image-20240426095531018](images/image-20240426095531018.png)
 
 通过git拉取代码到本地，在配置好node.js环境的前提下，使用vs打开文件夹，运行命令npm i, npm run serve启动项目，如图：
 
-<table>
-    <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/%E5%90%8E%E5%8F%B0%E5%89%8D%E7%AB%AF.png"/></td>
-    </tr>
-</table>
+![image-20240426095639926](images/image-20240426095639926.png)
+
 
 成功运行：
 
-<table>
-    <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/1682406718076.png"/></td>
-    </tr>
-</table>
+![image-20240426095607719](images/image-20240426095607719.png)
+
 
 
 ## 客服微信与技术讨论群（广告勿扰）：
@@ -470,5 +456,3 @@ Naco下载
     <td ><img height="250" width="250" src="https://ai.oss.mj.ink/chatgpt/github/客服微信.png"/></td>
      <td ><img height="250" width="250" src="https://ai.oss.mj.ink/chatgpt/github/客服微信2.png"/></td>  
 </div>
-
-

@@ -9,5 +9,3 @@ blade:
     prior-ip-pattern:
       - 192.168.0.*
       - 127.0.0.1
-
-

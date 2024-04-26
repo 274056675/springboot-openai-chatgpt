@@ -10,3 +10,5 @@ spring:
     loadbalancer:
       retry:
         enabled: true
+
+

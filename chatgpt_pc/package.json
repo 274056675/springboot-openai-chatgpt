@@ -38,6 +38,7 @@
     "eslint-plugin-vue": "^8.0.3",
     "node-sass": "^6.0.1",
     "sass-loader": "^10.0.5",
+    "vue-hot-reload-api": "^2.3.4",
     "vue-template-compiler": "^2.6.14"
   }
 }
