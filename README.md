@@ -337,10 +337,20 @@ P7分类：场景  风格：赛博朋克   比例：1:1   尺寸：512*512
 
 #### 4.1.2后端代码运行
 
-第一步：下载[BLade 3.7.1.RELEASE](https://gitee.com/smallc/SpringBlade/releases/download/v3.7.1/SpringBlade-3.7.1.zip)
-第二步：拉取超级AI大脑mng项目
-第三步：把超级AI大脑的mng覆盖Blader3.7.1
-第四步：运行Blader3.7.1
+<table>
+    <tr>
+        <td><a  href="https://gitee.com/smallc/SpringBlade/releases/download/v3.7.1/SpringBlade-3.7.1.zip">第一步：下载BLade 3.7.1.RELEASE</a></td>
+    </tr>
+        <tr>
+        <td>第二步：拉取超级AI大脑mng项目</td>
+    </tr>
+        <tr>
+        <td>第三步：把超级AI大脑的mng覆盖Blader3.7.1</td>
+    </tr>
+        <tr>
+        <td>第四步：运行Blader3.7.1</td>
+    </tr>
+</table>    
 
 通过git拉取代码到本地后，项目结构如图：
 
@@ -429,10 +439,20 @@ Naco下载
 
 **开发工具：** VsCode
 
-第一步：下载[Saber3.7.1](https://gitee.com/smallc/SpringBlade/releases/download/v3.7.1/Saber-3.7.1.zip)
-第二步：拉取超级AI大脑mng_web项目
-第三步：把超级AI大脑的mng_web项目覆盖Saber3.7.1
-第四步：运行Saber3.7.1
+<table>
+    <tr>
+        <td><a  href="https://gitee.com/smallc/SpringBlade/releases/download/v3.7.1/Saber-3.7.1.zip">第一步：下载Saber3.7.1</a></td>
+    </tr>
+        <tr>
+        <td>第二步：拉取超级AI大脑mng_web项目</td>
+    </tr>
+        <tr>
+        <td>第三步：把超级AI大脑的mng_web项目覆盖Saber3.7.1</td>
+    </tr>
+        <tr>
+        <td>第四步：运行Saber3.7.1</td>
+    </tr>
+</table>    
 
 把图片中选中的文件复制到Saber项目中，选择**覆盖**操作。
 
