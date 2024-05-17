@@ -15,6 +15,14 @@
 
 　　　　[技术社区 http://doc.mj.ink](http://doc.mj.ink)
 
+5. 视频教程
+
+   ​		[后端启动教程](https://www.bilibili.com/video/BV1rf421m7Jn/)
+
+   ​		[后端界面启动教程](https://www.bilibili.com/video/BV1Qz42117uJ)
+
+   ​		[PC端启动教程](https://www.bilibili.com/video/BV1cH4y137XZ)
+
 5. 本项目不在任何平台出售,如有发现请积极举报<br/>
 
 
@@ -337,6 +345,8 @@ P7分类：场景  风格：赛博朋克   比例：1:1   尺寸：512*512
 
 #### 4.1.2后端代码运行
 
+**Cloud版本代码运行：**
+
 <table>
     <tr>
         <td><a  href="https://gitee.com/smallc/SpringBlade/releases/download/v3.7.1/SpringBlade-3.7.1.zip">第一步：下载BLade 3.7.1.RELEASE</a></td>
@@ -348,9 +358,10 @@ P7分类：场景  风格：赛博朋克   比例：1:1   尺寸：512*512
         <td>第三步：把超级AI大脑的mng覆盖Blader3.7.1</td>
     </tr>
         <tr>
-        <td>第四步：运行Blader3.7.1</td>
+        <td>第四步：刷新maven再compile编译，运行Blader3.7.1</td>
     </tr>
 </table>    
+
 
 通过git拉取代码到本地后，项目结构如图：
 
@@ -402,8 +413,32 @@ Naco下载
 
 ![image-20240425175152653](images/image-20240425175152653.png)
 
+至此，后端Cloud版本代码运行成功！
 
-至此，后端代码运行成功！
+**SpringBoot版本代码运行：**
+
+<table>
+    <tr>
+        <td><a  href="https://gitee.com/smallc/SpringBlade/releases/download/v3.7.1/SpringBlade-boot-3.7.1.zip">第一步：下载SpringBLade-Boot 3.7.1.RELEASE</a></td>
+    </tr>
+        <tr>
+        <td>第二步：打开超级AI大脑chatgpt-boot项目</td>
+    </tr>
+        <tr>
+        <td>第三步：把超级AI大脑的chatgpt-boot覆盖SpringBlade-boot-3.7.1</td>
+    </tr>
+        <tr>
+        <td>第四步：刷新Maven,再进行Complie编译,启动SpringBlade-boot项目</td>
+    </tr>
+</table>    
+
+![image.png](http://doc.mj.ink/upload/img/document/0/1_20240517104231.png)
+
+![image.png](http://doc.mj.ink/upload/img/document/0/1_20240517104414.png)
+
+![image.png](http://doc.mj.ink/upload/img/document/0/1_20240517104954.png)
+
+![image.png](http://doc.mj.ink/upload/img/document/0/1_20240517105144.png)
 
 ### 4.2开源项目前端代码运行步骤
 

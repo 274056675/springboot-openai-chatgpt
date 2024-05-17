@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.springblade.modules.mjkj.mapper.IndexMapper">
+
+
+
+    <!--普通用户数-->
+    <select id="getCommonUserCou" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM chat_wxuser  where id not in (
+            SELECT DISTINCT wxuser_id FROM chat_goods_order where pay_status=1
+        )
+    </select>
+
+    <!--群机器人用户数-->
+    <select id="getRobotUserCou" resultType="java.lang.Integer">
+        SELECT COUNT(*) from chat_wechatbot_user
+    </select>
+
+    <!--付费用户数-->
+    <select id="getPayUserCou" resultType="java.lang.Integer">
+        SELECT  COUNT(DISTINCT wxuser_id) FROM chat_goods_order where pay_status=1
+    </select>
+
+    <!--会员信息-->
+    <select id="grtMember" resultType="map">
+        SELECT  phone ,register_time , id in
+             (
+                SELECT  DISTINCT wxuser_id FROM chat_goods_order where pay_status=1
+             ) as pay ,view_p_wx_name
+        FROM chat_wxuser where TO_DAYS(register_time)=TO_DAYS(NOW())
+    </select>
+
+    <!--今日新增会员-->
+    <select id="getNewMemberTodayCou" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM chat_wxuser where TO_DAYS(create_time)=TO_DAYS(NOW())
+    </select>
+
+    <!--今日新增付费会员-->
+    <select id="getNewPayMemberTodayCou" resultType="java.lang.Integer">
+        SELECT COUNT(DISTINCT wxuser_id) FROM chat_goods_order
+        where TO_DAYS(pay_time)=TO_DAYS(NOW()) and pay_status=1
+    </select>
+
+    <!--今日活跃用户-->
+    <select id="getActiveUserTodayCou" resultType="java.lang.Integer">
+        SELECT  COUNT(DISTINCT wxuser_id) FROM chat_log_message  WHERE TO_DAYS(create_time)=TO_DAYS(NOW())
+
+    </select>
+
+    <!--本年收入汇总-->
+    <select id="getCurrentYearTotalIncomeCou" resultType="map">
+        SELECT ifnull(SUM(amount),0) as yearMoney FROM chat_goods_order WHERE
+            YEAR(pay_time)=YEAR(NOW()) and pay_status=1
+    </select>
+
+    <!--本季度收入汇总-->
+    <select id="getTotalQuarterlyRevenueCou" resultType="map">
+        SELECT ifnull(SUM(amount),0) as QuarterlyMoney FROM chat_goods_order WHERE
+            QUARTER(pay_time)=QUARTER(now()) and pay_status=1
+    </select>
+
+    <!--本月收入汇总-->
+    <select id="getTotalMonthlyIncomeCou" resultType="map">
+        SELECT ifnull(SUM(amount),0) as Monthly FROM chat_goods_order WHERE
+            DATE_FORMAT( pay_time, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
+            and pay_status=1
+    </select>
+
+
+    <!--本年充值会员数-->
+    <select id="getCurrentYearMemberCou" resultType="java.lang.Integer">
+        select COUNT(DISTINCT wxuser_id) from chat_log_wxuser_time
+        where YEAR(start_time)=YEAR(NOW())
+    </select>
+
+    <!--本季度充值会员数-->
+    <select id="getQuarterMemberCou" resultType="java.lang.Integer">
+        select COUNT(DISTINCT wxuser_id) from chat_log_wxuser_time
+        where QUARTER(start_time)=QUARTER(now())
+    </select>
+
+
+    <!--本月充值会员数-->
+    <select id="getMonthMemberCou" resultType="java.lang.Integer">
+        SELECT COUNT(DISTINCT wxuser_id) FROM chat_log_wxuser_time WHERE
+            DATE_FORMAT( start_time, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
+    </select>
+
+
+    <select id="getTotalQuestions" resultType="Integer">
+        SELECT COUNT(message_content) FROM `chat_log_message`e WHERE e.message_type='q'
+    </select>
+
+    <select id="getTotalNumberDrawings" resultType="Integer">
+        SELECT
+            COUNT( message_content )
+        FROM
+            `chat_log_message`
+        WHERE
+            message_content LIKE '画%'
+           OR message_content LIKE '生成%'
+           OR message_content LIKE '制作%';
+    </select>
+
+    <select id="getSwarmRobotsTotalQuestions" resultType="Integer">
+        SELECT COUNT(message_content_q) FROM `chat_wechatbot_message`
+    </select>
+
+    <select id="getTodayQuestions" resultType="int">
+        SELECT COUNT(message_content) FROM `chat_log_message` where TO_DAYS(message_time) = TO_DAYS(CURDATE());
+    </select>
+    <select id="getTodayNumberDrawings" resultType="int">
+        SELECT
+            COUNT( message_content )
+        FROM
+            `chat_log_message`
+        WHERE
+                TO_DAYS( message_time ) = TO_DAYS(
+                CURDATE())
+          AND ( message_content LIKE '画%' OR message_content LIKE '生成%' OR message_content LIKE '制作%' );
+    </select>
+    <select id="getTodayCommissionsEarned" resultType="map">
+        SELECT
+            ifnull( SUM( fy_amount ), 0 ) AS TodayCommissionsEarned
+        FROM
+            `chat_commission_log`
+        WHERE
+                TO_DAYS( fy_time ) = TO_DAYS(
+                CURDATE())
+          AND fy_time;
+    </select>
+    <select id="getTodayRevenue" resultType="map">
+        SELECT
+            ifnull( SUM( amount ), 0 ) AS TodayRevenue
+        FROM
+            chat_goods_order
+        WHERE
+                to_days( pay_time ) = to_days(
+                now());
+    </select>
+    <select id="getTodayGroupQuestions" resultType="int">
+        SELECT
+            COUNT( message_content_q )
+        FROM
+            `chat_wechatbot_message`
+        WHERE
+                TO_DAYS( message_time_q ) = TO_DAYS(
+                CURDATE())
+    </select>
+
+
+    <select id="getTotalWithdrawals" resultType="map">
+        SELECT sum(withdrawal_amount) as totalWithdrawals FROM `chat_withdrawal_log` WHERE withdrawal_state='1'
+    </select>
+
+    <select id="getTotalQuantity" resultType="int">
+        SELECT  COUNT(wxuser_id) as totalQuantity FROM `chat_withdrawal_log` WHERE withdrawal_state='1'
+    </select>
+
+    <select id="getTotalCommissions" resultType="map">
+        SELECT
+            sum( e.fy_amount ) AS totalCommissions
+        FROM
+            `chat_commission_log` e
+                LEFT JOIN `chat_wxuser` d ON e.fy_wxuserid = d.id
+                AND TO_DAYS( d.expire_time ) >= TO_DAYS(
+                    NOW())
+        WHERE
+            NOT ISNULL( order_code );
+    </select>
+
+    <select id="getTotalNumberMembers" resultType="int">
+        SELECT
+            COUNT( d.expire_time ) totalNumberMembers
+        FROM
+            `chat_commission_log` e
+                LEFT JOIN `chat_wxuser` d ON e.fy_wxuserid = d.id
+                AND TO_DAYS( d.expire_time ) >= TO_DAYS(
+                    NOW())
+        WHERE
+            NOT ISNULL( order_code );
+    </select>
+
+    <select id="getGrossIncome" resultType="map">
+        SELECT SUM(amount) as cou FROM chat_goods_order where pay_status=1
+    </select>
+
+    <select id="getNumberPaidMembers" resultType="int">
+        SELECT COUNT(DISTINCT wxuser_id) as NumberPaidMembers FROM chat_goods_order where pay_status=1
+    </select>
+
+
+</mapper>
