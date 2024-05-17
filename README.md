@@ -32,6 +32,16 @@
 <img src="https://ai.oss.mj.ink/chatgpt/github/架构图.png" />
 
 ## 项目关系
+
+| 项目                                                         | Star                                                         | 简介                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ---------------------------- |
+| [springboot-openai-chatgpt](https://gitee.com/ylzl/springboot-openai-chatgpt) | [![Gitee star](https://gitee.com/ylzl/springboot-openai-chatgpt/badge/star.svg)](https://gitee.com/ylzl/springboot-openai-chatgpt) | 基于 Spring Boot 单体架构    |
+| [springcloud-openai-chatgpt](https://gitee.com/ylzl/springcloud-openai-chatgpt) | [![Gitee star](https://gitee.com/ylzl/springcloud-openai-chatgpt/badge/star.svg)](https://gitee.com/zhijiantianya/yudao-cloud) | 基于 Spring Cloud 微服务架构 |
+| [springboot-openai-chatgpt](https://github.com/274056675/springboot-openai-chatgpt) | [![GitHub stars](https://img.shields.io/github/stars/274056675/springboot-openai-chatgpt.svg?style=social&label=Stars)](https://github.com/274056675/springboot-openai-chatgpt) | 基于 Spring Boot 单体架构    |
+| [springcloud-openai-chatgpt](https://gitee.com/ylzl/springcloud-openai-chatgpt) | [![GitHub stars](https://img.shields.io/github/stars/274056675/springcloud-openai-chatgpt.svg?style=social&label=Stars)](https://github.com/274056675/springcloud-openai-chatgpt) | 基于 Spring Cloud 微服务架构 |
+
+###### 温馨提示：
+
 [本项目基于Bladex开源版本3.7.1.RELEASE开发](https://gitee.com/smallc/SpringBlade)
 
 ## 演示环境
@@ -527,3 +537,4 @@ Naco下载
     <td ><img height="250" width="250" src="https://ai.oss.mj.ink/chatgpt/github/客服微信.png"/></td>
      <td ><img height="250" width="250" src="https://ai.oss.mj.ink/chatgpt/github/客服微信2.png"/></td>  
 </div>
+​	
