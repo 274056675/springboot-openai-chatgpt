@@ -17,11 +17,11 @@
 
 5. 视频教程
 
-   ​		[后端启动教程](https://www.bilibili.com/video/BV1rf421m7Jn/)
+　　　　[后端启动教程](https://www.bilibili.com/video/BV1rf421m7Jn/)
 
-   ​		[后端界面启动教程](https://www.bilibili.com/video/BV1Qz42117uJ)
+　　　　[后端界面启动教程](https://www.bilibili.com/video/BV1Qz42117uJ)
 
-   ​		[PC端启动教程](https://www.bilibili.com/video/BV1cH4y137XZ)
+　　　　[PC端启动教程](https://www.bilibili.com/video/BV1cH4y137XZ)
 
 5. 本项目不在任何平台出售,如有发现请积极举报<br/>
 
@@ -432,13 +432,29 @@ Naco下载
     </tr>
 </table>    
 
-![image.png](http://doc.mj.ink/upload/img/document/0/1_20240517104231.png)
+<table>
+    <tr>
+        <td align='center'><img src="https://ai.oss.mj.ink/chatgpt/github/bootstart1.png"/></td>
+    </tr>
+</table>
 
-![image.png](http://doc.mj.ink/upload/img/document/0/1_20240517104414.png)
+<table>
+    <tr>
+        <td align='center'><img src="https://ai.oss.mj.ink/chatgpt/github/bootstart2.png"/></td>
+    </tr>
+</table>
 
-![image.png](http://doc.mj.ink/upload/img/document/0/1_20240517104954.png)
+<table>
+    <tr>
+        <td align='center'><img src="https://ai.oss.mj.ink/chatgpt/github/bootstart3.png"/></td>
+    </tr>
+</table>
 
-![image.png](http://doc.mj.ink/upload/img/document/0/1_20240517105144.png)
+<table>
+    <tr>
+        <td align='center'><img src="https://ai.oss.mj.ink/chatgpt/github/bootstart4.png"/></td>
+    </tr>
+</table>
 
 ### 4.2开源项目前端代码运行步骤
 
