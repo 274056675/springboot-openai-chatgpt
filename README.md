@@ -38,7 +38,7 @@
 | [springboot-openai-chatgpt](https://gitee.com/ylzl/springboot-openai-chatgpt) | [![Gitee star](https://gitee.com/ylzl/springboot-openai-chatgpt/badge/star.svg)](https://gitee.com/ylzl/springboot-openai-chatgpt) | 基于 Spring Boot 单体架构    |
 | [springcloud-openai-chatgpt](https://gitee.com/ylzl/springcloud-openai-chatgpt) | [![Gitee star](https://gitee.com/ylzl/springcloud-openai-chatgpt/badge/star.svg)](https://gitee.com/zhijiantianya/yudao-cloud) | 基于 Spring Cloud 微服务架构 |
 | [springboot-openai-chatgpt](https://github.com/274056675/springboot-openai-chatgpt) | [![GitHub stars](https://img.shields.io/github/stars/274056675/springboot-openai-chatgpt.svg?style=social&label=Stars)](https://github.com/274056675/springboot-openai-chatgpt) | 基于 Spring Boot 单体架构    |
-| [springcloud-openai-chatgpt](https://gitee.com/ylzl/springcloud-openai-chatgpt) | [![GitHub stars](https://img.shields.io/github/stars/274056675/springcloud-openai-chatgpt.svg?style=social&label=Stars)](https://github.com/274056675/springcloud-openai-chatgpt) | 基于 Spring Cloud 微服务架构 |
+| [springcloud-openai-chatgpt](https://github.com/274056675/springcloud-openai-chatgpt) | [![GitHub stars](https://img.shields.io/github/stars/274056675/springcloud-openai-chatgpt.svg?style=social&label=Stars)](https://github.com/274056675/springcloud-openai-chatgpt) | 基于 Spring Cloud 微服务架构 |
 
 ###### 温馨提示：
 
