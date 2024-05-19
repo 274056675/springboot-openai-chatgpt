@@ -16,9 +16,11 @@
 　　　　[技术社区 http://doc.mj.ink](http://doc.mj.ink)
 
 5. 视频教程
-|                                                              |                                                              |                                                              |
-| ------------------------------------------------------------ | :----------------------------------------------------------: | :----------------------------------------------------------: |
-| <a href="https://www.bilibili.com/video/BV1rf421m7Jn/"> <img height="200" width="320" src="https://ai.oss.mj.ink/chatgpt/github/cjaidn_ht.png"/></a> | <a href="https://www.bilibili.com/video/BV1Qz42117uJ/"><img height="200" width="320" src="https://ai.oss.mj.ink/chatgpt/github/cjaidn_ht_web.png" /></a> | <a href="https://www.bilibili.com/video/BV1cH4y137XZ"><img height="200" width="320" src="https://ai.oss.mj.ink/chatgpt/github/cjaidn_pc.png"/></a> |
+
+   |                         后端启动教程                         |                       后端界面启动教程                       |                         PC端启动教程                         |
+   | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+   | <a href="https://www.bilibili.com/video/BV1rf421m7Jn/"> <img height="140" width="200" src="https://ai.oss.mj.ink/chatgpt/github/cjaidn_ht.png"/></a> | <a href="https://www.bilibili.com/video/BV1Qz42117uJ/"><img height="140" width="200" src="https://ai.oss.mj.ink/chatgpt/github/cjaidn_ht_web.png" /></a> | <a href="https://www.bilibili.com/video/BV1cH4y137XZ"><img height="140" width="200" src="https://ai.oss.mj.ink/chatgpt/github/cjaidn_pc.png"/></a> |
+
 
 6. 本项目不在任何平台出售,如有发现请积极举报<br/>
 
