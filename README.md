@@ -15,6 +15,8 @@
 
 　　　　[技术社区 http://doc.mj.ink](http://doc.mj.ink)
 
+　　　　[MidJourney API接口文档](http://open.mj.ink/index/xqView?ID=1793092044168437761)
+
 5. 视频教程
 
    |                         后端启动教程                         |                       后端界面启动教程                       |                         PC端启动教程                         |
