@@ -40,6 +40,7 @@
 | [springcloud-openai-chatgpt](https://gitee.com/ylzl/springcloud-openai-chatgpt) | [![Gitee star](https://gitee.com/ylzl/springcloud-openai-chatgpt/badge/star.svg)](https://gitee.com/ylzl/springcloud-openai-chatgpt) | 基于 Spring Cloud 微服务架构 |
 | [springboot-openai-chatgpt](https://github.com/274056675/springboot-openai-chatgpt) | [![GitHub stars](https://img.shields.io/github/stars/274056675/springboot-openai-chatgpt.svg?style=social&label=Stars)](https://github.com/274056675/springboot-openai-chatgpt) | 基于 Spring Boot 单体架构    |
 | [springcloud-openai-chatgpt](https://github.com/274056675/springcloud-openai-chatgpt) | [![GitHub stars](https://img.shields.io/github/stars/274056675/springcloud-openai-chatgpt.svg?style=social&label=Stars)](https://github.com/274056675/springcloud-openai-chatgpt) | 基于 Spring Cloud 微服务架构 |
+| [springboot-openai-chatgpt](https://gitcode.com/ElonMusk666/springboot-openai-chatgpt) | [GitCode](https://gitcode.com/ElonMusk666/springboot-openai-chatgpt) | 基于 Spring Boot 单体架构    |
 
 ###### 温馨提示：
 
