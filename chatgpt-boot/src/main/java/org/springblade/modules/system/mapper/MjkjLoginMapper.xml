@@ -3,17 +3,17 @@
 <mapper namespace="org.springblade.modules.system.mapper.MjkjLoginMapper">
 
     <select id="getAdministrator" resultType="map">
-         SELECT
-                bu.*
-            FROM
-                blade_user bu
+        SELECT
+            bu.*
+        FROM
+            blade_user bu
                 INNER JOIN blade_role br ON FIND_IN_SET( br.id, bu.role_id )
-            WHERE
+        WHERE
             br.role_alias = 'admin'
-            AND bu.is_deleted = 0
-	        and bu.tenant_id=#{tenantId}
-	        and bu.account='administrator'
-	        and bu.is_deleted !=0
+          AND bu.is_deleted = 0
+          and bu.tenant_id=#{tenantId}
+          and bu.account='administrator'
+          and bu.is_deleted !=0
 	        limit 1
     </select>
 
@@ -27,13 +27,13 @@
 
     <!-- 执行保存语句 据说可以防注入-->
     <insert id="baseIntegerSql" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-		${select_sql}
-	</insert>
+        ${select_sql}
+    </insert>
 
     <!-- 执行编辑语句 据说可以防注入-->
     <update id="baseUpdateSql" parameterType="java.util.Map">
-		${select_sql}
-	</update>
+        ${select_sql}
+    </update>
 
     <select id="getTopPostId" resultType="long">
         select id from blade_post where tenant_id=#{tenantId} and is_deleted=0  order by id asc limit 1;
@@ -58,8 +58,8 @@
         FROM
             chat_wxuser
         WHERE
-        is_deleted =0
-        and open_id = #{openId}
+            is_deleted =0
+          and open_id = #{openId}
     </select>
 
     <select id="getBladeUserIdByPhone" resultType="long">
@@ -68,10 +68,10 @@
         FROM
             chat_wxuser
         WHERE
-        is_deleted =0
-        and phone = #{phone}
+            is_deleted =0
+          and phone = #{phone}
         order by id+0 asc
-        limit 1
+            limit 1
     </select>
 
     <select id="getWxUserId" resultType="String">
@@ -79,8 +79,8 @@
             id
         from chat_wxuser
         where
-        is_deleted =0
-        and blade_user_id =#{bladeUserId}
+            is_deleted =0
+          and blade_user_id =#{bladeUserId}
     </select>
 
     <select id="getWxUserIdByUnioId" resultType="String">
@@ -88,8 +88,8 @@
             id
         from chat_wxuser
         where
-        is_deleted =0
-        and wx_union_id =#{unionId}
+            is_deleted =0
+          and wx_union_id =#{unionId}
     </select>
 
     <select id="getBladeUserIdByUnioId" resultType="Long">
@@ -97,8 +97,8 @@
             blade_user_id
         from chat_wxuser
         where
-        is_deleted =0
-        and wx_union_id =#{unionId}
+            is_deleted =0
+          and wx_union_id =#{unionId}
     </select>
 
     <select id="getBladeUserIdByUUID" resultType="Long">
@@ -106,17 +106,8 @@
             blade_user_id
         from chat_wxuser
         where
-        is_deleted =0
-        and uuid =#{uuid}
-    </select>
-    <select id="getBladeUserIdByOpenid" resultType="java.lang.Long">
-        select
-            blade_user_id
-        from chat_wxuser
-        where
             is_deleted =0
-          and openid =#{openid}
-          and user_type='shiniu'
+          and uuid =#{uuid}
     </select>
 
 </mapper>

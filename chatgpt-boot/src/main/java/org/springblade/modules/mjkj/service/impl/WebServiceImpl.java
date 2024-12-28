@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.map.HashedMap;
 import org.springblade.core.log.exception.ServiceException;
 import org.springblade.core.secure.utils.AuthUtil;
 import org.springblade.core.tool.utils.DateUtil;
@@ -13,6 +12,8 @@ import org.springblade.core.tool.utils.RandomType;
 import org.springblade.core.tool.utils.RedisUtil;
 import org.springblade.modules.mjkj.common.cgform.service.IMjkjBaseSqlService;
 import org.springblade.modules.mjkj.common.config.constant.ChatgptConfig;
+import org.springblade.modules.mjkj.common.constant.AiModelConstant;
+import org.springblade.modules.mjkj.common.constant.ServiceTypeConstant;
 import org.springblade.modules.mjkj.common.utils.MjkjUtils;
 import org.springblade.modules.mjkj.mapper.WebMapper;
 import org.springblade.modules.mjkj.model.*;
@@ -23,9 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.annotation.Resource;
-import java.awt.*;
 import java.util.List;
 import java.util.*;
 
@@ -106,7 +105,7 @@ public class WebServiceImpl implements IWebService {
 		Date stopSendTime = MjkjUtils.getMap2DateTime(dataMap, "stop_send_time");
 		if (Func.isNotEmpty(stopSendTime)) {
 			if (now.getTime() > stopSendTime.getTime()) {//当前时间已经超过，说明可以放开了
-				Map<String, Object> updateMap = new HashedMap();
+				Map<String, Object> updateMap = new HashMap<>();
 				updateMap.put("stop_send_time", null);
 				baseSqlService.baseUpdateData("chat_wxuser", updateMap, wxuserId);
 				stopSendTime = null;//返回前端改为空
@@ -123,12 +122,6 @@ public class WebServiceImpl implements IWebService {
 		Date messageTime = MjkjUtils.getMap2DateTime(messageMap, "message_time");
 
 		//获取当前的数量
-		Integer viewRewardAdvertCou = 0;
-		String rewardAdvertRedisKey = MjkjUtils.getRewardAdvertRedisKey(userId, true);
-//		Set<String> keys = redisUtil.sGet(rewardAdvertRedisKey);
-//		if (Func.isNotEmpty(keys)) {
-//			viewRewardAdvertCou = keys.size();
-//		}
 		boolean buyFlag = true;
 		if (Func.isNotEmpty(expireTime)) {
 			String expireYYYY = DateUtil.format(expireTime, "yyyy");
@@ -257,11 +250,6 @@ public class WebServiceImpl implements IWebService {
 		//走缓存
 		Long userId = AuthUtil.getUserId();
 		String redisKey = MjkjUtils.getRedisKeyWuserId(userId);
-//		if (redisUtil.hasKey(redisKey)) {
-//			return (String) redisUtil.get(redisKey);
-//		}
-
-
 		QueryWrapper<Object> wrapper = new QueryWrapper<>();
 		wrapper.eq("is_deleted", 0);
 		wrapper.eq("blade_user_id", userId);
@@ -330,72 +318,63 @@ public class WebServiceImpl implements IWebService {
 		Long bladeUserId = AuthUtil.getUserId();
 		String wxuserId = this.getWxuserId();
 		String chatCode = this.getChatCode();
-
-
-		Date now = DateUtil.now();
-		String id = IdWorker.getIdStr();
+		Date qMessageTime = DateUtil.now();
+		String qMessageId = IdWorker.getIdStr();
 		WxUserInfoModel wxUserInfoModel = this.getWxUsrInfo();
 
 		//查询用户有没有设置模型
 		Map<String, Object> settingMap = baseSqlService.getDataOneByField("chat_wxuser_setting", "wxuser_id", wxuserId);
-		String defaultmodel = ChatgptConfig.getChatgptModel();
 		if (Func.isEmpty(settingMap)) { //用户没有设置模型，给他默认设置
 			settingMap = new HashMap<>();
 			settingMap.put("id", IdWorker.getIdStr());
 			settingMap.put("wxuser_id", wxuserId);
 			settingMap.put("blade_user_id", bladeUserId);
 			settingMap.put("translate_lang", "中文");
-			settingMap.put("ai_model", defaultmodel);
+			settingMap.put("ai_model", ChatgptConfig.getChatgptModel());
 			settingMap.put("image_model", ChatgptConfig.getImageModel());
 			baseSqlService.baseInsertData("chat_wxuser_setting", settingMap);
 		}
 
-		String aiModel = MjkjUtils.getMap2Str(settingMap, "ai_model");
-		String imageModel = MjkjUtils.getMap2Str(settingMap, "image_model");
-		String chatgptModel = aiModel;
-
-
 		List<Map<String, Object>> accountMapList = baseSqlService.getDataListByField("chat_api_account", "gpt_state", 0);//1
-
 		if (Func.isEmpty(accountMapList)) {
 			throw new ServiceException("账户配置有误，请联系客服处理");
 		}
 
 		ChatGptMsgModel questionMsgModel = new ChatGptMsgModel();
-		questionMsgModel.setId(id);
+		questionMsgModel.setId(qMessageId);
 		questionMsgModel.setPid("-1");
 		questionMsgModel.setChatCode(chatCode);
 		questionMsgModel.setMessage_type(MessageType.Q);//q =问题  a=答案
 		questionMsgModel.setMessage_content(question);
-		questionMsgModel.setMessage_time(now);
+		questionMsgModel.setMessage_time(qMessageTime);
 		questionMsgModel.setView_type(ViewType.TEXT);
 		questionMsgModel.setChat_list_id(String.valueOf(chatListIdL));
 
 		//返回结果，如果有敏感字的话，直接返回
 		Map<String, Object> insertMap = new HashMap<>();
-		insertMap.put("id", id);
+		insertMap.put("id", qMessageId);
 		insertMap.put("wxuser_id", wxuserId);
 		insertMap.put("message_type", MessageType.Q);//q =问题  a=答案
 		insertMap.put("message_content", question);
-		insertMap.put("message_time", now);
+		insertMap.put("message_time", qMessageTime);
 		insertMap.put("blade_user_id", bladeUserId);
 		insertMap.put("view_type", ViewType.TEXT);
 		insertMap.put("model_type", 0);
 		insertMap.put("context_flag", 1);//支持上下文
 		if (chatListIdL != 0L) {
 			insertMap.put("chat_list_id", String.valueOf(chatListIdL));
-
 		}
 		//校验是否有敏感词
 		List<ChatGptMsgModel> resultModelList = new ArrayList<>();
 		resultModelList.add(questionMsgModel);
 		//判断模型需要消耗的燃料，如果剩余燃料数不够用，就切换为默认的模型
+		String aiModel = MjkjUtils.getMap2Str(settingMap, "ai_model");
 		Integer rl = 0;
 		Integer nowRl = wxUserInfoModel.getRl_cou();
 		if (rl > 0 && nowRl < rl) {
-			chatgptModel = ChatgptConfig.getChatgptModel();
-			Map<String, Object> updateMap = new HashedMap();
-			updateMap.put("ai_model", chatgptModel);
+			aiModel = ChatgptConfig.getChatgptModel();
+			Map<String, Object> updateMap = new HashMap<>();
+			updateMap.put("ai_model", aiModel);
 			baseSqlService.baseUpdateDataWhere("chat_wxuser_setting", updateMap, "wxuser_id", wxuserId);
 			rl = 0;
 		}
@@ -403,22 +382,19 @@ public class WebServiceImpl implements IWebService {
 			Map<String, Object> updateMap = new HashMap<>();
 			updateMap.put("rl_used_cou", wxUserInfoModel.getRl_used_cou() + rl);
 			baseSqlService.baseUpdateData("chat_wxuser", updateMap, wxuserId);
-			this.subWxuserQuestionNum(bladeUserId, wxuserId, 4, rl, id, "AI问答->消耗燃料", "rl");
+			this.subWxuserQuestionNum(bladeUserId, wxuserId, ServiceTypeConstant.tw, rl, qMessageId, "AI问答->消耗燃料", "rl");
 		} else {
-			this.subWxuserQuestionNum(bladeUserId, wxuserId, 4, useNum, id, "AI问答->消耗积分", "question");
+			this.subWxuserQuestionNum(bladeUserId, wxuserId, ServiceTypeConstant.tw, useNum, qMessageId, "AI问答->消耗积分", "question");
 		}
-
-
 
 		baseSqlService.baseInsertData("chat_log_message", insertMap);
 
-		if (Func.equals(chatgptModel, "text-davinci-003")) {
-			chatGPTService.sendChatGptMessage(wxuserId, id, question, startMessageId, chatListIdL);
-		} else if (Func.equals(chatgptModel, "gpt-3.5-turbo-16k")) {
-			chatGPTService.sendChatGptTurboMessage(wxuserId, id, question, startMessageId, now, chatListIdL);
+		if (Func.equals(aiModel, AiModelConstant.gpt_3_0)) {
+			chatGPTService.sendChatGptMessage(wxuserId, qMessageId, question, startMessageId, chatListIdL);
+		} else if (Func.equals(aiModel, AiModelConstant.gpt_3_5)) {
+			chatGPTService.sendChatGptTurboMessage(wxuserId, qMessageId, question, startMessageId, qMessageTime, chatListIdL);
 		}
 		return resultModelList;
-
 	}
 
 
@@ -572,7 +548,7 @@ public class WebServiceImpl implements IWebService {
 			after_num = before_num - num;
 		}
 		//更新用户使用后的次数
-		Map<String, Object> wuserUpdateMap = new HashedMap();
+		Map<String, Object> wuserUpdateMap = new HashMap<>();
 		switch (numType) {
 			case "question":
 				wuserUpdateMap.put("question_cou" , after_num);
@@ -587,7 +563,7 @@ public class WebServiceImpl implements IWebService {
 		Date now = DateUtil.now();
 
 		//插入使用记录
-		Map<String, Object> detailMap = new HashedMap();
+		Map<String, Object> detailMap = new HashMap<>();
 		detailMap.put("wxuser_id", wxuserId);
 		detailMap.put("service_type", serviceType);
 		detailMap.put("type", type);
@@ -709,31 +685,31 @@ public class WebServiceImpl implements IWebService {
 		}
 		//需要减掉次数
 		if( ( useRl>0 ) && ( (rl> useRl)|| (rl == useRl) )) {
-			this.subWxuserQuestionNum(bladeUserId,wxuserId,9,useRl,null,"指令库->消耗燃料"+ funName,"rl");
-			}//扣除燃料次数
+			this.subWxuserQuestionNum(bladeUserId,wxuserId,ServiceTypeConstant.gdhw,useRl,null,"指令库->消耗燃料"+ funName,"rl");
+		}//扣除燃料次数
 		else {
-			this.subWxuserQuestionNum(bladeUserId, wxuserId, 9, useNum, null, "指令库->消耗积分" + funName,"question");
-			}//扣除次数
+			this.subWxuserQuestionNum(bladeUserId, wxuserId, ServiceTypeConstant.gdhw, useNum, null, "指令库->消耗积分" + funName,"question");
+		}//扣除次数
 		Date requestTime = DateUtil.now();//请求时间
 		//敏感词
 		String result = "";
 		String id = IdWorker.getIdStr();
-			List<MessageModel> messagesList = new ArrayList<>();
-			MessageModel sysModel = new MessageModel();
-			sysModel.setRole(MessageModelRoleType.SYSTEM);
-			sysModel.setContent(systemTitle);
-			messagesList.add(sysModel);//封装参数
+		List<MessageModel> messagesList = new ArrayList<>();
+		MessageModel sysModel = new MessageModel();
+		sysModel.setRole(MessageModelRoleType.SYSTEM);
+		sysModel.setContent(systemTitle);
+		messagesList.add(sysModel);//封装参数
 
-			MessageModel userModel = new MessageModel();
-			userModel.setRole(MessageModelRoleType.USER);
-			userModel.setContent(content);
-			messagesList.add(userModel);//封装参数
+		MessageModel userModel = new MessageModel();
+		userModel.setRole(MessageModelRoleType.USER);
+		userModel.setContent(content);
+		messagesList.add(userModel);//封装参数
 
-			if ( Func.isEmpty( aiModel)){
-				aiModel  = "ernie-bot-turbo";
-			}
+		if ( Func.isEmpty( aiModel)){
+			aiModel  = "ernie-bot-turbo";
+		}
 
-			result = chatGPTService.sendNowTimeChatGptTurboMessage(messagesList , aiModel);
+		result = chatGPTService.sendNowTimeChatGptTurboMessage(messagesList , aiModel);
 
 
 
@@ -807,7 +783,7 @@ public class WebServiceImpl implements IWebService {
 		addMap.put("sign_time", date);
 		baseSqlService.baseInsertData("chat_log_sign", addMap);
 
-		this.addWxuserQuestionNum(bladeUserId, wxuserId, 7, awardCou, null, "签到奖励积分","question");
+		this.addWxuserQuestionNum(bladeUserId, wxuserId, ServiceTypeConstant.qd, awardCou, null, "签到奖励积分","question");
 
 		//写入到缓存
 		String redisKey = MjkjUtils.getRedisKeySign(bladeUserId, date);
@@ -958,7 +934,6 @@ public class WebServiceImpl implements IWebService {
 	@Override
 	public IPage<Map<String,Object>> getSubCreditList(IPage<Object> page){
 		String wxuserId = this.getWxuserId();
-//		String wxuserId = "1692058205276446721";
 		QueryWrapper<Object> totalWrapper = new QueryWrapper<Object>();
 		totalWrapper.eq("wxuser_id", wxuserId);
 		totalWrapper.eq("is_deleted", 0);
@@ -1066,8 +1041,7 @@ public class WebServiceImpl implements IWebService {
 	@Override
 	public IPage<Map<String,Object>> getInvitedUsers(IPage<Object> page){
 		String wxuserId = this.getWxuserId();
-//		String wxuserId = "1628312273179992066";
-		QueryWrapper<Object> totalWrapper = new QueryWrapper<Object>();
+		QueryWrapper<Object> totalWrapper = new QueryWrapper<>();
 		totalWrapper.eq("pid", wxuserId);
 		totalWrapper.eq("is_deleted", 0);
 		totalWrapper.select("count(*) as cou");
@@ -1075,7 +1049,7 @@ public class WebServiceImpl implements IWebService {
 		Map<String,Object> totalMap =  baseSqlService.getDataOneByFieldParams("chat_wxuser", totalWrapper);
 		Integer totalCou = MjkjUtils.getMap2Integer(totalMap,"cou");
 
-		QueryWrapper<Object> wrapper = new QueryWrapper<Object>();
+		QueryWrapper<Object> wrapper = new QueryWrapper<>();
 		wrapper.eq("pid", wxuserId);
 		wrapper.eq("is_deleted",0);
 		IPage<Map<String, Object>> pages = baseSqlService.getDataIPageByFieldParams("chat_wxuser", page, wrapper);
@@ -1091,7 +1065,6 @@ public class WebServiceImpl implements IWebService {
 	@Override
 	public IPage<Map<String,Object>> getFunHistory(IPage<Object> page,String funDataId){
 		String wxuserId = this.getWxuserId();
-//		String wxuserId = "1628312273179992066";
 		QueryWrapper<Object> totalWrapper = new QueryWrapper<Object>();
 		totalWrapper.eq("wxuser_id", wxuserId);
 		totalWrapper.eq("is_deleted", 0);
@@ -1109,9 +1082,5 @@ public class WebServiceImpl implements IWebService {
 		pages.setTotal(totalCou);//重置总数
 		return pages;
 	}
-
-
-
-
 }
 

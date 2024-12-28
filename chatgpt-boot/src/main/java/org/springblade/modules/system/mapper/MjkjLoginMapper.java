@@ -68,6 +68,4 @@ public interface MjkjLoginMapper{
 	Long getBladeUserIdByUnioId(String unionId);
 
 	Long getBladeUserIdByUUID(String uuid);
-
-	Long getBladeUserIdByOpenid(String openid);
 }

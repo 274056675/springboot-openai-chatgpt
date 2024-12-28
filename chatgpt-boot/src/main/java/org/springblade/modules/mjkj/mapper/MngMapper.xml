@@ -4,38 +4,38 @@
 
     <select id="getMessageHistoryList" resultType="map">
         SELECT
-            lm.id as id,
-            wx.wx_name,
-            lm.message_content as message_q,
-            lma.message_content as message_a,
-            lm.message_time,
-            lma.message_time as answer_time
+        lm.id as id,
+        wx.wx_name,
+        lm.message_content as message_q,
+        lma.message_content as message_a,
+        lm.message_time,
+        lma.message_time as answer_time
         FROM
-            chat_log_message  lm
-            INNER JOIN chat_wxuser wx on lm.wxuser_id =wx.id
-            LEFT JOIN chat_log_message lma on lma.pid=lm.id and lma.message_type ='a'
+        chat_log_message  lm
+        INNER JOIN chat_wxuser wx on lm.wxuser_id =wx.id
+        LEFT JOIN chat_log_message lma on lma.pid=lm.id and lma.message_type ='a'
         WHERE
-            lm.is_deleted =0
-            and wx.is_deleted =0
-            and lm.message_type ='q'
-            <if test="params.id!=null and params.id!=''">
-                and lm.id =#{params.id}
-            </if>
-            <if test="params.wx_name!=null and params.wx_name!=''">
-                and wx.wx_name like concat('%', #{params.wx_name}, '%')
-            </if>
-            <if test="params.blade_user_id!=null and params.blade_user_id!=''">
-                and lm.blade_user_id =#{params.blade_user_id}
-            </if>
-            <if test="params.view_type!=null and params.view_type!=''">
-                and lm.view_type =#{params.view_type}
-            </if>
-            <if test="params !=null and params.message_time != null and params.message_time != ''">
-                <![CDATA[
+        lm.is_deleted =0
+        and wx.is_deleted =0
+        and lm.message_type ='q'
+        <if test="params.id!=null and params.id!=''">
+            and lm.id =#{params.id}
+        </if>
+        <if test="params.wx_name!=null and params.wx_name!=''">
+            and wx.wx_name like concat('%', #{params.wx_name}, '%')
+        </if>
+        <if test="params.blade_user_id!=null and params.blade_user_id!=''">
+            and lm.blade_user_id =#{params.blade_user_id}
+        </if>
+        <if test="params.view_type!=null and params.view_type!=''">
+            and lm.view_type =#{params.view_type}
+        </if>
+        <if test="params !=null and params.message_time != null and params.message_time != ''">
+            <![CDATA[
                 and SUBSTRING_INDEX(#{params.message_time}, ',', 1) <= DATE_FORMAT(lm.message_time, '%Y-%m-%d')
                 and SUBSTRING_INDEX(#{params.message_time}, ',', -1) >= DATE_FORMAT(lm.message_time, '%Y-%m-%d')
                 ]]>
-            </if>
+        </if>
         order by lm.id+0 desc
     </select>
     <select id="getMessageMoreFunHistoryList" resultType="map">
@@ -62,85 +62,59 @@
         order by lm.id+0 desc
     </select>
 
-    <select id="getShiniuMessageMoreFunHistoryList" resultType="map">
-        SELECT
-        lm.id as id,
-        wx.wx_name as view_wxname,
-        lm.more_name,
-        lm.message_q,
-        lm.message_a,
-        lm.message_q_time,
-        lm.message_a_time
-        FROM
-        chat_shiniu_log_message  lm
-        INNER JOIN chat_wxuser wx on lm.wxuser_id =wx.id
-        WHERE
-        lm.is_deleted =0
-        and wx.is_deleted =0
-        <if test="params.more_name!=null and params.more_name!=''">
-            and lm.more_name =#{params.more_name}
-        </if>
-        <if test="params.view_wxname!=null and params.view_wxname!=''">
-            and wx.wx_name like concat('%', #{params.view_wxname}, '%')
-        </if>
-        order by lm.id+0 desc
-    </select>
-
-
-
     <select id="getWxUserList" resultType="map">
         SELECT
         *
         FROM
         (
-            SELECT
-            wuser.id as id,
-            IFNULL(wuser.wx_name,'匿名用户') AS wx_name,
-            wuser.wx_avatar,
-            wuser.last_login_time,
-            wuser.register_time,
-            wuser.phone,
-            wuser.expire_time,
-            wuser.stop_send_time,
-            (select ifnull(count(id),0) from chat_log_message where is_deleted =0 and wxuser_id=wuser.id and message_type
-            ='q' ) as view_cou,
-            wuser.question_cou,
-            wuser.invite_code,
-            (select ifnull(count(id),'0') from chat_wxuser where is_deleted =0 and pid=wuser.id ) as view_sub_member,
-            (select ifnull(count(id),'0') from chat_log_share where is_deleted =0 and wxuser_id=wuser.id ) as view_share_cou,
-            p_wuser.wx_name as view_p_wx_name,
-            ifnull(wal.amount,0) as view_amount,
-            wuser.is_agent,
-            wuser.source,
-            wuser.rl_cou,
-            wuser.rl_used_cou,
-            wuser.last_login_ip
-            FROM
-            chat_wxuser wuser
-            left join chat_wxuser p_wuser on wuser.pid =p_wuser.id
-            left join chat_wxuser_wallet wal on wal.wxuser_id =wuser.id
-            WHERE
-            wuser.is_deleted =0
-            <if test="params.wx_name!=null and params.wx_name!=''">
-                and wuser.wx_name like concat('%', #{params.wx_name},'%')
-            </if>
-            <if test="params.view_p_wx_name!=null and params.view_p_wx_name!=''">
-                and p_wuser.wx_name = #{params.view_p_wx_name}
-            </if>
-            <if test="params.phone!=null and params.phone!=''">
-                and wuser.phone like concat('%', #{params.phone},'%')
-            </if>
-            <if test="params.question_cou!=null and params.question_cou!=''">
-                <![CDATA[
+        SELECT
+        wuser.id as id,
+        IFNULL(wuser.wx_name,'匿名用户') AS wx_name,
+        wuser.wx_avatar,
+        wuser.last_login_time,
+        wuser.register_time,
+        wuser.phone,
+        wuser.expire_time,
+        wuser.stop_send_time,
+        (select ifnull(count(id),0) from chat_log_message where is_deleted =0 and wxuser_id=wuser.id and message_type
+        ='q' ) as view_cou,
+        wuser.question_cou,
+        wuser.invite_code,
+        (select ifnull(count(id),'0') from chat_wxuser where is_deleted =0 and pid=wuser.id ) as view_sub_member,
+        (select ifnull(count(id),'0') from chat_log_share where is_deleted =0 and wxuser_id=wuser.id ) as view_share_cou,
+        p_wuser.wx_name as view_p_wx_name,
+        ifnull(wal.amount,0) as view_amount,
+        wuser.is_agent,
+        wuser.source,
+        wuser.rl_cou,
+        wuser.rl_used_cou,
+        wuser.last_login_ip
+        FROM
+        chat_wxuser wuser
+        left join chat_wxuser p_wuser on wuser.pid =p_wuser.id
+        left join chat_wxuser_wallet wal on wal.wxuser_id =wuser.id
+        WHERE
+        wuser.is_deleted =0
+        <if test="params.wx_name!=null and params.wx_name!=''">
+            and wuser.wx_name like concat('%', #{params.wx_name},'%')
+        </if>
+        <if test="params.view_p_wx_name!=null and params.view_p_wx_name!=''">
+            and p_wuser.wx_name = #{params.view_p_wx_name}
+        </if>
+        <if test="params.phone!=null and params.phone!=''">
+            and wuser.phone like concat('%', #{params.phone},'%')
+        </if>
+        <if test="params.question_cou!=null and params.question_cou!=''">
+            <![CDATA[
                      and wuser.question_cou <= #{params.question_cou}
                 ]]>
-            </if>
-            <if test="params !=null and params.register_time != null and params.register_time != ''">
-                <![CDATA[
+        </if>
+        <if test="params !=null and params.register_time != null and params.register_time != ''">
+            <![CDATA[
                     and SUBSTRING_INDEX(#{params.register_time}, ',', 1) <= DATE_FORMAT(wuser.register_time, '%Y-%m-%d')
                     and SUBSTRING_INDEX(#{params.register_time}, ',', -1) >= DATE_FORMAT(wuser.register_time, '%Y-%m-%d')
                 ]]>
-            </if>
+        </if>
         ) t where 1=1
         <if test="params.column!=null and params.column=='id'">
             <![CDATA[  order by id+0 ${params.order} ]]>
@@ -165,9 +139,9 @@
             count(1) as cou
         FROM
             chat_log_message
-            where is_deleted =0
-            and message_type='q'
-            group by timeStr
+        where is_deleted =0
+          and message_type='q'
+        group by timeStr
     </select>
 
     <select id="getRegisterCouList" resultType="map">
@@ -176,8 +150,8 @@
             count(1) as cou
         FROM
             chat_wxuser
-            where is_deleted =0
-            group by timeStr
+        where is_deleted =0
+        group by timeStr
     </select>
 
     <select id="getUseWuserCouList" resultType="map">
@@ -186,9 +160,9 @@
             count(distinct wxuser_id) as cou
         FROM
             chat_log_message
-            where is_deleted =0
-            and message_type='q'
-            group by timeStr
+        where is_deleted =0
+          and message_type='q'
+        group by timeStr
     </select>
     <select id="getShareCouList" resultType="map">
         SELECT
@@ -196,8 +170,8 @@
             count(id) as cou
         FROM
             chat_log_share
-            where is_deleted =0
-            group by timeStr
+        where is_deleted =0
+        group by timeStr
     </select>
 
     <select id="getSignCouList" resultType="map">
@@ -206,8 +180,8 @@
             count(id) as cou
         FROM
             chat_log_sign
-            where is_deleted =0
-            group by timeStr
+        where is_deleted =0
+        group by timeStr
     </select>
 
     <select id="getFileCouList" resultType="map">
@@ -216,8 +190,8 @@
             count(id) as cou
         FROM
             chat_log_file_download
-            where is_deleted =0
-            group by timeStr
+        where is_deleted =0
+        group by timeStr
     </select>
 
 
@@ -268,16 +242,16 @@
 
     <select id="getTodayCountList" resultType="map">
         SELECT
-            *
+        *
         from (
-            SELECT
-                wxuser.wx_name,
-                (select ifnull(count(id),0) from chat_wxuser where pid=wxuser.id and is_deleted =0 and  #{params.view_time}=DATE_FORMAT(create_time, '%Y-%m-%d')) as yq_cou,
-                (select ifnull(count(id),0) from chat_log_share where wxuser_id=wxuser.id and is_deleted =0 and  #{params.view_time}=DATE_FORMAT(create_time, '%Y-%m-%d')) as fx_cou,
-                (select ifnull(count(id),0) from chat_log_message where wxuser_id=wxuser.id and is_deleted =0 and  #{params.view_time}=DATE_FORMAT(create_time, '%Y-%m-%d')) as sy_cou
-            FROM
-                chat_wxuser wxuser
-            where is_deleted=0
+        SELECT
+        wxuser.wx_name,
+        (select ifnull(count(id),0) from chat_wxuser where pid=wxuser.id and is_deleted =0 and  #{params.view_time}=DATE_FORMAT(create_time, '%Y-%m-%d')) as yq_cou,
+        (select ifnull(count(id),0) from chat_log_share where wxuser_id=wxuser.id and is_deleted =0 and  #{params.view_time}=DATE_FORMAT(create_time, '%Y-%m-%d')) as fx_cou,
+        (select ifnull(count(id),0) from chat_log_message where wxuser_id=wxuser.id and is_deleted =0 and  #{params.view_time}=DATE_FORMAT(create_time, '%Y-%m-%d')) as sy_cou
+        FROM
+        chat_wxuser wxuser
+        where is_deleted=0
         ) t where 1=1
         <if test="params.wx_name!=null and params.wx_name!=''">
             and wx_name like concat('%', #{params.wx_name}, '%')
@@ -295,21 +269,21 @@
 
     <select id="getCommissionLogList" resultType="map">
         SELECT
-            log.id,
-            log.order_code,
-            log.order_amount,
-            log.create_time as order_time,
-            log.fy_level,
-            wxuser.wx_name as fy_wxname,
-            wxuser.phone as fy_phone,
-            log.fy_rate,
-            log.fy_amount
+        log.id,
+        log.order_code,
+        log.order_amount,
+        log.create_time as order_time,
+        log.fy_level,
+        wxuser.wx_name as fy_wxname,
+        wxuser.phone as fy_phone,
+        log.fy_rate,
+        log.fy_amount
         FROM
-            chat_commission_log log
-            INNER JOIN chat_wxuser wxuser on log.fy_wxuserid =wxuser.id
+        chat_commission_log log
+        INNER JOIN chat_wxuser wxuser on log.fy_wxuserid =wxuser.id
         where
-            log.is_deleted =0
-            and wxuser.is_deleted =0
+        log.is_deleted =0
+        and wxuser.is_deleted =0
         <if test="params.order_code!=null and params.order_code!=''">
             and log.order_code = #{params.order_code}
         </if>
@@ -333,22 +307,22 @@
 
     <select id="getWalletHistoryLogList" resultType="map">
         SELECT
-            wh.id as id,
-            wx.wx_name,
-            wx.phone,
-            wh.type as wallet_type,
-            wh.service_type,
-            wh.before_amount,
-            wh.amount,
-            wh.after_amount,
-            wh.remark,
-            wh.create_time as wallet_time
+        wh.id as id,
+        wx.wx_name,
+        wx.phone,
+        wh.type as wallet_type,
+        wh.service_type,
+        wh.before_amount,
+        wh.amount,
+        wh.after_amount,
+        wh.remark,
+        wh.create_time as wallet_time
         FROM
-            chat_wxuser_wallet_history wh
+        chat_wxuser_wallet_history wh
         INNER JOIN chat_wxuser wx ON wh.wxuser_id = wx.id
         WHERE
-            wh.is_deleted = 0
-            AND wx.is_deleted =0
+        wh.is_deleted = 0
+        AND wx.is_deleted =0
         <if test="params.wx_name!=null and params.wx_name!=''">
             and  wx.wx_name like concat('%', #{params.wx_name}, '%')
         </if>
@@ -394,49 +368,25 @@
         order by gor.id+0 desc
     </select>
 
-    <select id="getShiniuMessageMoreFunHistoryListTwo" resultType="map">
-        SELECT
-        lm.id as id,
-        wx.wx_name as view_wxname,
-        lm.fun_name,
-        lm.message_q,
-        lm.message_a,
-        lm.message_q_time,
-        lm.message_a_time
-        FROM
-        chat_shiniu_log_message_fun  lm
-        INNER JOIN chat_wxuser wx on lm.wxuser_id =wx.id
-        WHERE
-        lm.is_deleted =0
-        and wx.is_deleted =0
-        <if test="params.fun_name!=null and params.fun_name!=''">
-            and lm.fun_name =#{params.fun_name}
-        </if>
-        <if test="params.view_wxname!=null and params.view_wxname!=''">
-            and wx.wx_name like concat('%', #{params.view_wxname}, '%')
-        </if>
-        order by lm.id+0 desc
-    </select>
-
     <select id="getViewImageList" resultType="map">
         SELECT
-            id,
-            wxuser_name,
-            image_title,
-            use_point,
-            use_gas,
-            view_cou,
-            star as star_cou,
-            open_flag,
-            image_url1,
-            image_url2,
-            image_url3,
-            image_url4,
-            create_time as send_time
+        id,
+        wxuser_name,
+        image_title,
+        use_point,
+        use_gas,
+        view_cou,
+        star as star_cou,
+        open_flag,
+        image_url1,
+        image_url2,
+        image_url3,
+        image_url4,
+        create_time as send_time
         FROM
-            chat_image_info
+        chat_image_info
         where
-            is_deleted=0
+        is_deleted=0
         <if test="params.wxuser_name!=null and params.wxuser_name!=''">
             and wxuser_name like concat('%', #{params.wxuser_name}, '%')
         </if>

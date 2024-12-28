@@ -22,6 +22,7 @@ import org.springblade.core.secure.BladeUser;
 import org.springblade.core.secure.utils.AuthUtil;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.utils.*;
+import org.springblade.modules.mjkj.common.constant.ServiceTypeConstant;
 import org.springblade.modules.mjkj.service.IWebService;
 import org.springblade.modules.system.entity.*;
 import org.springblade.modules.system.mapper.MjkjLoginMapper;
@@ -228,13 +229,13 @@ public class MjkjUserServiceImpl implements IMjkjUserService {
 				//注册成功，发放奖励(自己)  【注册->1】【分享->2】【分享注册->3】【提问->4】
 				QuestionNumParam addParam = new QuestionNumParam();
 				addParam.setWxuserId(wxuserId);
-				addParam.setServiceType(1);//注册
+				addParam.setServiceType(ServiceTypeConstant.zc);//注册
 				addParam.setNum(Func.toInt(registerNum));
 				webService.addWxuserQuestionNum(addParam.getBladeUsrId(),addParam.getWxuserId(),addParam.getServiceType(),addParam.getNum(),null,"注册赠送积分","question");
 
 				QuestionNumParam addRl = new QuestionNumParam();
 				addRl.setWxuserId(wxuserId);
-				addRl.setServiceType(1);
+				addRl.setServiceType(ServiceTypeConstant.zc);
 				addRl.setNum(Func.toInt(registerRl));
 				webService.addWxuserQuestionNum(addRl.getBladeUsrId(),addRl.getWxuserId(),addRl.getServiceType(),addRl.getNum(),null,"注册赠送燃料","rl");
 
@@ -246,7 +247,7 @@ public class MjkjUserServiceImpl implements IMjkjUserService {
 					QuestionNumParam addParamP = new QuestionNumParam();
 					addParamP.setBladeUsrId(pBladeUserId);
 					addParamP.setWxuserId(pid);
-					addParamP.setServiceType(3);//注册
+					addParamP.setServiceType(ServiceTypeConstant.fxzc);
 					addParamP.setNum(Func.toInt(successNum));
 					webService.addWxuserQuestionNum(addParam.getBladeUsrId(),addParam.getWxuserId(),addParam.getServiceType(),addParam.getNum(),null,"注册赠送积分","question");
 

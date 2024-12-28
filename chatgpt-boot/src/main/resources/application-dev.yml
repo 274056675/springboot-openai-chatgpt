@@ -37,7 +37,7 @@ chatgpt:
   # 机器人个人提问信息
   wechatRotGeRenTip: 温馨提示：更多好玩请关注《超级AI大脑》公众号，即可体验
   # 机器人名称
-  wechatRotGeRenName: '超级AI大脑 ,AI智多星 ,十牛AI ,云熹堂健康AI机器人 '
+  wechatRotGeRenName: '超级AI大脑'
   # 图片模型 chatgpt
   imageModel: ChatGPT
   imageModelWechatRot: chatgpt

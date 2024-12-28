@@ -54,8 +54,6 @@ public class WxUserInfoModel {
 
 	private String userCode;//用户好
 
-	private String ShiniuPayOpen;//在十牛获取用户信息时使用
-
 	private Integer rl_cou; //燃料次数
 
 	private Integer rl_used_cou; //燃料已使用次数

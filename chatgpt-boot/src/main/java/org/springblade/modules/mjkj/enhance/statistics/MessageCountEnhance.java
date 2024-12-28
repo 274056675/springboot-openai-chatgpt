@@ -32,7 +32,7 @@ public class MessageCountEnhance implements CgformEnhanceJavaListInter {
 	 * @param list
 	 */
 	public void execute(String tableName, String tenantId, List<Map<String, Object>> list, Map<String, Object> params)
-		throws BusinessException {
+			throws BusinessException {
 		MjkjUtils.clearList(list);
 		List<String> dateList = this.getNext30Day();
 		//使用次数
@@ -64,14 +64,9 @@ public class MessageCountEnhance implements CgformEnhanceJavaListInter {
 						amountTmp=amount;
 					}
 					payMap.put(timeStr,amountTmp);
-				}catch (Exception e){
-
-				}
-
+				}catch (Exception ignored){}
 			}
 		}
-
-
 
 		Map<String, Map<String, Object>> messageCouMap = MjkjUtils.list2Map(messageCouList, "timeStr");
 		Map<String, Map<String, Object>> registerCouMap = MjkjUtils.list2Map(registerCouList, "timeStr");
@@ -80,28 +75,13 @@ public class MessageCountEnhance implements CgformEnhanceJavaListInter {
 		Map<String, Map<String, Object>> signCouMap = MjkjUtils.list2Map(signCouList, "timeStr");
 		Map<String, Map<String, Object>> fileCouMap = MjkjUtils.list2Map(fileCouList, "timeStr");
 
-
 		for (String dateStr : dateList) {
-
-			Map<String, Object> twMap = messageCouMap.get(dateStr);
-			String twCou = MjkjUtils.getMap2Str(twMap, "cou");
-
-			Map<String, Object> zcMap = registerCouMap.get(dateStr);
-			String zcCou = MjkjUtils.getMap2Str(zcMap, "cou");
-
-			Map<String, Object> useMap = useWuserCouMap.get(dateStr);
-			String useCou = MjkjUtils.getMap2Str(useMap, "cou");
-
-			Map<String, Object> fxMap = shareCouMap.get(dateStr);
-			String fxCou = MjkjUtils.getMap2Str(fxMap, "cou");
-
-			Map<String, Object> signMap = signCouMap.get(dateStr);
-			String qdCou = MjkjUtils.getMap2Str(signMap, "cou");
-
-			Map<String, Object> fileMap = fileCouMap.get(dateStr);
-			String wjCou = MjkjUtils.getMap2Str(fileMap, "cou");
-
-
+			String twCou = MjkjUtils.getMap2Str(messageCouMap.get(dateStr), "cou");
+			String zcCou = MjkjUtils.getMap2Str(registerCouMap.get(dateStr), "cou");
+			String useCou = MjkjUtils.getMap2Str(useWuserCouMap.get(dateStr), "cou");
+			String fxCou = MjkjUtils.getMap2Str(shareCouMap.get(dateStr), "cou");
+			String qdCou = MjkjUtils.getMap2Str(signCouMap.get(dateStr), "cou");
+			String wjCou = MjkjUtils.getMap2Str(fileCouMap.get(dateStr), "cou");
 
 			BigDecimal amountCou = MjkjUtils.getMap2BigD(payMap, dateStr);
 			String amountCouStr=Func.isEmpty(amountCou)||amountCou.compareTo(BigDecimal.ZERO)!=1?"-":amountCou.setScale(2).stripTrailingZeros().toPlainString();

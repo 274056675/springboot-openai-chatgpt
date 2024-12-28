@@ -41,20 +41,6 @@ public interface MngMapper {
 	IPage<Map<String, Object>> getMessageMoreFunHistoryList(@Param("page") IPage<Map<String, Object>> page, @Param("params") Map<String, Object> params);
 
 	/**
-	 * 十牛 - 更多好玩-聊天记录
-	 * @return
-	 */
-	IPage<Map<String, Object>> getShiniuMessageMoreFunHistoryList(@Param("page") IPage<Map<String, Object>> page, @Param("params") Map<String, Object> params);
-
-	/**
-	 * 十牛 - 更多好玩-聊天记录2
-	 * @param page
-	 * @param params
-	 * @return
-	 */
-	IPage getShiniuMessageMoreFunHistoryListTwo(Page page, Map<String, Object> params);
-
-	/**
 	 * 获取用户列表
 	 * @return
 	 */

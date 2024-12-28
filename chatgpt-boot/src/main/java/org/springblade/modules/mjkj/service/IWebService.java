@@ -59,11 +59,10 @@ public interface IWebService {
 	//获取参数设置
 	String getCsszVal(String code, String defaultVal);
 
-
-	//增加用户次数  【注册->1】【分享->2】【分享注册->3】【提问->4】【5=人工】【6=广告奖励】【7=签到】【8=会员奖励】【9=更多好玩】【10=口令福利】
+	//增加用户次数
 	void  addWxuserQuestionNum(Long bladeUserId, String wxuserId, Integer serviceType, Integer num, String questionId, String remark, String numType);
 
-	//减用户次数  【注册->1】【分享->2】【分享注册->3】【提问->4】【5=人工】【6=广告奖励】【7=签到】【8=会员奖励】【9=更多好玩】【10=口令福利】
+	//减用户次数
 	void  subWxuserQuestionNum(Long bladeUserId, String wxuserId, Integer serviceType, Integer num, String questionId, String remark, String numType);
 
 	//获取新邀请码

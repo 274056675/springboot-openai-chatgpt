@@ -34,6 +34,7 @@ import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.RedisUtil;
 import org.springblade.modules.mjkj.common.cgform.service.IMjkjBaseSqlService;
 import org.springblade.modules.mjkj.common.config.constant.ChatgptConfig;
+import org.springblade.modules.mjkj.common.constant.AiModelConstant;
 import org.springblade.modules.mjkj.common.utils.MjkjUtils;
 
 import org.springblade.modules.mjkj.model.ChatGptMsgModel;
@@ -294,16 +295,11 @@ public class ChatController {
 			return R.data("翻译失败");
 		}
 		//获取个人设置
-//		Map<String, Object> settingMap = webService.getWxUserSetting(wxuserId);
-		//String targetLang = MjkjUtils.getMap2Str(settingMap, "translate_lang");
 		String targetLang = paramModel.getTargetLang();
 		if (Func.isEmpty(targetLang)) {
 			targetLang = "英文";
 		}
 
-//		Map<String, Object> settingMap = baseSqlService.getDataOneByField("chat_wxuser_setting","wxuser_id",wxuserId);
-//		String aiModel = MjkjUtils.getMap2Str(settingMap,"ai_model");
-		String aiModel = "gpt-3.5-turbo-16k";
 		//先从数据库里面获取，没有的话，则到ai那边获取
 		QueryWrapper<Object> translateWrapper = new QueryWrapper<>();
 		translateWrapper.eq("is_deleted", 0);
@@ -332,9 +328,7 @@ public class ChatController {
 		model2.setContent("将上面一段话翻译成：" + targetLang);
 		messagesList.add(model2);//封装参数
 		//开始翻译，实时，不走异步
-
-		String result = chatGPTService.sendNowTimeChatGptTurboMessage(messagesList,aiModel);
-
+		String result = chatGPTService.sendNowTimeChatGptTurboMessage(messagesList, AiModelConstant.gpt_3_0);
 
 		//插入到数据库
 		if (Func.isNotEmpty(result)) {
@@ -367,12 +361,11 @@ public class ChatController {
 		if (Func.isNotEmpty(messageMap)) {
 			return R.data("成功");
 		}
-		Date now = DateUtil.now();
 
 		Map<String, Object> addMap = new HashMap<>();
 		addMap.put("log_message_id", messageId);
 		addMap.put("wxuser_id", wxuserId);
-		addMap.put("star_time", now);
+		addMap.put("star_time", DateUtil.now());
 		baseSqlService.baseInsertData("chat_hot_message_star", addMap);
 
 		return R.data("成功");
@@ -399,12 +392,11 @@ public class ChatController {
 			settingMap.put("image_model",imageModel);
 			baseSqlService.baseInsertData("chat_wxuser_setting", settingMap);
 		}
-		QueryWrapper queryWrapper = new QueryWrapper<>();
+		QueryWrapper<Object> queryWrapper = new QueryWrapper<>();
 		queryWrapper.select("mx_lx");
 		queryWrapper.ne("model_status",1);
 		List<Map<String,Object>> modellist = baseSqlService.getDataListByFieldParams("chat_model", queryWrapper);
-		for (int i = 0; i < modellist.size(); i++) {
-			Map<String,Object> map= modellist.get(i);
+		for (Map<String, Object> map : modellist) {
 			String mxLx = MjkjUtils.getMap2Str(map, "mx_lx");
 			if (Func.equals(mxLx,MjkjUtils.getMap2Str(settingMap, "ai_model"))){
 				settingMap.replace("ai_model",aiModel);
@@ -586,15 +578,6 @@ public class ChatController {
 		return R.data(resultMap);
 	}
 
-
-
-
-
-
-
-
-
-
 	@ApiOperationSupport(order = 26)
 	@GetMapping(value = "/store")
 	@ApiOperation(value = "收藏", notes = "收藏")
@@ -707,9 +690,6 @@ public class ChatController {
 
 	}
 
-
-
-
 	@ApiOperationSupport(order = 37)
 	@PostMapping(value = "/get/invited")
 	@ApiOperation(value = "展示已经邀请的人数",notes = "展示已经邀请的人数")
@@ -743,9 +723,5 @@ public class ChatController {
 		return R.success(url);
 
 	}
-
-
-
-
 }
 
