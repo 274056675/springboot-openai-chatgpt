@@ -23,7 +23,6 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 Vue.use(VueAxios, axios)
 
-
 // 公告列表 页面挂载
 import announcementVue from '@/components/announcement/announcement'
 Vue.prototype.$announcementVue = announcementVue

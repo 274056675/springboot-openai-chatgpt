@@ -51,7 +51,7 @@ under the License.
    |
    | Default: ${user.home}/.m2/repository
    -->
-  <localRepository>D:\LinRiQiang\Maven\mavenlib</localRepository>
+  <localRepository>D:\maven\repository</localRepository>
   
 
   <!-- interactiveMode

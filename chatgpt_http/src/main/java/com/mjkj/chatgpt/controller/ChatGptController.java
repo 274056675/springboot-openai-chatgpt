@@ -39,7 +39,7 @@ public class ChatGptController {
     @Autowired
     private IChatGPTService chatGPTService;
 
-    private static String aesKey = "vWkzDxDfXruFpgjDH7Jy0mIWamCQvdct";
+    private static final String aesKey = "vWkzDxDfXruFpgjDH7Jy0mIWamCQvdct";
 
 
 

@@ -24,7 +24,6 @@ import website from '@/config/website';
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 
-
 //引入图标库
 import '@/assets/css/font-awesome.min.css'
 
