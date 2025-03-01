@@ -76,8 +76,6 @@ public class ChatGPTServiceImpl implements IChatGPTService {
         String url = param.getUrl();
         String apiKey = param.getKey();
         String req_body = param.getBody();
-
-
         HttpRequest request  = HttpRequest.post(url)
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + apiKey);
