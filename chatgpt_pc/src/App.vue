@@ -166,6 +166,7 @@ export default {
   },
 };
 </script>
+
 <style lang="scss">
 @import url("@/assets/icon/iconfont.css");
 input::-webkit-outer-spin-button,
