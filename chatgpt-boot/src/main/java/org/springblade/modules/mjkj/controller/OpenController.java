@@ -289,9 +289,7 @@ public class OpenController {
 				queryWrapper.eq("is_deleted", 0);
 				queryWrapper.eq("view_status", 1);
 				List<Map<String, Object>> fourMapList=baseSqlService.getDataListByFieldParams("chat_gjgl_fun_data", queryWrapper);
-				for (Map<String, Object> fourMap : fourMapList) {
-					dataMapList.add(fourMap);
-				}
+                dataMapList.addAll(fourMapList);
 			}
 		}
 
