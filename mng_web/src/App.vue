@@ -17,6 +17,7 @@ export default {
   computed: {}
 };
 </script>
+
 <style lang="scss">
 #app {
   width: 100%;
