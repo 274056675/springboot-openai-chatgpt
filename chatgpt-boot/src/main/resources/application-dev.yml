@@ -42,7 +42,7 @@ chatgpt:
   imageModel: ChatGPT
   imageModelWechatRot: chatgpt
   # 默认头像
-  defaultLogo: https://ai.oss.mj.ink/chatgpt/upload/2023-05-30/1663433665026666498_1685428465871.png
+  defaultLogo: https://oss.mj.ink/chatgpt/upload/2023-05-30/1663433665026666498_1685428465871.png
   # 默认名字
   defaultUserName: '超级AI大脑'
 
