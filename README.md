@@ -1,5 +1,5 @@
 <p align="center">
-	<img alt="logo"  src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/xct.jpg">
+	<img alt="logo"  src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/xct.jpg">
 </p>
 
 ```
@@ -25,7 +25,7 @@
 
    |                         后端启动教程                         |                       后端界面启动教程                       |                         PC端启动教程                         |
    | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
-   | <a target="_blank" href="https://www.bilibili.com/video/BV1rf421m7Jn/"> <img height="140" width="200" src="https://ai.oss.mj.ink/chatgpt/github/cjaidn_ht.png"/></a> | <a target="_blank" href="https://www.bilibili.com/video/BV1Qz42117uJ/"><img height="140" width="200" src="https://ai.oss.mj.ink/chatgpt/github/cjaidn_ht_web.png" /></a> | <a target="_blank" href="https://www.bilibili.com/video/BV1cH4y137XZ"><img height="140" width="200" src="https://ai.oss.mj.ink/chatgpt/github/cjaidn_pc.png"/></a> |
+   | <a target="_blank" href="https://www.bilibili.com/video/BV1rf421m7Jn/"> <img height="140" width="200" src="https://oss.mj.ink/chatgpt/github/cjaidn_ht.png"/></a> | <a target="_blank" href="https://www.bilibili.com/video/BV1Qz42117uJ/"><img height="140" width="200" src="https://oss.mj.ink/chatgpt/github/cjaidn_ht_web.png" /></a> | <a target="_blank" href="https://www.bilibili.com/video/BV1cH4y137XZ"><img height="140" width="200" src="https://oss.mj.ink/chatgpt/github/cjaidn_pc.png"/></a> |
 
 
 6. 本项目不在任何平台出售,如有发现请积极举报<br/>
@@ -34,7 +34,7 @@
 
 ## 超级AI大脑产品架构图
 
-<img src="https://ai.oss.mj.ink/chatgpt/github/架构图.png" />
+<img src="https://oss.mj.ink/chatgpt/github/架构图.png" />
 
 ## 项目关系
 
@@ -60,19 +60,19 @@
 
 1. Web端在线体验地址(点击图片可访问)：http://www.mj.ink
 
-     <a href="http://www.mj.ink"><img src="https://ai.oss.mj.ink/chatgpt/github/PC端聊天.png" /></a>
+     <a href="http://www.mj.ink"><img src="https://oss.mj.ink/chatgpt/github/PC端聊天.png" /></a>
 
 2. 微信关注超级AI大脑公众号及手机扫码下载App
 
 |                          微信公众号                          |                           Android                            |                             IOS                              |
 | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
-| <img height="200" width="200" src="https://ai.oss.mj.ink/chatgpt/github/wxgzh.jpg"/> | <img height="200" width="200" src="https://ai.oss.mj.ink/chatgpt/github/安卓225.png"/> | <a href="https://apps.apple.com/cn/app/id6448979172"><img height="200" width="200" src="https://ai.oss.mj.ink/chatgpt/github/ios.png"/></a> |
+| <img height="200" width="200" src="https://oss.mj.ink/chatgpt/github/wxgzh.jpg"/> | <img height="200" width="200" src="https://oss.mj.ink/chatgpt/github/安卓225.png"/> | <a href="https://apps.apple.com/cn/app/id6448979172"><img height="200" width="200" src="https://oss.mj.ink/chatgpt/github/ios.png"/></a> |
 |                        **微信公众号**                        |                         **Android**                          |                           **IOS**                            |
 
 3. 新用户第一次登录即为注册，可微信进行登录。如图：
 
  <div align=left>
-    <td ><img height="" width="" src="https://ai.oss.mj.ink/chatgpt/github/PC端登录页.png"/></td>
+    <td ><img height="" width="" src="https://oss.mj.ink/chatgpt/github/PC端登录页.png"/></td>
  </div>
 
 
@@ -87,10 +87,10 @@
 
 <table>
     <tr>
-        <td><img src="https://ai.oss.mj.ink/chatgpt/github/desk1.png"/></td>
-       	<td><img src="https://ai.oss.mj.ink/chatgpt/github/desk2.png"/></td>
-        <td><img src="https://ai.oss.mj.ink/chatgpt/github/desk3.png"/></td>
-        <td><img src="https://ai.oss.mj.ink/chatgpt/github/desk4.png"/></td>
+        <td><img src="https://oss.mj.ink/chatgpt/github/desk1.png"/></td>
+       	<td><img src="https://oss.mj.ink/chatgpt/github/desk2.png"/></td>
+        <td><img src="https://oss.mj.ink/chatgpt/github/desk3.png"/></td>
+        <td><img src="https://oss.mj.ink/chatgpt/github/desk4.png"/></td>
     </tr>
 </table>
 
@@ -98,25 +98,25 @@
 
 ###### 聊天页
 
-<img src="https://ai.oss.mj.ink/chatgpt/github/聊天医生.png" />
+<img src="https://oss.mj.ink/chatgpt/github/聊天医生.png" />
 
 
 
 ###### 绘画广场
 
-<img src="https://ai.oss.mj.ink/chatgpt/github/PC端绘画广场_20230922100319.png" />
+<img src="https://oss.mj.ink/chatgpt/github/PC端绘画广场_20230922100319.png" />
 
 
 
 ###### PC端绘画界面
 
-<img src="https://ai.oss.mj.ink/chatgpt/github/PC端绘画界面2.png" />
+<img src="https://oss.mj.ink/chatgpt/github/PC端绘画界面2.png" />
 
 
 
 ###### PC端绘画生成
 
-<img src="https://ai.oss.mj.ink/chatgpt/github/PC端绘画生成.png" />
+<img src="https://oss.mj.ink/chatgpt/github/PC端绘画生成.png" />
 ## 2.主要功能点展示
 
 ### 2.1 AI聊天工具箱
@@ -125,9 +125,9 @@
 
 <table>
     <tr>
-        <td><img src="https://ai.oss.mj.ink/chatgpt/github/首页1.jpg" /></td>
-        <td><img src="https://ai.oss.mj.ink/chatgpt/github/%E5%89%8D%E5%8F%B02.jpg" /></td>
-        <td><img src="https://ai.oss.mj.ink/chatgpt/github/首页3.jpg"/></td>
+        <td><img src="https://oss.mj.ink/chatgpt/github/首页1.jpg" /></td>
+        <td><img src="https://oss.mj.ink/chatgpt/github/%E5%89%8D%E5%8F%B02.jpg" /></td>
+        <td><img src="https://oss.mj.ink/chatgpt/github/首页3.jpg"/></td>
     </tr>
 </table>
 
@@ -141,20 +141,20 @@
 
 <table>
     <tr>
-        <td><img src="https://ai.oss.mj.ink/chatgpt/upload/2023-09-02/1697894033617657858_1693644457619.png" /></td>
-        <td><img src="https://ai.oss.mj.ink/chatgpt/upload/2023-09-02/1697894588394053634_1693644589891.png" /></td>
-        <td><img src="http://ai.oss.mj.ink/chatgpt/upload/2023-09-02/1697895053861134338_1693644700864.png"/></td>
-        <td><img src="http://ai.oss.mj.ink/chatgpt/upload/2023-09-02/1697895337224118274_1693644768430.png" /></td>
+        <td><img src="https://oss.mj.ink/chatgpt/upload/2023-09-02/1697894033617657858_1693644457619.png" /></td>
+        <td><img src="https://oss.mj.ink/chatgpt/upload/2023-09-02/1697894588394053634_1693644589891.png" /></td>
+        <td><img src="http://oss.mj.ink/chatgpt/upload/2023-09-02/1697895053861134338_1693644700864.png"/></td>
+        <td><img src="http://oss.mj.ink/chatgpt/upload/2023-09-02/1697895337224118274_1693644768430.png" /></td>
     </tr>
 </table>
 **社区部分**，用户发布的作品将在社区中根据作品热度进行排序展示，用户可点击进行观赏、创作同款、生成海报，用户点击分享可下载图片以及分享到朋友圈。功能展示如图：
 
 <table>
     <tr>
-        <td><img src="https://ai.oss.mj.ink/chatgpt/github/绘画界面.png" /></td>
-        <td><img src="https://ai.oss.mj.ink/chatgpt/github/生成海报.png"/></td>
-        <td><img src="https://ai.oss.mj.ink/chatgpt/github/发布社区.png"/></td>
-        <td><img src="https://ai.oss.mj.ink/chatgpt/github/发布海报2.png" /></td>
+        <td><img src="https://oss.mj.ink/chatgpt/github/绘画界面.png" /></td>
+        <td><img src="https://oss.mj.ink/chatgpt/github/生成海报.png"/></td>
+        <td><img src="https://oss.mj.ink/chatgpt/github/发布社区.png"/></td>
+        <td><img src="https://oss.mj.ink/chatgpt/github/发布海报2.png" /></td>
         </tr>
     </table>
 
@@ -171,9 +171,9 @@ P1分类：通用   风格：自定义   比例：1:1   尺寸：512*512   生�
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/少女1.png" /></td>
-        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/少女4.png" /></td>
-        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/少女2.png" /></td>
+        <td height="220" width="210"><img src="http://oss.mj.ink/chatgpt/github/少女1.png" /></td>
+        <td height="220" width="210"><img src="http://oss.mj.ink/chatgpt/github/少女4.png" /></td>
+        <td height="220" width="210"><img src="http://oss.mj.ink/chatgpt/github/少女2.png" /></td>
     </tr>
 </table>
 
@@ -187,9 +187,9 @@ P2分类：通用   风格：自定义   比例：1:1   尺寸：512*512   生�
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/卡通少女2.png" /></td>
-        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/卡通少女1.png" /></td>
-        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/卡通少女3.png" /></td>
+        <td height="220" width="210"><img src="http://oss.mj.ink/chatgpt/github/卡通少女2.png" /></td>
+        <td height="220" width="210"><img src="http://oss.mj.ink/chatgpt/github/卡通少女1.png" /></td>
+        <td height="220" width="210"><img src="http://oss.mj.ink/chatgpt/github/卡通少女3.png" /></td>
     </tr>
 </table>
 
@@ -203,9 +203,9 @@ P3分类：通用   风格：漫画   比例：1:1   尺寸：512*512   生成�
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/卡通猫咪2.png" /></td>
-        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/卡通猫咪1.png" /></td>
-        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/卡通猫咪3.png" /></td>
+        <td height="220" width="210"><img src="http://oss.mj.ink/chatgpt/github/卡通猫咪2.png" /></td>
+        <td height="220" width="210"><img src="http://oss.mj.ink/chatgpt/github/卡通猫咪1.png" /></td>
+        <td height="220" width="210"><img src="http://oss.mj.ink/chatgpt/github/卡通猫咪3.png" /></td>
     </tr>
 </table>
 
@@ -218,9 +218,9 @@ P4分类：通用   风格：写实主义   比例：1:1   尺寸：512*512   �
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/鲜花4.png" /></td>
-        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/新鲜花2.png" /></td>
-        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/新鲜花3.png" /></td>
+        <td height="220" width="210"><img src="http://oss.mj.ink/chatgpt/github/鲜花4.png" /></td>
+        <td height="220" width="210"><img src="http://oss.mj.ink/chatgpt/github/新鲜花2.png" /></td>
+        <td height="220" width="210"><img src="http://oss.mj.ink/chatgpt/github/新鲜花3.png" /></td>
     </tr>
 </table>
 
@@ -234,9 +234,9 @@ P5分类：中国风   风格：国画   比例：1:1   尺寸：512*512   生�
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/水墨画1.png" /></td>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/水墨画2.png" /></td>
-        <td height="220" width="210"><img src="http://ai.oss.mj.ink/chatgpt/github/水墨画3.png" /></td>
+        <td height="220" width="210"><img src="https://oss.mj.ink/chatgpt/github/水墨画1.png" /></td>
+        <td height="220" width="210"><img src="https://oss.mj.ink/chatgpt/github/水墨画2.png" /></td>
+        <td height="220" width="210"><img src="http://oss.mj.ink/chatgpt/github/水墨画3.png" /></td>
     </tr>
 </table>
 
@@ -250,9 +250,9 @@ P6分类：场景   风格：史诗大片   比例：1:1   尺寸：512*512   �
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/机器人1.png" /></td>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/机器人2.png" /></td>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/机器人3.png" /></td>
+        <td height="220" width="210"><img src="https://oss.mj.ink/chatgpt/github/机器人1.png" /></td>
+        <td height="220" width="210"><img src="https://oss.mj.ink/chatgpt/github/机器人2.png" /></td>
+        <td height="220" width="210"><img src="https://oss.mj.ink/chatgpt/github/机器人3.png" /></td>
     </tr>
 </table>
 
@@ -265,9 +265,9 @@ P7分类：场景  风格：赛博朋克   比例：1:1   尺寸：512*512
 
 <table align="center">
     <tr>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/赛博朋克1.png" /></td>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/赛博朋克2.png" /></td>
-        <td height="220" width="210"><img src="https://ai.oss.mj.ink/chatgpt/github/赛博朋克3.png" /></td>
+        <td height="220" width="210"><img src="https://oss.mj.ink/chatgpt/github/赛博朋克1.png" /></td>
+        <td height="220" width="210"><img src="https://oss.mj.ink/chatgpt/github/赛博朋克2.png" /></td>
+        <td height="220" width="210"><img src="https://oss.mj.ink/chatgpt/github/赛博朋克3.png" /></td>
     </tr>
 </table>
 
@@ -278,7 +278,7 @@ P7分类：场景  风格：赛博朋克   比例：1:1   尺寸：512*512
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/后台统计图.jpg"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/github/后台统计图.jpg"/></td>
     </tr>
 </table>
 
@@ -288,16 +288,16 @@ P7分类：场景  风格：赛博朋克   比例：1:1   尺寸：512*512
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/1682406718076.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/github/1682406718076.png"/></td>
     </tr>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/1682406881447.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/github/1682406881447.png"/></td>
     </tr>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/1682406917225.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/github/1682406917225.png"/></td>
     </tr>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/1682406989125.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/github/1682406989125.png"/></td>
     </tr>
 </table>
 
@@ -313,16 +313,16 @@ P7分类：场景  风格：赛博朋克   比例：1:1   尺寸：512*512
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/%E8%A1%A8%E5%8D%95%E5%BC%80%E5%8F%911.jpg"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/github/%E8%A1%A8%E5%8D%95%E5%BC%80%E5%8F%911.jpg"/></td>
     </tr>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/%E8%A1%A8%E5%8D%95%E5%BC%80%E5%8F%912.jpg"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/github/%E8%A1%A8%E5%8D%95%E5%BC%80%E5%8F%912.jpg"/></td>
     </tr>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/%E8%A1%A8%E5%8D%95%E5%BC%80%E5%8F%913.jpg"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/github/%E8%A1%A8%E5%8D%95%E5%BC%80%E5%8F%913.jpg"/></td>
     </tr>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/%E8%A1%A8%E5%8D%95%E5%BC%80%E5%8F%914.jpg"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/github/%E8%A1%A8%E5%8D%95%E5%BC%80%E5%8F%914.jpg"/></td>
 </table>
 
 ### 3.2 App在线开发
@@ -333,13 +333,13 @@ P7分类：场景  风格：赛博朋克   比例：1:1   尺寸：512*512
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/%E8%A1%A8%E5%8D%95%E8%AE%BE%E8%AE%A11.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/github/%E8%A1%A8%E5%8D%95%E8%AE%BE%E8%AE%A11.png"/></td>
     </tr>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/%E8%A1%A8%E5%8D%95%E8%AE%BE%E8%AE%A12.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/github/%E8%A1%A8%E5%8D%95%E8%AE%BE%E8%AE%A12.png"/></td>
     </tr>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/%E8%A1%A8%E5%8D%95%E8%AE%BE%E8%AE%A13.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/github/%E8%A1%A8%E5%8D%95%E8%AE%BE%E8%AE%A13.png"/></td>
     </tr>
 </table>
 
@@ -384,7 +384,7 @@ P7分类：场景  风格：赛博朋克   比例：1:1   尺寸：512*512
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/项目结构.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/github/项目结构.png"/></td>
     </tr>
 </table>
 下载BLade 3.7.1.RELEASE解压后，把图片中选中的文件复制到blade项目中，选择**覆盖**操作。
@@ -403,7 +403,7 @@ Naco下载
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/nacos启动.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/github/nacos启动.png"/></td>
     </tr>
 </table>
 
@@ -411,7 +411,7 @@ Naco下载
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/Snipaste_2023-04-28_11-17-57.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/github/Snipaste_2023-04-28_11-17-57.png"/></td>
     </tr>
 </table>
 
@@ -423,7 +423,7 @@ Naco下载
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/Snipaste_2023-04-28_11-12-24.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/github/Snipaste_2023-04-28_11-12-24.png"/></td>
     </tr>
 </table>
 配置好nacos后分别在项目中**启动**以下5个服务，并能被nacos正常访问到，如图：
@@ -451,25 +451,25 @@ Naco下载
 
 <table>
     <tr>
-        <td align='center'><img src="https://ai.oss.mj.ink/chatgpt/github/bootstart1.png"/></td>
+        <td align='center'><img src="https://oss.mj.ink/chatgpt/github/bootstart1.png"/></td>
     </tr>
 </table>
 
 <table>
     <tr>
-        <td align='center'><img src="https://ai.oss.mj.ink/chatgpt/github/bootstart2.png"/></td>
+        <td align='center'><img src="https://oss.mj.ink/chatgpt/github/bootstart2.png"/></td>
     </tr>
 </table>
 
 <table>
     <tr>
-        <td align='center'><img src="https://ai.oss.mj.ink/chatgpt/github/bootstart3.png"/></td>
+        <td align='center'><img src="https://oss.mj.ink/chatgpt/github/bootstart3.png"/></td>
     </tr>
 </table>
 
 <table>
     <tr>
-        <td align='center'><img src="https://ai.oss.mj.ink/chatgpt/github/bootstart4.png"/></td>
+        <td align='center'><img src="https://oss.mj.ink/chatgpt/github/bootstart4.png"/></td>
     </tr>
 </table>
 
@@ -487,7 +487,7 @@ Naco下载
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/gateway网关.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/github/gateway网关.png"/></td>
     </tr>
 </table>
 
@@ -495,7 +495,7 @@ Naco下载
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/github/开源pc截图.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/github/开源pc截图.png"/></td>
     </tr>
 </table>
 
@@ -540,8 +540,8 @@ Naco下载
 ## 客服微信与技术讨论群（广告勿扰）：
 
  <div align=center >
-    <td ><img height="250" width="250" src="https://ai.oss.mj.ink/chatgpt/github/Wechatgroup2.jpg"/></td>
-    <td ><img height="250" width="250" src="https://ai.oss.mj.ink/chatgpt/github/客服微信.png"/></td>
-     <td ><img height="250" width="250" src="https://ai.oss.mj.ink/chatgpt/github/客服微信2.png"/></td>  
+    <td ><img height="250" width="250" src="https://oss.mj.ink/chatgpt/github/Wechatgroup2.jpg"/></td>
+    <td ><img height="250" width="250" src="https://oss.mj.ink/chatgpt/github/客服微信.png"/></td>
+     <td ><img height="250" width="250" src="https://oss.mj.ink/chatgpt/github/客服微信2.png"/></td>  
 </div>
 ​	
