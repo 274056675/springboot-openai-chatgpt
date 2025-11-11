@@ -23,7 +23,7 @@
         <mp.version>3.3.2</mp.version>
         <hutool.version>5.5.6</hutool.version>
         <lombok.versin>1.18.12</lombok.versin>
-        <fastjson.version>1.2.70</fastjson.version>
+        <fastjson.version>2.0.60</fastjson.version>
     </properties>
 
     <dependencies>
